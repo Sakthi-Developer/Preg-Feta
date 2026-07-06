@@ -18,7 +18,7 @@ from matplotlib.lines import Line2D
 from sklearn.metrics import roc_curve, precision_recall_curve, roc_auc_score, average_precision_score, confusion_matrix
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-FIG = os.path.join(ROOT, "figures")
+FIG = os.environ.get("FIG_OUT", os.path.join(ROOT, "figures"))
 os.makedirs(FIG, exist_ok=True)
 DPI = 200
 
@@ -140,8 +140,6 @@ def fig1():
                       "tensors — not from a separate data source",
             fontsize=8, color=C["mat"], ha="center", va="center", style="italic")
 
-    ax.text(6.0, 6.0, "Proposed framework overview", ha="center",
-            fontsize=13, fontweight="bold")
     save(fig, "fig1_framework_overview.png")
 
 
@@ -194,8 +192,6 @@ def fig2():
         ax.text(cx + w / 2 + 0.55, yc, label, ha="left", va="center",
                 fontsize=8, color=C["loss"], style="italic")
 
-    ax.text(cx, 10.25, "FETA-Transformer architecture", ha="center",
-            fontsize=13, fontweight="bold")
     ax.text(6.9, 5.4, "→ explainability module", rotation=90, ha="center",
             va="center", fontsize=8.5, color=C["loss"])
     save(fig, "fig2_feta_architecture.png")
@@ -299,7 +295,6 @@ def fig3():
     axp.text(5.55, centers[3], "node-importance\noutput", fontsize=7.5,
              color=C["loss"], ha="left", va="center", style="italic")
 
-    fig.suptitle("PREG-Net architecture and knowledge graph", fontsize=13, fontweight="bold", y=1.0)
     save(fig, "fig3_pregnet_architecture.png")
 
 
@@ -350,8 +345,7 @@ def fig4():
     traj(axes[1, 0], "FHR", "(c) Fetal heart rate by outcome", "FHR (bpm)")
     traj(axes[1, 1], "CRL", "(d) Crown-rump length by outcome", "CRL (mm)")
 
-    fig.suptitle("Synthetic cohort and trajectory visualization", fontsize=13, fontweight="bold")
-    fig.tight_layout(rect=[0, 0, 1, 0.97])
+    fig.tight_layout()
     save(fig, "fig4_cohort_trajectories.png")
 
 
@@ -402,8 +396,7 @@ def fig5():
     axp.set_xlim(-0.01, 1.01); axp.set_ylim(0.0, 1.02)
     axp.legend(fontsize=7.4, loc="lower left")
 
-    fig.suptitle("Discrimination on the held-out test split", fontsize=13, fontweight="bold")
-    fig.tight_layout(rect=[0, 0, 1, 0.96])
+    fig.tight_layout()
     save(fig, "fig5_roc_pr.png")
 
 
@@ -448,7 +441,6 @@ def fig6():
         if prop:
             tick.set_fontweight("bold"); tick.set_color(C["proposed"])
     ax.set_xlabel("Cross-validation AUROC (mean ± SD, 5-fold)")
-    ax.set_title("Cross-validation forest plot")
     handles = [Line2D([0], [0], marker="o", color="w", markerfacecolor=C["proposed"],
                       markeredgecolor="black", ms=9, label="proposed"),
                Line2D([0], [0], marker="o", color="w", markerfacecolor=C["baseline"],
@@ -490,9 +482,7 @@ def fig7():
         ax.set_xticks(np.arange(-.5, 2, 1), minor=True)
         ax.set_yticks(np.arange(-.5, 2, 1), minor=True)
         ax.grid(which="minor", color="white", lw=1.5)
-    fig.suptitle("Confusion matrices at threshold 0.5 (test split)",
-                 fontsize=13, fontweight="bold")
-    fig.tight_layout(rect=[0, 0, 1, 0.96])
+    fig.tight_layout()
     save(fig, "fig7_confusion_matrices.png")
 
 
@@ -521,9 +511,7 @@ def fig8():
     ax2.set_ylabel("mean maternal→time cross-attention")
     ax2.set_title("Maternal→time cross-attention")
     ax2.legend(fontsize=9); ax2.grid(ls=":", alpha=0.4)
-    fig.suptitle("FETA temporal attention by gestational week",
-                 fontsize=13, fontweight="bold")
-    fig.tight_layout(rect=[0, 0, 1, 0.95])
+    fig.tight_layout()
     save(fig, "fig8_feta_attention.png")
 
 
@@ -570,9 +558,7 @@ def fig9():
     axe.set_ylim(0, (grp["mean"] + grp["std"]).max() * 1.25)
     axe.grid(axis="y", ls=":", alpha=0.4)
 
-    fig.suptitle("PREG-Net node importance and edge attention",
-                 fontsize=13, fontweight="bold")
-    fig.tight_layout(rect=[0, 0, 1, 0.95])
+    fig.tight_layout()
     save(fig, "fig9_pregnet_explainability.png")
 
 
