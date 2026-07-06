@@ -1,0 +1,8 @@
+| Model | Parameters | Epochs completed | Total train time, s | Mean epoch time, s | Checkpoint size, MB | Device |
+| --- | --- | --- | --- | --- | --- | --- |
+| PREG-Net | 16130 | 80 | 27.1 | 0.34 | 0.21 | CPU |
+| FETA-Transformer | 87201 | 71 | 23.3 | 0.33 | 1.06 | CPU |
+| Ensemble | 103331 | 22 | 10.4 | 0.47 | 1.27 | CPU |
+| Learned Ensemble | 103334 | 31 | 14.1 | 0.45 | 1.27 | CPU |
+| Torch Logistic Regression | 24 | not recorded | not recorded | not recorded | not persisted | CPU |
+| Torch MLP | 3649 | not recorded | not recorded | not recorded | not persisted | CPU |

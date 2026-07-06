@@ -1,0 +1,20 @@
+{
+  "patients_csv": "data/generated/patients.csv",
+  "scans_csv": "data/generated/scans.csv",
+  "feta_checkpoint": "results/feta_transformer/checkpoints/best_model.pt",
+  "preg_checkpoint": "results/preg_net/checkpoints/best_model.pt",
+  "n_test_patients": 122,
+  "n_feta_attention_rows": 359,
+  "n_preg_node_rows": 2290,
+  "n_preg_edge_rows": 11589,
+  "case_studies": [
+    "P00548",
+    "P00320",
+    "P00089",
+    "P00099"
+  ],
+  "notes": [
+    "PREG-Net edge attention is averaged across GAT layers and heads.",
+    "FETA maternal-to-time maps are post-hoc maps from trained W_q/W_k projections over temporal tokens."
+  ]
+}

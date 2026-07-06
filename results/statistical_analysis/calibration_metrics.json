@@ -1,0 +1,92 @@
+[
+  {
+    "model": "MLP",
+    "brier_score": 0.01624861838591122,
+    "expected_calibration_error": 0.019995171106121416,
+    "max_calibration_error": 0.4437541961669922,
+    "mean_probability": 0.25770008913890835,
+    "observed_prevalence": 0.23770491803278687,
+    "n_bins": 10
+  },
+  {
+    "model": "Sklearn Logistic Regression",
+    "brier_score": 0.02092261418214257,
+    "expected_calibration_error": 0.03268011665633193,
+    "max_calibration_error": 0.5579118132591248,
+    "mean_probability": 0.2604598363295512,
+    "observed_prevalence": 0.23770491803278687,
+    "n_bins": 10
+  },
+  {
+    "model": "XGBoost",
+    "brier_score": 0.03251643147445534,
+    "expected_calibration_error": 0.02445998517190461,
+    "max_calibration_error": 0.8911478519439697,
+    "mean_probability": 0.2520831283289256,
+    "observed_prevalence": 0.23770491803278687,
+    "n_bins": 10
+  },
+  {
+    "model": "HistGradientBoosting",
+    "brier_score": 0.034654954406856835,
+    "expected_calibration_error": 0.03883696584029605,
+    "max_calibration_error": 0.8490973287787296,
+    "mean_probability": 0.24418302108088513,
+    "observed_prevalence": 0.23770491803278687,
+    "n_bins": 10
+  },
+  {
+    "model": "Random Forest",
+    "brier_score": 0.0399851548269581,
+    "expected_calibration_error": 0.05986338797814207,
+    "max_calibration_error": 0.24047619047619043,
+    "mean_probability": 0.25822404371584695,
+    "observed_prevalence": 0.23770491803278687,
+    "n_bins": 10
+  },
+  {
+    "model": "Ensemble",
+    "brier_score": 0.042617467521471435,
+    "expected_calibration_error": 0.04159017981289593,
+    "max_calibration_error": 0.6356472969055176,
+    "mean_probability": 0.27929509784568285,
+    "observed_prevalence": 0.23770491803278687,
+    "n_bins": 10
+  },
+  {
+    "model": "FETA-Transformer",
+    "brier_score": 0.04541248199526434,
+    "expected_calibration_error": 0.04710874073975532,
+    "max_calibration_error": 0.7667144685983658,
+    "mean_probability": 0.24261237201963162,
+    "observed_prevalence": 0.23770491803278687,
+    "n_bins": 10
+  },
+  {
+    "model": "Learned Ensemble",
+    "brier_score": 0.04662038709263053,
+    "expected_calibration_error": 0.06443138677458901,
+    "max_calibration_error": 0.8827279806137085,
+    "mean_probability": 0.29348461244820206,
+    "observed_prevalence": 0.23770491803278687,
+    "n_bins": 10
+  },
+  {
+    "model": "PREG-Net",
+    "brier_score": 0.05015729532015396,
+    "expected_calibration_error": 0.05405957407922077,
+    "max_calibration_error": 0.446534052491188,
+    "mean_probability": 0.28387750230646563,
+    "observed_prevalence": 0.23770491803278687,
+    "n_bins": 10
+  },
+  {
+    "model": "Torch Logistic Regression",
+    "brier_score": 0.09991542727263815,
+    "expected_calibration_error": 0.22683635555574147,
+    "max_calibration_error": 0.4393315513928731,
+    "mean_probability": 0.4194586585413237,
+    "observed_prevalence": 0.23770491803278687,
+    "n_bins": 10
+  }
+]

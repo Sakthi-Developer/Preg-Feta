@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="850" height="548" viewBox="0 0 850 548">
+<rect width="100%" height="100%" fill="white"/>
+<style>text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#202124}.axis{stroke:#333;stroke-width:1}.grid{stroke:#e1e5ea;stroke-width:1}.label{font-size:12px}.title{font-size:18px;font-weight:700}.subtitle{font-size:12px;fill:#555}.box{fill:#f7f9fc;stroke:#7b8794;stroke-width:1.2}.arrow{stroke:#333;stroke-width:1.5;marker-end:url(#arrow)}</style>
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#333"/></marker></defs>
+<text x="24.0" y="34.0" font-size="20" font-weight="700" text-anchor="start">PREG-Net Edge Attention</text>
+<text x="258.0" y="88.0" font-size="11" font-weight="500" text-anchor="end">CRL_to_GS</text>
+<rect x="270" y="70" width="500.0" height="20" fill="#c77736" opacity="0.86"/>
+<text x="778.0" y="86.0" font-size="11" font-weight="400" text-anchor="start">0.217</text>
+<text x="258.0" y="122.0" font-size="11" font-weight="500" text-anchor="end">FHR_to_YSD</text>
+<rect x="270" y="104" width="450.4" height="20" fill="#c77736" opacity="0.86"/>
+<text x="728.4" y="120.0" font-size="11" font-weight="400" text-anchor="start">0.195</text>
+<text x="258.0" y="156.0" font-size="11" font-weight="500" text-anchor="end">CRL_temporal_backward</text>
+<rect x="270" y="138" width="387.8" height="20" fill="#c77736" opacity="0.86"/>
+<text x="665.8" y="154.0" font-size="11" font-weight="400" text-anchor="start">0.168</text>
+<text x="258.0" y="190.0" font-size="11" font-weight="500" text-anchor="end">GS_to_YSD</text>
+<rect x="270" y="172" width="387.6" height="20" fill="#c77736" opacity="0.86"/>
+<text x="665.6" y="188.0" font-size="11" font-weight="400" text-anchor="start">0.168</text>
+<text x="258.0" y="224.0" font-size="11" font-weight="500" text-anchor="end">GS_temporal_backward</text>
+<rect x="270" y="206" width="383.1" height="20" fill="#c77736" opacity="0.86"/>
+<text x="661.1" y="222.0" font-size="11" font-weight="400" text-anchor="start">0.166</text>
+<text x="258.0" y="258.0" font-size="11" font-weight="500" text-anchor="end">previous_loss_to_YSD</text>
+<rect x="270" y="240" width="375.2" height="20" fill="#c77736" opacity="0.86"/>
+<text x="653.2" y="256.0" font-size="11" font-weight="400" text-anchor="start">0.163</text>
+<text x="258.0" y="292.0" font-size="11" font-weight="500" text-anchor="end">CRL_to_FHR</text>
+<rect x="270" y="274" width="369.8" height="20" fill="#c77736" opacity="0.86"/>
+<text x="647.8" y="290.0" font-size="11" font-weight="400" text-anchor="start">0.160</text>
+<text x="258.0" y="326.0" font-size="11" font-weight="500" text-anchor="end">age_to_YSD</text>
+<rect x="270" y="308" width="369.1" height="20" fill="#c77736" opacity="0.86"/>
+<text x="647.1" y="324.0" font-size="11" font-weight="400" text-anchor="start">0.160</text>
+<text x="258.0" y="360.0" font-size="11" font-weight="500" text-anchor="end">YSD_temporal_backward</text>
+<rect x="270" y="342" width="357.7" height="20" fill="#c77736" opacity="0.86"/>
+<text x="635.7" y="358.0" font-size="11" font-weight="400" text-anchor="start">0.155</text>
+<text x="258.0" y="394.0" font-size="11" font-weight="500" text-anchor="end">FHR_temporal_forward</text>
+<rect x="270" y="376" width="326.9" height="20" fill="#c77736" opacity="0.86"/>
+<text x="604.9" y="392.0" font-size="11" font-weight="400" text-anchor="start">0.142</text>
+<text x="258.0" y="428.0" font-size="11" font-weight="500" text-anchor="end">FHR_to_CRL</text>
+<rect x="270" y="410" width="319.0" height="20" fill="#c77736" opacity="0.86"/>
+<text x="597.0" y="426.0" font-size="11" font-weight="400" text-anchor="start">0.138</text>
+<text x="258.0" y="462.0" font-size="11" font-weight="500" text-anchor="end">CRL_temporal_forward</text>
+<rect x="270" y="444" width="318.5" height="20" fill="#c77736" opacity="0.86"/>
+<text x="596.5" y="460.0" font-size="11" font-weight="400" text-anchor="start">0.138</text>
+<text x="520.0" y="524.0" font-size="12" font-weight="600" text-anchor="middle">Mean edge attention</text>
+</svg>

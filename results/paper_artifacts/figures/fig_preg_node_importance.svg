@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="850" height="514" viewBox="0 0 850 514">
+<rect width="100%" height="100%" fill="white"/>
+<style>text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#202124}.axis{stroke:#333;stroke-width:1}.grid{stroke:#e1e5ea;stroke-width:1}.label{font-size:12px}.title{font-size:18px;font-weight:700}.subtitle{font-size:12px;fill:#555}.box{fill:#f7f9fc;stroke:#7b8794;stroke-width:1.2}.arrow{stroke:#333;stroke-width:1.5;marker-end:url(#arrow)}</style>
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#333"/></marker></defs>
+<text x="24.0" y="34.0" font-size="20" font-weight="700" text-anchor="start">PREG-Net Node Importance</text>
+<text x="258.0" y="88.0" font-size="11" font-weight="500" text-anchor="end">FHR (temporal)</text>
+<rect x="270" y="70" width="500.0" height="20" fill="#2f5fb3" opacity="0.86"/>
+<text x="778.0" y="86.0" font-size="11" font-weight="400" text-anchor="start">0.228</text>
+<text x="258.0" y="122.0" font-size="11" font-weight="500" text-anchor="end">YSD (temporal)</text>
+<rect x="270" y="104" width="134.4" height="20" fill="#2f5fb3" opacity="0.86"/>
+<text x="412.4" y="120.0" font-size="11" font-weight="400" text-anchor="start">0.061</text>
+<text x="258.0" y="156.0" font-size="11" font-weight="500" text-anchor="end">singleton (maternal)</text>
+<rect x="270" y="138" width="87.6" height="20" fill="#2f5fb3" opacity="0.86"/>
+<text x="365.6" y="154.0" font-size="11" font-weight="400" text-anchor="start">0.040</text>
+<text x="258.0" y="190.0" font-size="11" font-weight="500" text-anchor="end">gravidity (maternal)</text>
+<rect x="270" y="172" width="65.9" height="20" fill="#2f5fb3" opacity="0.86"/>
+<text x="343.9" y="188.0" font-size="11" font-weight="400" text-anchor="start">0.030</text>
+<text x="258.0" y="224.0" font-size="11" font-weight="500" text-anchor="end">GS (temporal)</text>
+<rect x="270" y="206" width="41.4" height="20" fill="#2f5fb3" opacity="0.86"/>
+<text x="319.4" y="222.0" font-size="11" font-weight="400" text-anchor="start">0.019</text>
+<text x="258.0" y="258.0" font-size="11" font-weight="500" text-anchor="end">conception_ivf (maternal)</text>
+<rect x="270" y="240" width="8.0" height="20" fill="#2f5fb3" opacity="0.86"/>
+<text x="286.0" y="256.0" font-size="11" font-weight="400" text-anchor="start">0.004</text>
+<text x="258.0" y="292.0" font-size="11" font-weight="500" text-anchor="end">previous_loss (maternal)</text>
+<rect x="270" y="274" width="7.0" height="20" fill="#2f5fb3" opacity="0.86"/>
+<text x="285.0" y="290.0" font-size="11" font-weight="400" text-anchor="start">0.003</text>
+<text x="258.0" y="326.0" font-size="11" font-weight="500" text-anchor="end">bmi (maternal)</text>
+<rect x="270" y="308" width="6.5" height="20" fill="#2f5fb3" opacity="0.86"/>
+<text x="284.5" y="324.0" font-size="11" font-weight="400" text-anchor="start">0.003</text>
+<text x="258.0" y="360.0" font-size="11" font-weight="500" text-anchor="end">CRL (temporal)</text>
+<rect x="270" y="342" width="6.4" height="20" fill="#2f5fb3" opacity="0.86"/>
+<text x="284.4" y="358.0" font-size="11" font-weight="400" text-anchor="start">0.003</text>
+<text x="258.0" y="394.0" font-size="11" font-weight="500" text-anchor="end">age (maternal)</text>
+<rect x="270" y="376" width="4.8" height="20" fill="#2f5fb3" opacity="0.86"/>
+<text x="282.8" y="392.0" font-size="11" font-weight="400" text-anchor="start">0.002</text>
+<text x="258.0" y="428.0" font-size="11" font-weight="500" text-anchor="end">parity (maternal)</text>
+<rect x="270" y="410" width="3.1" height="20" fill="#2f5fb3" opacity="0.86"/>
+<text x="281.1" y="426.0" font-size="11" font-weight="400" text-anchor="start">0.001</text>
+<text x="520.0" y="490.0" font-size="12" font-weight="600" text-anchor="middle">Mean readout importance</text>
+</svg>

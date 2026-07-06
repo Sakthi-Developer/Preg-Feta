@@ -1,0 +1,452 @@
+[
+  {
+    "model_a": "PREG-Net",
+    "model_b": "MLP",
+    "auroc_a_minus_b": -0.01297738227660361,
+    "ci_lower": -0.0296907216494845,
+    "ci_upper": -0.002278261729513672,
+    "p_value_bootstrap": 0.012,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "FETA-Transformer",
+    "model_b": "MLP",
+    "auroc_a_minus_b": -0.008898776418242549,
+    "ci_lower": -0.02315498464550427,
+    "ci_upper": -0.0006806540287208052,
+    "p_value_bootstrap": 0.029,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "PREG-Net",
+    "model_b": "Sklearn Logistic Regression",
+    "auroc_a_minus_b": -0.010752688172043001,
+    "ci_lower": -0.02734711233728413,
+    "ci_upper": -0.00069379456327986,
+    "p_value_bootstrap": 0.037,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "MLP",
+    "model_b": "XGBoost",
+    "auroc_a_minus_b": 0.0074156470152020315,
+    "ci_lower": 0.00038986354775838173,
+    "ci_upper": 0.019379974505658426,
+    "p_value_bootstrap": 0.043,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "MLP",
+    "model_b": "HistGradientBoosting",
+    "auroc_a_minus_b": 0.005190952910641422,
+    "ci_lower": 0.0,
+    "ci_upper": 0.014450182742729977,
+    "p_value_bootstrap": 0.066,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "Torch Logistic Regression",
+    "model_b": "MLP",
+    "auroc_a_minus_b": -0.009640341119762752,
+    "ci_lower": -0.0260423629679144,
+    "ci_upper": 0.0,
+    "p_value_bootstrap": 0.07,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "MLP",
+    "model_b": "Random Forest",
+    "auroc_a_minus_b": 0.00760103819058211,
+    "ci_lower": -0.00037101127223431173,
+    "ci_upper": 0.021021045328399622,
+    "p_value_bootstrap": 0.101,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "PREG-Net",
+    "model_b": "Learned Ensemble",
+    "auroc_a_minus_b": -0.007786429365962189,
+    "ci_lower": -0.020917478265000768,
+    "ci_upper": 0.0015197568389057087,
+    "p_value_bootstrap": 0.133,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "FETA-Transformer",
+    "model_b": "Sklearn Logistic Regression",
+    "auroc_a_minus_b": -0.006674082313681939,
+    "ci_lower": -0.019753915994385467,
+    "ci_upper": 0.0016500254975467363,
+    "p_value_bootstrap": 0.164,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "Sklearn Logistic Regression",
+    "model_b": "Random Forest",
+    "auroc_a_minus_b": 0.005376344086021501,
+    "ci_lower": -0.001318007440130267,
+    "ci_upper": 0.016907468413301322,
+    "p_value_bootstrap": 0.173,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "Learned Ensemble",
+    "model_b": "MLP",
+    "auroc_a_minus_b": -0.005190952910641422,
+    "ci_lower": -0.016315351810306473,
+    "ci_upper": 0.001885902876001877,
+    "p_value_bootstrap": 0.197,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "PREG-Net",
+    "model_b": "Ensemble",
+    "auroc_a_minus_b": -0.007786429365962189,
+    "ci_lower": -0.023360204867435147,
+    "ci_upper": 0.0029777735562309835,
+    "p_value_bootstrap": 0.2,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "PREG-Net",
+    "model_b": "HistGradientBoosting",
+    "auroc_a_minus_b": -0.007786429365962189,
+    "ci_lower": -0.02224793806210171,
+    "ci_upper": 0.0038993264799716014,
+    "p_value_bootstrap": 0.229,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "Torch Logistic Regression",
+    "model_b": "Sklearn Logistic Regression",
+    "auroc_a_minus_b": -0.0074156470152021425,
+    "ci_lower": -0.0218329414601797,
+    "ci_upper": 0.0033370411568409697,
+    "p_value_bootstrap": 0.247,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "Ensemble",
+    "model_b": "MLP",
+    "auroc_a_minus_b": -0.005190952910641422,
+    "ci_lower": -0.01636397058823529,
+    "ci_upper": 0.0020844226338177806,
+    "p_value_bootstrap": 0.252,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "Sklearn Logistic Regression",
+    "model_b": "XGBoost",
+    "auroc_a_minus_b": 0.005190952910641422,
+    "ci_lower": -0.002907896673535479,
+    "ci_upper": 0.017799042587001428,
+    "p_value_bootstrap": 0.275,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "HistGradientBoosting",
+    "model_b": "XGBoost",
+    "auroc_a_minus_b": 0.0022246941045606095,
+    "ci_lower": -0.0017366257685550556,
+    "ci_upper": 0.008360032587093759,
+    "p_value_bootstrap": 0.359,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "Ensemble",
+    "model_b": "Sklearn Logistic Regression",
+    "auroc_a_minus_b": -0.0029662588060808126,
+    "ci_lower": -0.011237011066993352,
+    "ci_upper": 0.0016025641025640969,
+    "p_value_bootstrap": 0.37,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "FETA-Transformer",
+    "model_b": "Ensemble",
+    "auroc_a_minus_b": -0.0037078235076011268,
+    "ci_lower": -0.013115916341722711,
+    "ci_upper": 0.0034978941790086496,
+    "p_value_bootstrap": 0.378,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "PREG-Net",
+    "model_b": "Random Forest",
+    "auroc_a_minus_b": -0.005376344086021501,
+    "ci_lower": -0.020145620748299356,
+    "ci_upper": 0.0077981171860533145,
+    "p_value_bootstrap": 0.43,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "Torch Logistic Regression",
+    "model_b": "HistGradientBoosting",
+    "auroc_a_minus_b": -0.00444938820912133,
+    "ci_lower": -0.017045454545454586,
+    "ci_upper": 0.005109779324140207,
+    "p_value_bootstrap": 0.442,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "PREG-Net",
+    "model_b": "XGBoost",
+    "auroc_a_minus_b": -0.005561735261401579,
+    "ci_lower": -0.021687036178107563,
+    "ci_upper": 0.008507733054670397,
+    "p_value_bootstrap": 0.462,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "Learned Ensemble",
+    "model_b": "Sklearn Logistic Regression",
+    "auroc_a_minus_b": -0.0029662588060808126,
+    "ci_lower": -0.012273331137461624,
+    "ci_upper": 0.0038224805008210405,
+    "p_value_bootstrap": 0.464,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "FETA-Transformer",
+    "model_b": "Learned Ensemble",
+    "auroc_a_minus_b": -0.0037078235076011268,
+    "ci_lower": -0.014880952380952328,
+    "ci_upper": 0.005562264950473982,
+    "p_value_bootstrap": 0.485,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "Learned Ensemble",
+    "model_b": "Torch Logistic Regression",
+    "auroc_a_minus_b": 0.00444938820912133,
+    "ci_lower": -0.0076549165120592955,
+    "ci_upper": 0.01972019102612025,
+    "p_value_bootstrap": 0.529,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "Ensemble",
+    "model_b": "Torch Logistic Regression",
+    "auroc_a_minus_b": 0.00444938820912133,
+    "ci_lower": -0.009269558769002595,
+    "ci_upper": 0.020202109718238766,
+    "p_value_bootstrap": 0.541,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "Sklearn Logistic Regression",
+    "model_b": "HistGradientBoosting",
+    "auroc_a_minus_b": 0.0029662588060808126,
+    "ci_lower": -0.00601667509755742,
+    "ci_upper": 0.012917982218452303,
+    "p_value_bootstrap": 0.542,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "FETA-Transformer",
+    "model_b": "HistGradientBoosting",
+    "auroc_a_minus_b": -0.0037078235076011268,
+    "ci_lower": -0.018387751798028155,
+    "ci_upper": 0.0068840579710145455,
+    "p_value_bootstrap": 0.545,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "Random Forest",
+    "model_b": "HistGradientBoosting",
+    "auroc_a_minus_b": -0.002410085279940688,
+    "ci_lower": -0.011958995942092654,
+    "ci_upper": 0.005527210884353706,
+    "p_value_bootstrap": 0.586,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "PREG-Net",
+    "model_b": "FETA-Transformer",
+    "auroc_a_minus_b": -0.004078605858361062,
+    "ci_lower": -0.02083333333333337,
+    "ci_upper": 0.010870730570387253,
+    "p_value_bootstrap": 0.601,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "MLP",
+    "model_b": "Sklearn Logistic Regression",
+    "auroc_a_minus_b": 0.0022246941045606095,
+    "ci_lower": -0.0023411790415467787,
+    "ci_upper": 0.009502026765076152,
+    "p_value_bootstrap": 0.607,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "PREG-Net",
+    "model_b": "Torch Logistic Regression",
+    "auroc_a_minus_b": -0.0033370411568408587,
+    "ci_lower": -0.016866705731191624,
+    "ci_upper": 0.010917758823937326,
+    "p_value_bootstrap": 0.651,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "Learned Ensemble",
+    "model_b": "Random Forest",
+    "auroc_a_minus_b": 0.002410085279940688,
+    "ci_lower": -0.0074237453465063165,
+    "ci_upper": 0.014237140920910607,
+    "p_value_bootstrap": 0.661,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "Ensemble",
+    "model_b": "Random Forest",
+    "auroc_a_minus_b": 0.002410085279940688,
+    "ci_lower": -0.006843190862657819,
+    "ci_upper": 0.014237715994211777,
+    "p_value_bootstrap": 0.679,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "Learned Ensemble",
+    "model_b": "XGBoost",
+    "auroc_a_minus_b": 0.0022246941045606095,
+    "ci_lower": -0.009663008301674339,
+    "ci_upper": 0.014423123781676471,
+    "p_value_bootstrap": 0.718,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "Ensemble",
+    "model_b": "XGBoost",
+    "auroc_a_minus_b": 0.0022246941045606095,
+    "ci_lower": -0.009547202797202775,
+    "ci_upper": 0.017029660572939365,
+    "p_value_bootstrap": 0.73,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "Torch Logistic Regression",
+    "model_b": "XGBoost",
+    "auroc_a_minus_b": -0.0022246941045607205,
+    "ci_lower": -0.016473417645648556,
+    "ci_upper": 0.008961389034398493,
+    "p_value_bootstrap": 0.73,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "Torch Logistic Regression",
+    "model_b": "Random Forest",
+    "auroc_a_minus_b": -0.002039302929180642,
+    "ci_lower": -0.01361998657977368,
+    "ci_upper": 0.007228353297840895,
+    "p_value_bootstrap": 0.743,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "FETA-Transformer",
+    "model_b": "Random Forest",
+    "auroc_a_minus_b": -0.0012977382276604388,
+    "ci_lower": -0.013255948007574223,
+    "ci_upper": 0.010639720104676252,
+    "p_value_bootstrap": 0.835,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "FETA-Transformer",
+    "model_b": "XGBoost",
+    "auroc_a_minus_b": -0.0014831294030405173,
+    "ci_lower": -0.01581361078991287,
+    "ci_upper": 0.01041666666666663,
+    "p_value_bootstrap": 0.849,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "FETA-Transformer",
+    "model_b": "Torch Logistic Regression",
+    "auroc_a_minus_b": 0.0007415647015202032,
+    "ci_lower": -0.016027061855670155,
+    "ci_upper": 0.017006802721088454,
+    "p_value_bootstrap": 0.955,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "Random Forest",
+    "model_b": "XGBoost",
+    "auroc_a_minus_b": -0.00018539117538007854,
+    "ci_lower": -0.007798117186053316,
+    "ci_upper": 0.00724750905797104,
+    "p_value_bootstrap": 0.994,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "Ensemble",
+    "model_b": "Learned Ensemble",
+    "auroc_a_minus_b": 0.0,
+    "ci_lower": -0.0063638591800357445,
+    "ci_upper": 0.007753071308762871,
+    "p_value_bootstrap": 1.0,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "Ensemble",
+    "model_b": "HistGradientBoosting",
+    "auroc_a_minus_b": 0.0,
+    "ci_lower": -0.012480771675565813,
+    "ci_upper": 0.012262861216143218,
+    "p_value_bootstrap": 1.0,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  },
+  {
+    "model_a": "Learned Ensemble",
+    "model_b": "HistGradientBoosting",
+    "auroc_a_minus_b": 0.0,
+    "ci_lower": -0.012160562560815352,
+    "ci_upper": 0.011695955295993992,
+    "p_value_bootstrap": 1.0,
+    "n_bootstrap": 2000,
+    "method_note": "Bootstrap paired AUROC difference; documented alternative to DeLong."
+  }
+]

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="360" viewBox="0 0 980 360">
+<rect width="100%" height="100%" fill="white"/>
+<style>text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#202124}.axis{stroke:#333;stroke-width:1}.grid{stroke:#e1e5ea;stroke-width:1}.label{font-size:12px}.title{font-size:18px;font-weight:700}.subtitle{font-size:12px;fill:#555}.box{fill:#f7f9fc;stroke:#7b8794;stroke-width:1.2}.arrow{stroke:#333;stroke-width:1.5;marker-end:url(#arrow)}</style>
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#333"/></marker></defs>
+<text x="24.0" y="32.0" font-size="20" font-weight="700" text-anchor="start">FETA-Transformer Architecture</text>
+<rect class="box" x="40" y="95" width="140" height="95" rx="6"/>
+<text x="110.0" y="129.0" font-size="12" font-weight="600" text-anchor="middle">Longitudinal ultrasound</text>
+<text x="110.0" y="147.0" font-size="12" font-weight="400" text-anchor="middle">FHR, CRL, GS, YSD</text>
+<rect class="box" x="235" y="95" width="140" height="95" rx="6"/>
+<text x="305.0" y="129.0" font-size="12" font-weight="600" text-anchor="middle">Modality-specific</text>
+<text x="305.0" y="147.0" font-size="12" font-weight="400" text-anchor="middle">linear projections</text>
+<rect class="box" x="430" y="95" width="140" height="95" rx="6"/>
+<text x="500.0" y="129.0" font-size="12" font-weight="600" text-anchor="middle">Continuous gestational</text>
+<text x="500.0" y="147.0" font-size="12" font-weight="400" text-anchor="middle">age positional encoding</text>
+<rect class="box" x="625" y="95" width="140" height="95" rx="6"/>
+<text x="695.0" y="129.0" font-size="12" font-weight="600" text-anchor="middle">Transformer encoder</text>
+<text x="695.0" y="147.0" font-size="12" font-weight="400" text-anchor="middle">self-attention over scans</text>
+<rect class="box" x="820" y="95" width="140" height="95" rx="6"/>
+<text x="890.0" y="129.0" font-size="12" font-weight="600" text-anchor="middle">Temporal attention pooling</text>
+<text x="890.0" y="147.0" font-size="12" font-weight="400" text-anchor="middle">+ maternal conditioning</text>
+<line class="arrow" x1="190" y1="142.5" x2="225" y2="142.5"/>
+<line class="arrow" x1="385" y1="142.5" x2="420" y2="142.5"/>
+<line class="arrow" x1="580" y1="142.5" x2="615" y2="142.5"/>
+<line class="arrow" x1="775" y1="142.5" x2="810" y2="142.5"/>
+<text x="40.0" y="250.0" font-size="13" font-weight="500" text-anchor="start">Output: pregnancy-loss probability; exported: temporal pooling weights and post-hoc maternal-to-time maps</text>
+<text x="40.0" y="292.0" font-size="12" font-weight="400" text-anchor="start">Synthetic first-trimester cohort: multimodal temporal scans plus maternal features</text>
+</svg>

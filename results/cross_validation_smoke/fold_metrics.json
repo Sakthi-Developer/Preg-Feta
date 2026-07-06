@@ -1,0 +1,80 @@
+[
+  {
+    "model": "preg",
+    "fold": 0,
+    "split": "train",
+    "auroc": 0.7372115384615384,
+    "auprc": 0.49739859162427513,
+    "accuracy": 0.7764705882352941,
+    "sensitivity": 0.05,
+    "specificity": 1.0,
+    "f1": 0.09523809523809523,
+    "precision": 1.0,
+    "recall": 0.05
+  },
+  {
+    "model": "preg",
+    "fold": 0,
+    "split": "val",
+    "auroc": 0.7841614906832297,
+    "auprc": 0.5465467664901094,
+    "accuracy": 0.7833333333333333,
+    "sensitivity": 0.07142857142857142,
+    "specificity": 1.0,
+    "f1": 0.13333333333333333,
+    "precision": 1.0,
+    "recall": 0.07142857142857142
+  },
+  {
+    "model": "preg",
+    "fold": 0,
+    "split": "test",
+    "auroc": 0.7966729244889446,
+    "auprc": 0.6060875233936266,
+    "accuracy": 0.78,
+    "sensitivity": 0.06382978723404255,
+    "specificity": 1.0,
+    "f1": 0.12,
+    "precision": 1.0,
+    "recall": 0.06382978723404255
+  },
+  {
+    "model": "torch_logistic_regression",
+    "fold": 0,
+    "split": "train",
+    "auroc": 0.9007692307692309,
+    "auprc": 0.7861616871896505,
+    "accuracy": 0.8323529411764706,
+    "sensitivity": 0.825,
+    "specificity": 0.8346153846153846,
+    "f1": 0.6984126984126984,
+    "precision": 0.6055045871559633,
+    "recall": 0.825
+  },
+  {
+    "model": "torch_logistic_regression",
+    "fold": 0,
+    "split": "val",
+    "auroc": 0.9099378881987576,
+    "auprc": 0.8272598433312719,
+    "accuracy": 0.85,
+    "sensitivity": 0.8571428571428571,
+    "specificity": 0.8478260869565217,
+    "f1": 0.7272727272727273,
+    "precision": 0.631578947368421,
+    "recall": 0.8571428571428571
+  },
+  {
+    "model": "torch_logistic_regression",
+    "fold": 0,
+    "split": "test",
+    "auroc": 0.8921916284244193,
+    "auprc": 0.80478037482197,
+    "accuracy": 0.835,
+    "sensitivity": 0.7659574468085106,
+    "specificity": 0.8562091503267973,
+    "f1": 0.6857142857142857,
+    "precision": 0.6206896551724138,
+    "recall": 0.7659574468085106
+  }
+]

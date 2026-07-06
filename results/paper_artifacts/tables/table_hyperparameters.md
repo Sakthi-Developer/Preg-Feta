@@ -1,0 +1,8 @@
+| Model | Epochs | Batch size | Learning rate | Weight decay | Patience | Architecture | Fusion |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| PREG-Net | 80 | 32 | 0.001 | 0.0001 | 15 | hidden_dim=64, GAT layers=2, heads=4, dropout=0.2 |  |
+| FETA-Transformer | 80 | 32 | 0.001 | 0.0001 | 15 | d_model=64, heads=4, layers=2, d_ff=128, dropout=0.2 |  |
+| Ensemble | 80 | 32 | 0.001 | 0.0001 | 15 | late fusion of trained FETA-Transformer and PREG-Net | average |
+| Learned Ensemble | 80 | 32 | 0.001 | 0.0001 | 15 | late fusion of trained FETA-Transformer and PREG-Net | learned |
+| Torch Logistic Regression / MLP | 300 | full batch | 0.001 | 0.0001 | 50 | 23 engineered tabular features; MLP hidden 64/32 |  |
+| Sklearn / tree baselines |  |  |  |  |  | LogisticRegression, RandomForest, HistGradientBoosting, XGBoost on engineered tabular features |  |

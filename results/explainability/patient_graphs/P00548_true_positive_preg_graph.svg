@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="430" viewBox="0 0 860 430">
+<rect width="100%" height="100%" fill="white"/>
+<style>text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#222}.edge{fill:none;stroke-linecap:round}.phys{stroke:#5c77b8}.temp{stroke:#999}.mat{stroke:#c77736}.temporal{fill:#e8f0fe;stroke:#2f5fb3}.maternal{fill:#fff2df;stroke:#b56723}</style>
+<text x="22" y="28" font-size="18" font-weight="700">P00548: true positive</text>
+<text x="22" y="49" font-size="12">PREG-Net probability 1.000; node size = readout importance; edge width = mean GAT attention.</text>
+<line class="edge mat" x1="70.0" y1="70.0" x2="210.0" y2="300.0" stroke-width="5.00" opacity="0.90"/>
+<line class="edge mat" x1="70.0" y1="70.0" x2="322.0" y2="300.0" stroke-width="4.94" opacity="0.89"/>
+<line class="edge mat" x1="70.0" y1="70.0" x2="210.0" y2="235.0" stroke-width="4.75" opacity="0.86"/>
+<line class="edge mat" x1="70.0" y1="70.0" x2="434.0" y2="300.0" stroke-width="4.68" opacity="0.85"/>
+<line class="edge mat" x1="70.0" y1="70.0" x2="434.0" y2="235.0" stroke-width="4.60" opacity="0.83"/>
+<line class="edge mat" x1="70.0" y1="70.0" x2="322.0" y2="235.0" stroke-width="4.25" opacity="0.78"/>
+<line class="edge mat" x1="70.0" y1="70.0" x2="210.0" y2="105.0" stroke-width="4.17" opacity="0.76"/>
+<line class="edge mat" x1="70.0" y1="70.0" x2="434.0" y2="105.0" stroke-width="4.12" opacity="0.76"/>
+<line class="edge mat" x1="70.0" y1="70.0" x2="210.0" y2="170.0" stroke-width="4.11" opacity="0.75"/>
+<line class="edge mat" x1="70.0" y1="70.0" x2="322.0" y2="105.0" stroke-width="4.07" opacity="0.75"/>
+<line class="edge mat" x1="70.0" y1="70.0" x2="322.0" y2="170.0" stroke-width="4.00" opacity="0.74"/>
+<line class="edge mat" x1="70.0" y1="70.0" x2="434.0" y2="170.0" stroke-width="3.87" opacity="0.72"/>
+<line class="edge phys" x1="210.0" y1="300.0" x2="210.0" y2="235.0" stroke-width="3.63" opacity="0.68"/>
+<line class="edge phys" x1="210.0" y1="300.0" x2="210.0" y2="105.0" stroke-width="3.45" opacity="0.65"/>
+<line class="edge temp" x1="322.0" y1="300.0" x2="434.0" y2="300.0" stroke-width="3.18" opacity="0.60"/>
+<line class="edge phys" x1="210.0" y1="105.0" x2="210.0" y2="300.0" stroke-width="3.16" opacity="0.60"/>
+<line class="edge phys" x1="434.0" y1="300.0" x2="434.0" y2="235.0" stroke-width="3.15" opacity="0.60"/>
+<line class="edge temp" x1="210.0" y1="300.0" x2="322.0" y2="300.0" stroke-width="3.10" opacity="0.59"/>
+<line class="edge phys" x1="434.0" y1="105.0" x2="434.0" y2="300.0" stroke-width="3.07" opacity="0.58"/>
+<line class="edge temp" x1="322.0" y1="300.0" x2="210.0" y2="300.0" stroke-width="2.93" opacity="0.56"/>
+<line class="edge phys" x1="322.0" y1="300.0" x2="322.0" y2="235.0" stroke-width="2.92" opacity="0.56"/>
+<line class="edge phys" x1="434.0" y1="300.0" x2="434.0" y2="105.0" stroke-width="2.84" opacity="0.55"/>
+<line class="edge phys" x1="210.0" y1="170.0" x2="210.0" y2="235.0" stroke-width="2.82" opacity="0.54"/>
+<line class="edge phys" x1="322.0" y1="105.0" x2="322.0" y2="300.0" stroke-width="2.81" opacity="0.54"/>
+<line class="edge phys" x1="322.0" y1="170.0" x2="322.0" y2="235.0" stroke-width="2.79" opacity="0.54"/>
+<line class="edge temp" x1="322.0" y1="170.0" x2="434.0" y2="170.0" stroke-width="2.72" opacity="0.53"/>
+<line class="edge temp" x1="322.0" y1="170.0" x2="210.0" y2="170.0" stroke-width="2.59" opacity="0.51"/>
+<line class="edge phys" x1="322.0" y1="300.0" x2="322.0" y2="105.0" stroke-width="2.52" opacity="0.49"/>
+<circle class="temporal" cx="210.0" cy="105.0" r="14.6" stroke-width="1.2"/>
+<text x="228.6" y="109.0" font-size="10">FHR_t1</text>
+<circle class="temporal" cx="210.0" cy="170.0" r="7.3" stroke-width="1.2"/>
+<text x="221.3" y="174.0" font-size="10">CRL_t1</text>
+<circle class="temporal" cx="210.0" cy="235.0" r="8.7" stroke-width="1.2"/>
+<text x="222.7" y="239.0" font-size="10">GS_t1</text>
+<circle class="temporal" cx="210.0" cy="300.0" r="22.6" stroke-width="1.2"/>
+<text x="236.6" y="304.0" font-size="10">YSD_t1</text>
+<circle class="temporal" cx="322.0" cy="105.0" r="11.0" stroke-width="1.2"/>
+<text x="337.0" y="109.0" font-size="10">FHR_t2</text>
+<circle class="temporal" cx="322.0" cy="170.0" r="7.2" stroke-width="1.2"/>
+<text x="333.2" y="174.0" font-size="10">CRL_t2</text>
+<circle class="temporal" cx="322.0" cy="235.0" r="8.8" stroke-width="1.2"/>
+<text x="334.8" y="239.0" font-size="10">GS_t2</text>
+<circle class="temporal" cx="322.0" cy="300.0" r="16.7" stroke-width="1.2"/>
+<text x="342.7" y="304.0" font-size="10">YSD_t2</text>
+<circle class="temporal" cx="434.0" cy="105.0" r="19.3" stroke-width="1.2"/>
+<text x="457.3" y="109.0" font-size="10">FHR_t3</text>
+<circle class="temporal" cx="434.0" cy="170.0" r="7.3" stroke-width="1.2"/>
+<text x="445.3" y="174.0" font-size="10">CRL_t3</text>
+<circle class="temporal" cx="434.0" cy="235.0" r="9.3" stroke-width="1.2"/>
+<text x="447.3" y="239.0" font-size="10">GS_t3</text>
+<circle class="temporal" cx="434.0" cy="300.0" r="25.0" stroke-width="1.2"/>
+<text x="463.0" y="304.0" font-size="10">YSD_t3</text>
+<circle class="maternal" cx="70.0" cy="70.0" r="7.8" stroke-width="1.2"/>
+<text x="81.8" y="74.0" font-size="10">age</text>
+<circle class="maternal" cx="70.0" cy="115.0" r="7.2" stroke-width="1.2"/>
+<text x="81.2" y="119.0" font-size="10">bmi</text>
+<circle class="maternal" cx="70.0" cy="160.0" r="7.0" stroke-width="1.2"/>
+<text x="81.0" y="164.0" font-size="10">parity</text>
+<circle class="maternal" cx="70.0" cy="205.0" r="11.6" stroke-width="1.2"/>
+<text x="85.6" y="209.0" font-size="10">gravidity</text>
+<circle class="maternal" cx="70.0" cy="250.0" r="7.2" stroke-width="1.2"/>
+<text x="81.2" y="254.0" font-size="10">previous_loss</text>
+<circle class="maternal" cx="70.0" cy="295.0" r="7.4" stroke-width="1.2"/>
+<text x="81.4" y="299.0" font-size="10">conception_ivf</text>
+<circle class="maternal" cx="70.0" cy="340.0" r="9.4" stroke-width="1.2"/>
+<text x="83.4" y="344.0" font-size="10">singleton</text>
+</svg>

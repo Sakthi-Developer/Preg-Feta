@@ -1,0 +1,407 @@
+[
+  {
+    "model_a": "Torch Logistic Regression",
+    "model_b": "MLP",
+    "a_correct_b_wrong": 0,
+    "a_wrong_b_correct": 10,
+    "discordant": 10,
+    "mcnemar_statistic_corrected": 8.1,
+    "p_value_exact": 0.001953125
+  },
+  {
+    "model_a": "Torch Logistic Regression",
+    "model_b": "Sklearn Logistic Regression",
+    "a_correct_b_wrong": 1,
+    "a_wrong_b_correct": 9,
+    "discordant": 10,
+    "mcnemar_statistic_corrected": 4.9,
+    "p_value_exact": 0.021484375
+  },
+  {
+    "model_a": "FETA-Transformer",
+    "model_b": "MLP",
+    "a_correct_b_wrong": 0,
+    "a_wrong_b_correct": 6,
+    "discordant": 6,
+    "mcnemar_statistic_corrected": 4.166666666666667,
+    "p_value_exact": 0.03125
+  },
+  {
+    "model_a": "Ensemble",
+    "model_b": "MLP",
+    "a_correct_b_wrong": 0,
+    "a_wrong_b_correct": 5,
+    "discordant": 5,
+    "mcnemar_statistic_corrected": 3.2,
+    "p_value_exact": 0.0625
+  },
+  {
+    "model_a": "Learned Ensemble",
+    "model_b": "MLP",
+    "a_correct_b_wrong": 0,
+    "a_wrong_b_correct": 5,
+    "discordant": 5,
+    "mcnemar_statistic_corrected": 3.2,
+    "p_value_exact": 0.0625
+  },
+  {
+    "model_a": "Torch Logistic Regression",
+    "model_b": "HistGradientBoosting",
+    "a_correct_b_wrong": 3,
+    "a_wrong_b_correct": 10,
+    "discordant": 13,
+    "mcnemar_statistic_corrected": 2.769230769230769,
+    "p_value_exact": 0.09228515625
+  },
+  {
+    "model_a": "PREG-Net",
+    "model_b": "MLP",
+    "a_correct_b_wrong": 0,
+    "a_wrong_b_correct": 4,
+    "discordant": 4,
+    "mcnemar_statistic_corrected": 2.25,
+    "p_value_exact": 0.125
+  },
+  {
+    "model_a": "MLP",
+    "model_b": "Random Forest",
+    "a_correct_b_wrong": 4,
+    "a_wrong_b_correct": 0,
+    "discordant": 4,
+    "mcnemar_statistic_corrected": 2.25,
+    "p_value_exact": 0.125
+  },
+  {
+    "model_a": "MLP",
+    "model_b": "XGBoost",
+    "a_correct_b_wrong": 4,
+    "a_wrong_b_correct": 0,
+    "discordant": 4,
+    "mcnemar_statistic_corrected": 2.25,
+    "p_value_exact": 0.125
+  },
+  {
+    "model_a": "PREG-Net",
+    "model_b": "Torch Logistic Regression",
+    "a_correct_b_wrong": 9,
+    "a_wrong_b_correct": 3,
+    "discordant": 12,
+    "mcnemar_statistic_corrected": 2.0833333333333335,
+    "p_value_exact": 0.14599609375
+  },
+  {
+    "model_a": "Torch Logistic Regression",
+    "model_b": "Random Forest",
+    "a_correct_b_wrong": 3,
+    "a_wrong_b_correct": 9,
+    "discordant": 12,
+    "mcnemar_statistic_corrected": 2.0833333333333335,
+    "p_value_exact": 0.14599609375
+  },
+  {
+    "model_a": "Torch Logistic Regression",
+    "model_b": "XGBoost",
+    "a_correct_b_wrong": 3,
+    "a_wrong_b_correct": 9,
+    "discordant": 12,
+    "mcnemar_statistic_corrected": 2.0833333333333335,
+    "p_value_exact": 0.14599609375
+  },
+  {
+    "model_a": "FETA-Transformer",
+    "model_b": "Sklearn Logistic Regression",
+    "a_correct_b_wrong": 1,
+    "a_wrong_b_correct": 5,
+    "discordant": 6,
+    "mcnemar_statistic_corrected": 1.5,
+    "p_value_exact": 0.21875
+  },
+  {
+    "model_a": "Ensemble",
+    "model_b": "Torch Logistic Regression",
+    "a_correct_b_wrong": 9,
+    "a_wrong_b_correct": 4,
+    "discordant": 13,
+    "mcnemar_statistic_corrected": 1.2307692307692308,
+    "p_value_exact": 0.266845703125
+  },
+  {
+    "model_a": "Learned Ensemble",
+    "model_b": "Torch Logistic Regression",
+    "a_correct_b_wrong": 9,
+    "a_wrong_b_correct": 4,
+    "discordant": 13,
+    "mcnemar_statistic_corrected": 1.2307692307692308,
+    "p_value_exact": 0.266845703125
+  },
+  {
+    "model_a": "Ensemble",
+    "model_b": "Sklearn Logistic Regression",
+    "a_correct_b_wrong": 1,
+    "a_wrong_b_correct": 4,
+    "discordant": 5,
+    "mcnemar_statistic_corrected": 0.8,
+    "p_value_exact": 0.375
+  },
+  {
+    "model_a": "Learned Ensemble",
+    "model_b": "Sklearn Logistic Regression",
+    "a_correct_b_wrong": 1,
+    "a_wrong_b_correct": 4,
+    "discordant": 5,
+    "mcnemar_statistic_corrected": 0.8,
+    "p_value_exact": 0.375
+  },
+  {
+    "model_a": "MLP",
+    "model_b": "HistGradientBoosting",
+    "a_correct_b_wrong": 4,
+    "a_wrong_b_correct": 1,
+    "discordant": 5,
+    "mcnemar_statistic_corrected": 0.8,
+    "p_value_exact": 0.375
+  },
+  {
+    "model_a": "FETA-Transformer",
+    "model_b": "Torch Logistic Regression",
+    "a_correct_b_wrong": 9,
+    "a_wrong_b_correct": 5,
+    "discordant": 14,
+    "mcnemar_statistic_corrected": 0.6428571428571429,
+    "p_value_exact": 0.4239501953125
+  },
+  {
+    "model_a": "FETA-Transformer",
+    "model_b": "HistGradientBoosting",
+    "a_correct_b_wrong": 2,
+    "a_wrong_b_correct": 5,
+    "discordant": 7,
+    "mcnemar_statistic_corrected": 0.5714285714285714,
+    "p_value_exact": 0.453125
+  },
+  {
+    "model_a": "MLP",
+    "model_b": "Sklearn Logistic Regression",
+    "a_correct_b_wrong": 2,
+    "a_wrong_b_correct": 0,
+    "discordant": 2,
+    "mcnemar_statistic_corrected": 0.5,
+    "p_value_exact": 0.5
+  },
+  {
+    "model_a": "Sklearn Logistic Regression",
+    "model_b": "Random Forest",
+    "a_correct_b_wrong": 2,
+    "a_wrong_b_correct": 0,
+    "discordant": 2,
+    "mcnemar_statistic_corrected": 0.5,
+    "p_value_exact": 0.5
+  },
+  {
+    "model_a": "Sklearn Logistic Regression",
+    "model_b": "XGBoost",
+    "a_correct_b_wrong": 3,
+    "a_wrong_b_correct": 1,
+    "discordant": 4,
+    "mcnemar_statistic_corrected": 0.25,
+    "p_value_exact": 0.625
+  },
+  {
+    "model_a": "PREG-Net",
+    "model_b": "Sklearn Logistic Regression",
+    "a_correct_b_wrong": 2,
+    "a_wrong_b_correct": 4,
+    "discordant": 6,
+    "mcnemar_statistic_corrected": 0.16666666666666666,
+    "p_value_exact": 0.6875
+  },
+  {
+    "model_a": "FETA-Transformer",
+    "model_b": "Random Forest",
+    "a_correct_b_wrong": 2,
+    "a_wrong_b_correct": 4,
+    "discordant": 6,
+    "mcnemar_statistic_corrected": 0.16666666666666666,
+    "p_value_exact": 0.6875
+  },
+  {
+    "model_a": "FETA-Transformer",
+    "model_b": "XGBoost",
+    "a_correct_b_wrong": 2,
+    "a_wrong_b_correct": 4,
+    "discordant": 6,
+    "mcnemar_statistic_corrected": 0.16666666666666666,
+    "p_value_exact": 0.6875
+  },
+  {
+    "model_a": "PREG-Net",
+    "model_b": "FETA-Transformer",
+    "a_correct_b_wrong": 5,
+    "a_wrong_b_correct": 3,
+    "discordant": 8,
+    "mcnemar_statistic_corrected": 0.125,
+    "p_value_exact": 0.7265625
+  },
+  {
+    "model_a": "Ensemble",
+    "model_b": "HistGradientBoosting",
+    "a_correct_b_wrong": 3,
+    "a_wrong_b_correct": 5,
+    "discordant": 8,
+    "mcnemar_statistic_corrected": 0.125,
+    "p_value_exact": 0.7265625
+  },
+  {
+    "model_a": "Learned Ensemble",
+    "model_b": "HistGradientBoosting",
+    "a_correct_b_wrong": 3,
+    "a_wrong_b_correct": 5,
+    "discordant": 8,
+    "mcnemar_statistic_corrected": 0.125,
+    "p_value_exact": 0.7265625
+  },
+  {
+    "model_a": "PREG-Net",
+    "model_b": "Ensemble",
+    "a_correct_b_wrong": 3,
+    "a_wrong_b_correct": 2,
+    "discordant": 5,
+    "mcnemar_statistic_corrected": 0.0,
+    "p_value_exact": 1.0
+  },
+  {
+    "model_a": "PREG-Net",
+    "model_b": "Learned Ensemble",
+    "a_correct_b_wrong": 3,
+    "a_wrong_b_correct": 2,
+    "discordant": 5,
+    "mcnemar_statistic_corrected": 0.0,
+    "p_value_exact": 1.0
+  },
+  {
+    "model_a": "PREG-Net",
+    "model_b": "Random Forest",
+    "a_correct_b_wrong": 3,
+    "a_wrong_b_correct": 3,
+    "discordant": 6,
+    "mcnemar_statistic_corrected": 0.16666666666666666,
+    "p_value_exact": 1.0
+  },
+  {
+    "model_a": "PREG-Net",
+    "model_b": "HistGradientBoosting",
+    "a_correct_b_wrong": 3,
+    "a_wrong_b_correct": 4,
+    "discordant": 7,
+    "mcnemar_statistic_corrected": 0.0,
+    "p_value_exact": 1.0
+  },
+  {
+    "model_a": "PREG-Net",
+    "model_b": "XGBoost",
+    "a_correct_b_wrong": 3,
+    "a_wrong_b_correct": 3,
+    "discordant": 6,
+    "mcnemar_statistic_corrected": 0.16666666666666666,
+    "p_value_exact": 1.0
+  },
+  {
+    "model_a": "FETA-Transformer",
+    "model_b": "Ensemble",
+    "a_correct_b_wrong": 1,
+    "a_wrong_b_correct": 2,
+    "discordant": 3,
+    "mcnemar_statistic_corrected": 0.0,
+    "p_value_exact": 1.0
+  },
+  {
+    "model_a": "FETA-Transformer",
+    "model_b": "Learned Ensemble",
+    "a_correct_b_wrong": 1,
+    "a_wrong_b_correct": 2,
+    "discordant": 3,
+    "mcnemar_statistic_corrected": 0.0,
+    "p_value_exact": 1.0
+  },
+  {
+    "model_a": "Ensemble",
+    "model_b": "Learned Ensemble",
+    "a_correct_b_wrong": 0,
+    "a_wrong_b_correct": 0,
+    "discordant": 0,
+    "mcnemar_statistic_corrected": 0.0,
+    "p_value_exact": 1.0
+  },
+  {
+    "model_a": "Ensemble",
+    "model_b": "Random Forest",
+    "a_correct_b_wrong": 2,
+    "a_wrong_b_correct": 3,
+    "discordant": 5,
+    "mcnemar_statistic_corrected": 0.0,
+    "p_value_exact": 1.0
+  },
+  {
+    "model_a": "Ensemble",
+    "model_b": "XGBoost",
+    "a_correct_b_wrong": 2,
+    "a_wrong_b_correct": 3,
+    "discordant": 5,
+    "mcnemar_statistic_corrected": 0.0,
+    "p_value_exact": 1.0
+  },
+  {
+    "model_a": "Learned Ensemble",
+    "model_b": "Random Forest",
+    "a_correct_b_wrong": 2,
+    "a_wrong_b_correct": 3,
+    "discordant": 5,
+    "mcnemar_statistic_corrected": 0.0,
+    "p_value_exact": 1.0
+  },
+  {
+    "model_a": "Learned Ensemble",
+    "model_b": "XGBoost",
+    "a_correct_b_wrong": 2,
+    "a_wrong_b_correct": 3,
+    "discordant": 5,
+    "mcnemar_statistic_corrected": 0.0,
+    "p_value_exact": 1.0
+  },
+  {
+    "model_a": "Sklearn Logistic Regression",
+    "model_b": "HistGradientBoosting",
+    "a_correct_b_wrong": 3,
+    "a_wrong_b_correct": 2,
+    "discordant": 5,
+    "mcnemar_statistic_corrected": 0.0,
+    "p_value_exact": 1.0
+  },
+  {
+    "model_a": "Random Forest",
+    "model_b": "HistGradientBoosting",
+    "a_correct_b_wrong": 2,
+    "a_wrong_b_correct": 3,
+    "discordant": 5,
+    "mcnemar_statistic_corrected": 0.0,
+    "p_value_exact": 1.0
+  },
+  {
+    "model_a": "Random Forest",
+    "model_b": "XGBoost",
+    "a_correct_b_wrong": 1,
+    "a_wrong_b_correct": 1,
+    "discordant": 2,
+    "mcnemar_statistic_corrected": 0.5,
+    "p_value_exact": 1.0
+  },
+  {
+    "model_a": "HistGradientBoosting",
+    "model_b": "XGBoost",
+    "a_correct_b_wrong": 2,
+    "a_wrong_b_correct": 1,
+    "discordant": 3,
+    "mcnemar_statistic_corrected": 0.0,
+    "p_value_exact": 1.0
+  }
+]

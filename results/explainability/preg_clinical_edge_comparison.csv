@@ -1,0 +1,36 @@
+rank_by_attention,relationship,edge_type,clinical_group,source_feature,target_feature,mean_attention,clinical_interpretation
+1,CRL_to_GS,physiological,additional_code_edge,CRL,GS,0.21665075093424752,Additional edge present in implementation; useful to report separately.
+2,FHR_to_YSD,physiological,additional_code_edge,FHR,YSD,0.1951619750692984,Additional edge present in implementation; useful to report separately.
+3,CRL_temporal_backward,temporal,temporal_same_variable,CRL,CRL,0.168023293091275,Tracks same-variable change across consecutive scans.
+4,GS_to_YSD,physiological,additional_code_edge,GS,YSD,0.16794942923326014,Additional edge present in implementation; useful to report separately.
+5,GS_temporal_backward,temporal,temporal_same_variable,GS,GS,0.16601696676468547,Tracks same-variable change across consecutive scans.
+6,previous_loss_to_YSD,maternal_to_us,primary_research_rationale,previous_loss,YSD,0.16258295519604324,Matches the primary research rationale.
+7,CRL_to_FHR,physiological,additional_code_edge,CRL,FHR,0.16024305688056442,Additional edge present in implementation; useful to report separately.
+8,age_to_YSD,maternal_to_us,additional_code_edge,age,YSD,0.15993531690625096,Additional edge present in implementation; useful to report separately.
+9,YSD_temporal_backward,temporal,temporal_same_variable,YSD,YSD,0.15501107558419433,Tracks same-variable change across consecutive scans.
+10,FHR_temporal_forward,temporal,temporal_same_variable,FHR,FHR,0.1416303873816623,Tracks same-variable change across consecutive scans.
+11,FHR_to_CRL,physiological,primary_research_rationale,FHR,CRL,0.13821641251984412,Matches the primary research rationale.
+12,CRL_temporal_forward,temporal,temporal_same_variable,CRL,CRL,0.13801392567057147,Tracks same-variable change across consecutive scans.
+13,FHR_temporal_backward,temporal,temporal_same_variable,FHR,FHR,0.13725345320842436,Tracks same-variable change across consecutive scans.
+14,YSD_temporal_forward,temporal,temporal_same_variable,YSD,YSD,0.13671025508063755,Tracks same-variable change across consecutive scans.
+15,previous_loss_to_GS,maternal_to_us,primary_research_rationale,previous_loss,GS,0.1362284574149213,Matches the primary research rationale.
+16,age_to_GS,maternal_to_us,additional_code_edge,age,GS,0.13319854040871423,Additional edge present in implementation; useful to report separately.
+17,parity_to_FHR,maternal_to_us,additional_code_edge,parity,FHR,0.12497426948216964,Additional edge present in implementation; useful to report separately.
+18,parity_to_CRL,maternal_to_us,additional_code_edge,parity,CRL,0.12408325792106081,Additional edge present in implementation; useful to report separately.
+19,bmi_to_YSD,maternal_to_us,primary_research_rationale,bmi,YSD,0.12178548886168301,Matches the primary research rationale.
+20,YSD_to_GS,physiological,primary_research_rationale,YSD,GS,0.12011721232143285,Matches the primary research rationale.
+21,previous_loss_to_FHR,maternal_to_us,primary_research_rationale,previous_loss,FHR,0.11897509501505031,Matches the primary research rationale.
+22,GS_temporal_forward,temporal,temporal_same_variable,GS,GS,0.1177736209226057,Tracks same-variable change across consecutive scans.
+23,conception_ivf_to_GS,maternal_to_us,additional_code_edge,conception_ivf,GS,0.1110353960258715,Additional edge present in implementation; useful to report separately.
+24,age_to_FHR,maternal_to_us,primary_research_rationale,age,FHR,0.10886063690305088,Matches the primary research rationale.
+25,previous_loss_to_CRL,maternal_to_us,primary_research_rationale,previous_loss,CRL,0.10871358518812982,Matches the primary research rationale.
+26,age_to_CRL,maternal_to_us,primary_research_rationale,age,CRL,0.1080832379691116,Matches the primary research rationale.
+27,GS_to_CRL,physiological,additional_code_edge,GS,CRL,0.10588628216581757,Additional edge present in implementation; useful to report separately.
+28,bmi_to_GS,maternal_to_us,primary_research_rationale,bmi,GS,0.09542042565399723,Matches the primary research rationale.
+29,YSD_to_FHR,physiological,additional_code_edge,YSD,FHR,0.09191250757503643,Additional edge present in implementation; useful to report separately.
+30,conception_ivf_to_FHR,maternal_to_us,additional_code_edge,conception_ivf,FHR,0.08016292862905433,Additional edge present in implementation; useful to report separately.
+31,conception_ivf_to_CRL,maternal_to_us,additional_code_edge,conception_ivf,CRL,0.07807547716335665,Additional edge present in implementation; useful to report separately.
+32,bmi_to_CRL,maternal_to_us,primary_research_rationale,bmi,CRL,0.07307484952478688,Matches the primary research rationale.
+33,bmi_to_FHR,maternal_to_us,primary_research_rationale,bmi,FHR,0.06910877818537456,Matches the primary research rationale.
+34,gravidity_to_CRL,maternal_to_us,additional_code_edge,gravidity,CRL,0.061831186346522946,Additional edge present in implementation; useful to report separately.
+35,gravidity_to_FHR,maternal_to_us,additional_code_edge,gravidity,FHR,0.06165278174273649,Additional edge present in implementation; useful to report separately.

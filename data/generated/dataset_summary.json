@@ -1,0 +1,42 @@
+{
+  "seed": 42,
+  "n_patients": 800,
+  "n_scans": 2408,
+  "n_loss": 188,
+  "n_live": 612,
+  "loss_rate": 0.235,
+  "scans_per_patient": {
+    "min": 2,
+    "max": 5,
+    "mean": 3.01,
+    "median": 3.0
+  },
+  "columns": {
+    "patients": [
+      "patient_id",
+      "age",
+      "bmi",
+      "parity",
+      "gravidity",
+      "previous_loss",
+      "conception",
+      "singleton",
+      "label"
+    ],
+    "scans": [
+      "patient_id",
+      "gestational_age_weeks",
+      "FHR",
+      "CRL",
+      "GS",
+      "YSD"
+    ]
+  },
+  "validation": {
+    "all_patients_have_scans": true,
+    "min_scans_ok": true,
+    "max_scans_ok": true,
+    "gestational_age_max_ok": true,
+    "no_remaining_missing_us_values": true
+  }
+}

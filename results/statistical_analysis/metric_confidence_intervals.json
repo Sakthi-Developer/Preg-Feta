@@ -1,0 +1,562 @@
+[
+  {
+    "model": "PREG-Net",
+    "metric": "auroc",
+    "estimate": 0.985539488320356,
+    "ci_lower": 0.9662913016126949,
+    "ci_upper": 0.997272812393599,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "PREG-Net",
+    "metric": "auprc",
+    "estimate": 0.9567551384778858,
+    "ci_lower": 0.8909288575670362,
+    "ci_upper": 0.9914027256753756,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "PREG-Net",
+    "metric": "accuracy",
+    "estimate": 0.9508196721311475,
+    "ci_lower": 0.9098360655737705,
+    "ci_upper": 0.9836065573770492,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "PREG-Net",
+    "metric": "sensitivity",
+    "estimate": 0.9655172413793104,
+    "ci_lower": 0.88,
+    "ci_upper": 1.0,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "PREG-Net",
+    "metric": "specificity",
+    "estimate": 0.946236559139785,
+    "ci_lower": 0.8942279411764706,
+    "ci_upper": 0.9886363636363636,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "PREG-Net",
+    "metric": "f1",
+    "estimate": 0.9032258064516129,
+    "ci_lower": 0.8107533064979873,
+    "ci_upper": 0.9697192513368983,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "PREG-Net",
+    "metric": "precision",
+    "estimate": 0.8484848484848485,
+    "ci_lower": 0.7142857142857143,
+    "ci_upper": 0.9629629629629629,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "FETA-Transformer",
+    "metric": "auroc",
+    "estimate": 0.9896180941787172,
+    "ci_lower": 0.9731868427525983,
+    "ci_upper": 0.9992753623188406,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "FETA-Transformer",
+    "metric": "auprc",
+    "estimate": 0.9727902126609023,
+    "ci_lower": 0.9295410304160301,
+    "ci_upper": 0.9978136200716846,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "FETA-Transformer",
+    "metric": "accuracy",
+    "estimate": 0.9344262295081968,
+    "ci_lower": 0.8852459016393442,
+    "ci_upper": 0.9754098360655737,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "FETA-Transformer",
+    "metric": "sensitivity",
+    "estimate": 0.896551724137931,
+    "ci_lower": 0.7741935483870968,
+    "ci_upper": 1.0,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "FETA-Transformer",
+    "metric": "specificity",
+    "estimate": 0.946236559139785,
+    "ci_lower": 0.896097132034632,
+    "ci_upper": 0.989010989010989,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "FETA-Transformer",
+    "metric": "f1",
+    "estimate": 0.8666666666666667,
+    "ci_lower": 0.7555555555555556,
+    "ci_upper": 0.9491525423728815,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "FETA-Transformer",
+    "metric": "precision",
+    "estimate": 0.8387096774193549,
+    "ci_lower": 0.6944444444444444,
+    "ci_upper": 0.9655172413793104,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "Ensemble",
+    "metric": "auroc",
+    "estimate": 0.9933259176863181,
+    "ci_lower": 0.9809502551020408,
+    "ci_upper": 1.0,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "Ensemble",
+    "metric": "auprc",
+    "estimate": 0.9805506529059317,
+    "ci_lower": 0.9408369811677809,
+    "ci_upper": 1.0,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "Ensemble",
+    "metric": "accuracy",
+    "estimate": 0.9426229508196722,
+    "ci_lower": 0.8934426229508197,
+    "ci_upper": 0.9836065573770492,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "Ensemble",
+    "metric": "sensitivity",
+    "estimate": 0.9655172413793104,
+    "ci_lower": 0.88,
+    "ci_upper": 1.0,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "Ensemble",
+    "metric": "specificity",
+    "estimate": 0.9354838709677419,
+    "ci_lower": 0.878769401330377,
+    "ci_upper": 0.9789473684210527,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "Ensemble",
+    "metric": "f1",
+    "estimate": 0.8888888888888888,
+    "ci_lower": 0.7936507936507936,
+    "ci_upper": 0.9620487576183778,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "Ensemble",
+    "metric": "precision",
+    "estimate": 0.8235294117647058,
+    "ci_lower": 0.6875,
+    "ci_upper": 0.9411764705882353,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "Learned Ensemble",
+    "metric": "auroc",
+    "estimate": 0.9933259176863182,
+    "ci_lower": 0.9823713235294117,
+    "ci_upper": 0.9996535092077371,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "Learned Ensemble",
+    "metric": "auprc",
+    "estimate": 0.9807312357646061,
+    "ci_lower": 0.9468783100410887,
+    "ci_upper": 0.999058923606621,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "Learned Ensemble",
+    "metric": "accuracy",
+    "estimate": 0.9426229508196722,
+    "ci_lower": 0.9016393442622951,
+    "ci_upper": 0.9836065573770492,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "Learned Ensemble",
+    "metric": "sensitivity",
+    "estimate": 0.9655172413793104,
+    "ci_lower": 0.88,
+    "ci_upper": 1.0,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "Learned Ensemble",
+    "metric": "specificity",
+    "estimate": 0.9354838709677419,
+    "ci_lower": 0.8829787234042553,
+    "ci_upper": 0.979381443298969,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "Learned Ensemble",
+    "metric": "f1",
+    "estimate": 0.8888888888888888,
+    "ci_lower": 0.7931034482758621,
+    "ci_upper": 0.9629629629629629,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "Learned Ensemble",
+    "metric": "precision",
+    "estimate": 0.8235294117647058,
+    "ci_lower": 0.6875,
+    "ci_upper": 0.9444444444444444,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "Torch Logistic Regression",
+    "metric": "auroc",
+    "estimate": 0.9888765294771968,
+    "ci_lower": 0.9732620320855615,
+    "ci_upper": 0.999151425189959,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "Torch Logistic Regression",
+    "metric": "auprc",
+    "estimate": 0.9660531639611926,
+    "ci_lower": 0.9116541461873209,
+    "ci_upper": 0.9977443609022556,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "Torch Logistic Regression",
+    "metric": "accuracy",
+    "estimate": 0.9016393442622951,
+    "ci_lower": 0.8442622950819673,
+    "ci_upper": 0.9508196721311475,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "Torch Logistic Regression",
+    "metric": "sensitivity",
+    "estimate": 0.9655172413793104,
+    "ci_lower": 0.8845588235294117,
+    "ci_upper": 1.0,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "Torch Logistic Regression",
+    "metric": "specificity",
+    "estimate": 0.8817204301075269,
+    "ci_lower": 0.8118811881188119,
+    "ci_upper": 0.9431818181818182,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "Torch Logistic Regression",
+    "metric": "f1",
+    "estimate": 0.8235294117647058,
+    "ci_lower": 0.711864406779661,
+    "ci_upper": 0.9111181434599156,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "Torch Logistic Regression",
+    "metric": "precision",
+    "estimate": 0.717948717948718,
+    "ci_lower": 0.5713474025974026,
+    "ci_upper": 0.8529411764705882,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "MLP",
+    "metric": "auroc",
+    "estimate": 0.9985168705969596,
+    "ci_lower": 0.9941520467836257,
+    "ci_upper": 1.0,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "MLP",
+    "metric": "auprc",
+    "estimate": 0.9951528477687811,
+    "ci_lower": 0.9792528617627433,
+    "ci_upper": 1.0,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "MLP",
+    "metric": "accuracy",
+    "estimate": 0.9836065573770492,
+    "ci_lower": 0.9590163934426229,
+    "ci_upper": 1.0,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "MLP",
+    "metric": "sensitivity",
+    "estimate": 1.0,
+    "ci_lower": 1.0,
+    "ci_upper": 1.0,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "MLP",
+    "metric": "specificity",
+    "estimate": 0.978494623655914,
+    "ci_lower": 0.9468085106382979,
+    "ci_upper": 1.0,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "MLP",
+    "metric": "f1",
+    "estimate": 0.9666666666666667,
+    "ci_lower": 0.9122807017543859,
+    "ci_upper": 1.0,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "MLP",
+    "metric": "precision",
+    "estimate": 0.9354838709677419,
+    "ci_lower": 0.8387096774193549,
+    "ci_upper": 1.0,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "Sklearn Logistic Regression",
+    "metric": "auroc",
+    "estimate": 0.996292176492399,
+    "ci_lower": 0.9881411161302466,
+    "ci_upper": 1.0,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "Sklearn Logistic Regression",
+    "metric": "auprc",
+    "estimate": 0.9878173726018553,
+    "ci_lower": 0.9592324701655953,
+    "ci_upper": 1.0,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "Sklearn Logistic Regression",
+    "metric": "accuracy",
+    "estimate": 0.9672131147540983,
+    "ci_lower": 0.9344262295081968,
+    "ci_upper": 0.9918032786885246,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "Sklearn Logistic Regression",
+    "metric": "sensitivity",
+    "estimate": 0.9655172413793104,
+    "ci_lower": 0.88,
+    "ci_upper": 1.0,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "Sklearn Logistic Regression",
+    "metric": "specificity",
+    "estimate": 0.967741935483871,
+    "ci_lower": 0.9278350515463918,
+    "ci_upper": 1.0,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "Sklearn Logistic Regression",
+    "metric": "f1",
+    "estimate": 0.9333333333333333,
+    "ci_lower": 0.8571428571428571,
+    "ci_upper": 0.9855174525413348,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "Sklearn Logistic Regression",
+    "metric": "precision",
+    "estimate": 0.9032258064516129,
+    "ci_lower": 0.7930675287356322,
+    "ci_upper": 1.0,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "Random Forest",
+    "metric": "auroc",
+    "estimate": 0.9909158324063775,
+    "ci_lower": 0.9773916018350215,
+    "ci_upper": 0.9991758442373778,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "Random Forest",
+    "metric": "auprc",
+    "estimate": 0.9704962872271459,
+    "ci_lower": 0.9238741966625676,
+    "ci_upper": 0.9974469026116193,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "Random Forest",
+    "metric": "accuracy",
+    "estimate": 0.9508196721311475,
+    "ci_lower": 0.9098360655737705,
+    "ci_upper": 0.9836065573770492,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "Random Forest",
+    "metric": "sensitivity",
+    "estimate": 0.9310344827586207,
+    "ci_lower": 0.8260869565217391,
+    "ci_upper": 1.0,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "Random Forest",
+    "metric": "specificity",
+    "estimate": 0.956989247311828,
+    "ci_lower": 0.9120879120879121,
+    "ci_upper": 0.9896907216494846,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "Random Forest",
+    "metric": "f1",
+    "estimate": 0.9,
+    "ci_lower": 0.8076923076923076,
+    "ci_upper": 0.96875,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "Random Forest",
+    "metric": "precision",
+    "estimate": 0.8709677419354839,
+    "ci_lower": 0.7390732265446224,
+    "ci_upper": 0.9696969696969697,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "HistGradientBoosting",
+    "metric": "auroc",
+    "estimate": 0.9933259176863182,
+    "ci_lower": 0.9814432989690721,
+    "ci_upper": 1.0,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "HistGradientBoosting",
+    "metric": "auprc",
+    "estimate": 0.978389596410586,
+    "ci_lower": 0.9392688010792719,
+    "ci_upper": 1.0,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "HistGradientBoosting",
+    "metric": "accuracy",
+    "estimate": 0.9590163934426229,
+    "ci_lower": 0.9180327868852459,
+    "ci_upper": 0.9918032786885246,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "HistGradientBoosting",
+    "metric": "sensitivity",
+    "estimate": 0.9310344827586207,
+    "ci_lower": 0.8181818181818182,
+    "ci_upper": 1.0,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "HistGradientBoosting",
+    "metric": "specificity",
+    "estimate": 0.967741935483871,
+    "ci_lower": 0.9276951556224899,
+    "ci_upper": 1.0,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "HistGradientBoosting",
+    "metric": "f1",
+    "estimate": 0.9152542372881356,
+    "ci_lower": 0.8275862068965518,
+    "ci_upper": 0.9818181818181818,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "HistGradientBoosting",
+    "metric": "precision",
+    "estimate": 0.9,
+    "ci_lower": 0.7837837837837838,
+    "ci_upper": 1.0,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "XGBoost",
+    "metric": "auroc",
+    "estimate": 0.9911012235817576,
+    "ci_lower": 0.9768234053565923,
+    "ci_upper": 0.9991992568226121,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "XGBoost",
+    "metric": "auprc",
+    "estimate": 0.9728733735456891,
+    "ci_lower": 0.9279536062626291,
+    "ci_upper": 0.9973062359721716,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "XGBoost",
+    "metric": "accuracy",
+    "estimate": 0.9508196721311475,
+    "ci_lower": 0.9098360655737705,
+    "ci_upper": 0.9836065573770492,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "XGBoost",
+    "metric": "sensitivity",
+    "estimate": 0.9655172413793104,
+    "ci_lower": 0.8822941176470588,
+    "ci_upper": 1.0,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "XGBoost",
+    "metric": "specificity",
+    "estimate": 0.946236559139785,
+    "ci_lower": 0.8958333333333334,
+    "ci_upper": 0.989247311827957,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "XGBoost",
+    "metric": "f1",
+    "estimate": 0.9032258064516129,
+    "ci_lower": 0.8135593220338984,
+    "ci_upper": 0.9714285714285714,
+    "n_bootstrap": 2000
+  },
+  {
+    "model": "XGBoost",
+    "metric": "precision",
+    "estimate": 0.8484848484848485,
+    "ci_lower": 0.7142857142857143,
+    "ci_upper": 0.967741935483871,
+    "n_bootstrap": 2000
+  }
+]

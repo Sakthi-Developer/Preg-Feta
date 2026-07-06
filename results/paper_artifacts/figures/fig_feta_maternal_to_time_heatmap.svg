@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="750" height="279" viewBox="0 0 750 279">
+<rect width="100%" height="100%" fill="white"/>
+<style>text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#202124}.axis{stroke:#333;stroke-width:1}.grid{stroke:#e1e5ea;stroke-width:1}.label{font-size:12px}.title{font-size:18px;font-weight:700}.subtitle{font-size:12px;fill:#555}.box{fill:#f7f9fc;stroke:#7b8794;stroke-width:1.2}.arrow{stroke:#333;stroke-width:1.5;marker-end:url(#arrow)}</style>
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#333"/></marker></defs>
+<text x="24.0" y="34.0" font-size="20" font-weight="700" text-anchor="start">Post-Hoc Maternal-To-Time Attention By Gestational Week</text>
+<text x="157.0" y="57.0" font-size="11" font-weight="600" text-anchor="middle">5</text>
+<text x="211.0" y="57.0" font-size="11" font-weight="600" text-anchor="middle">6</text>
+<text x="265.0" y="57.0" font-size="11" font-weight="600" text-anchor="middle">7</text>
+<text x="319.0" y="57.0" font-size="11" font-weight="600" text-anchor="middle">8</text>
+<text x="373.0" y="57.0" font-size="11" font-weight="600" text-anchor="middle">9</text>
+<text x="427.0" y="57.0" font-size="11" font-weight="600" text-anchor="middle">10</text>
+<text x="481.0" y="57.0" font-size="11" font-weight="600" text-anchor="middle">11</text>
+<text x="535.0" y="57.0" font-size="11" font-weight="600" text-anchor="middle">12</text>
+<text x="589.0" y="57.0" font-size="11" font-weight="600" text-anchor="middle">13</text>
+<text x="643.0" y="57.0" font-size="11" font-weight="600" text-anchor="middle">14</text>
+<text x="114.0" y="104.0" font-size="12" font-weight="600" text-anchor="end">ongoing</text>
+<rect x="130" y="72" width="54" height="56" fill="#416dba" stroke="#ffffff" stroke-width="2"/>
+<text x="157.0" y="104.0" font-size="11" font-weight="600" text-anchor="middle">0.38</text>
+<rect x="184" y="72" width="54" height="56" fill="#2f5fb3" stroke="#ffffff" stroke-width="2"/>
+<text x="211.0" y="104.0" font-size="11" font-weight="600" text-anchor="middle">0.42</text>
+<rect x="238" y="72" width="54" height="56" fill="#3b68b7" stroke="#ffffff" stroke-width="2"/>
+<text x="265.0" y="104.0" font-size="11" font-weight="600" text-anchor="middle">0.39</text>
+<rect x="292" y="72" width="54" height="56" fill="#4c76be" stroke="#ffffff" stroke-width="2"/>
+<text x="319.0" y="104.0" font-size="11" font-weight="600" text-anchor="middle">0.35</text>
+<rect x="346" y="72" width="54" height="56" fill="#5b81c3" stroke="#ffffff" stroke-width="2"/>
+<text x="373.0" y="104.0" font-size="11" font-weight="600" text-anchor="middle">0.32</text>
+<rect x="400" y="72" width="54" height="56" fill="#6186c6" stroke="#ffffff" stroke-width="2"/>
+<text x="427.0" y="104.0" font-size="11" font-weight="600" text-anchor="middle">0.31</text>
+<rect x="454" y="72" width="54" height="56" fill="#7092cc" stroke="#ffffff" stroke-width="2"/>
+<text x="481.0" y="104.0" font-size="11" font-weight="600" text-anchor="middle">0.28</text>
+<rect x="508" y="72" width="54" height="56" fill="#7797ce" stroke="#ffffff" stroke-width="2"/>
+<text x="535.0" y="104.0" font-size="11" font-weight="600" text-anchor="middle">0.26</text>
+<rect x="562" y="72" width="54" height="56" fill="#98b1db" stroke="#ffffff" stroke-width="2"/>
+<text x="589.0" y="104.0" font-size="11" font-weight="600" text-anchor="middle">0.19</text>
+<rect x="616" y="72" width="54" height="56" fill="#88a5d5" stroke="#ffffff" stroke-width="2"/>
+<text x="643.0" y="104.0" font-size="11" font-weight="600" text-anchor="middle">0.23</text>
+<text x="114.0" y="160.0" font-size="12" font-weight="600" text-anchor="end">loss</text>
+<rect x="130" y="128" width="54" height="56" fill="#f2f3f5" stroke="#ffffff" stroke-width="2"/>
+<text x="157.0" y="160.0" font-size="11" font-weight="600" text-anchor="middle"></text>
+<rect x="184" y="128" width="54" height="56" fill="#3a67b7" stroke="#ffffff" stroke-width="2"/>
+<text x="211.0" y="160.0" font-size="11" font-weight="600" text-anchor="middle">0.39</text>
+<rect x="238" y="128" width="54" height="56" fill="#668ac8" stroke="#ffffff" stroke-width="2"/>
+<text x="265.0" y="160.0" font-size="11" font-weight="600" text-anchor="middle">0.30</text>
+<rect x="292" y="128" width="54" height="56" fill="#4772bc" stroke="#ffffff" stroke-width="2"/>
+<text x="319.0" y="160.0" font-size="11" font-weight="600" text-anchor="middle">0.36</text>
+<rect x="346" y="128" width="54" height="56" fill="#688bc8" stroke="#ffffff" stroke-width="2"/>
+<text x="373.0" y="160.0" font-size="11" font-weight="600" text-anchor="middle">0.30</text>
+<rect x="400" y="128" width="54" height="56" fill="#5c82c4" stroke="#ffffff" stroke-width="2"/>
+<text x="427.0" y="160.0" font-size="11" font-weight="600" text-anchor="middle">0.32</text>
+<rect x="454" y="128" width="54" height="56" fill="#3b69b7" stroke="#ffffff" stroke-width="2"/>
+<text x="481.0" y="160.0" font-size="11" font-weight="600" text-anchor="middle">0.39</text>
+<rect x="508" y="128" width="54" height="56" fill="#6a8dc9" stroke="#ffffff" stroke-width="2"/>
+<text x="535.0" y="160.0" font-size="11" font-weight="600" text-anchor="middle">0.29</text>
+<rect x="562" y="128" width="54" height="56" fill="#567dc1" stroke="#ffffff" stroke-width="2"/>
+<text x="589.0" y="160.0" font-size="11" font-weight="600" text-anchor="middle">0.33</text>
+<rect x="616" y="128" width="54" height="56" fill="#678bc8" stroke="#ffffff" stroke-width="2"/>
+<text x="643.0" y="160.0" font-size="11" font-weight="600" text-anchor="middle">0.30</text>
+<text x="400.0" y="247.0" font-size="12" font-weight="600" text-anchor="middle">Rounded gestational week</text>
+</svg>

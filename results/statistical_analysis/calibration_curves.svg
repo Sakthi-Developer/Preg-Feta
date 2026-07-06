@@ -1,0 +1,349 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="1700" viewBox="0 0 920 1700">
+<rect width="100%" height="100%" fill="white"/>
+<style>text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#222}.axis{stroke:#222;stroke-width:1}.grid{stroke:#ddd;stroke-width:1}.diag{stroke:#777;stroke-width:1;stroke-dasharray:5 5}.line{fill:none;stroke:#1f77b4;stroke-width:2}.point{fill:#1f77b4;fill-opacity:.82}</style>
+<text x="18" y="24" font-size="15" font-weight="600">PREG-Net</text>
+<line class="grid" x1="58.0" y1="48" x2="58.0" y2="278"/>
+<line class="grid" x1="58" y1="278.0" x2="398" y2="278.0"/>
+<text x="50.0" y="298" font-size="10">0</text>
+<text x="24" y="281.0" font-size="10">0</text>
+<line class="grid" x1="143.0" y1="48" x2="143.0" y2="278"/>
+<line class="grid" x1="58" y1="220.5" x2="398" y2="220.5"/>
+<text x="135.0" y="298" font-size="10">0.25</text>
+<text x="24" y="223.5" font-size="10">0.25</text>
+<line class="grid" x1="228.0" y1="48" x2="228.0" y2="278"/>
+<line class="grid" x1="58" y1="163.0" x2="398" y2="163.0"/>
+<text x="220.0" y="298" font-size="10">0.5</text>
+<text x="24" y="166.0" font-size="10">0.5</text>
+<line class="grid" x1="313.0" y1="48" x2="313.0" y2="278"/>
+<line class="grid" x1="58" y1="105.5" x2="398" y2="105.5"/>
+<text x="305.0" y="298" font-size="10">0.75</text>
+<text x="24" y="108.5" font-size="10">0.75</text>
+<line class="grid" x1="398.0" y1="48" x2="398.0" y2="278"/>
+<line class="grid" x1="58" y1="48.0" x2="398" y2="48.0"/>
+<text x="390.0" y="298" font-size="10">1</text>
+<text x="24" y="51.0" font-size="10">1</text>
+<line class="axis" x1="58" y1="278" x2="398" y2="278"/>
+<line class="axis" x1="58" y1="278" x2="58" y2="48"/>
+<line class="diag" x1="58" y1="278" x2="398" y2="48"/>
+<polyline class="line" points="59.6,278.0 104.5,232.0 132.2,278.0 209.8,278.0 341.7,48.0 394.0,83.9"/>
+<circle class="point" cx="59.6" cy="278.0" r="10.0"/>
+<circle class="point" cx="104.5" cy="232.0" r="5.2"/>
+<circle class="point" cx="132.2" cy="278.0" r="4.0"/>
+<circle class="point" cx="209.8" cy="278.0" r="4.4"/>
+<circle class="point" cx="341.7" cy="48.0" r="4.0"/>
+<circle class="point" cx="394.0" cy="83.9" r="8.7"/>
+<text x="130" y="317" font-size="11">Mean predicted probability</text>
+<text x="12" y="193" font-size="11" transform="rotate(-90 12 193)">Observed event rate</text>
+<text x="478" y="24" font-size="15" font-weight="600">FETA-Transformer</text>
+<line class="grid" x1="518.0" y1="48" x2="518.0" y2="278"/>
+<line class="grid" x1="518" y1="278.0" x2="858" y2="278.0"/>
+<text x="510.0" y="298" font-size="10">0</text>
+<text x="484" y="281.0" font-size="10">0</text>
+<line class="grid" x1="603.0" y1="48" x2="603.0" y2="278"/>
+<line class="grid" x1="518" y1="220.5" x2="858" y2="220.5"/>
+<text x="595.0" y="298" font-size="10">0.25</text>
+<text x="484" y="223.5" font-size="10">0.25</text>
+<line class="grid" x1="688.0" y1="48" x2="688.0" y2="278"/>
+<line class="grid" x1="518" y1="163.0" x2="858" y2="163.0"/>
+<text x="680.0" y="298" font-size="10">0.5</text>
+<text x="484" y="166.0" font-size="10">0.5</text>
+<line class="grid" x1="773.0" y1="48" x2="773.0" y2="278"/>
+<line class="grid" x1="518" y1="105.5" x2="858" y2="105.5"/>
+<text x="765.0" y="298" font-size="10">0.75</text>
+<text x="484" y="108.5" font-size="10">0.75</text>
+<line class="grid" x1="858.0" y1="48" x2="858.0" y2="278"/>
+<line class="grid" x1="518" y1="48.0" x2="858" y2="48.0"/>
+<text x="850.0" y="298" font-size="10">1</text>
+<text x="484" y="51.0" font-size="10">1</text>
+<line class="axis" x1="518" y1="278" x2="858" y2="278"/>
+<line class="axis" x1="518" y1="278" x2="518" y2="48"/>
+<line class="diag" x1="518" y1="278" x2="858" y2="48"/>
+<polyline class="line" points="519.0,272.9 597.3,48.0 701.9,163.0 773.3,278.0 801.9,220.5 857.1,48.0"/>
+<circle class="point" cx="519.0" cy="272.9" r="10.0"/>
+<circle class="point" cx="597.3" cy="48.0" r="4.0"/>
+<circle class="point" cx="701.9" cy="163.0" r="4.4"/>
+<circle class="point" cx="773.3" cy="278.0" r="4.0"/>
+<circle class="point" cx="801.9" cy="220.5" r="5.0"/>
+<circle class="point" cx="857.1" cy="48.0" r="7.9"/>
+<text x="590" y="317" font-size="11">Mean predicted probability</text>
+<text x="472" y="193" font-size="11" transform="rotate(-90 472 193)">Observed event rate</text>
+<text x="18" y="364" font-size="15" font-weight="600">Ensemble</text>
+<line class="grid" x1="58.0" y1="388" x2="58.0" y2="618"/>
+<line class="grid" x1="58" y1="618.0" x2="398" y2="618.0"/>
+<text x="50.0" y="638" font-size="10">0</text>
+<text x="24" y="621.0" font-size="10">0</text>
+<line class="grid" x1="143.0" y1="388" x2="143.0" y2="618"/>
+<line class="grid" x1="58" y1="560.5" x2="398" y2="560.5"/>
+<text x="135.0" y="638" font-size="10">0.25</text>
+<text x="24" y="563.5" font-size="10">0.25</text>
+<line class="grid" x1="228.0" y1="388" x2="228.0" y2="618"/>
+<line class="grid" x1="58" y1="503.0" x2="398" y2="503.0"/>
+<text x="220.0" y="638" font-size="10">0.5</text>
+<text x="24" y="506.0" font-size="10">0.5</text>
+<line class="grid" x1="313.0" y1="388" x2="313.0" y2="618"/>
+<line class="grid" x1="58" y1="445.5" x2="398" y2="445.5"/>
+<text x="305.0" y="638" font-size="10">0.75</text>
+<text x="24" y="448.5" font-size="10">0.75</text>
+<line class="grid" x1="398.0" y1="388" x2="398.0" y2="618"/>
+<line class="grid" x1="58" y1="388.0" x2="398" y2="388.0"/>
+<text x="390.0" y="638" font-size="10">1</text>
+<text x="24" y="391.0" font-size="10">1</text>
+<line class="axis" x1="58" y1="618" x2="398" y2="618"/>
+<line class="axis" x1="58" y1="618" x2="58" y2="388"/>
+<line class="diag" x1="58" y1="618" x2="398" y2="388"/>
+<polyline class="line" points="63.6,615.3 107.7,618.0 175.0,618.0 274.1,618.0 353.2,503.0 391.0,404.4"/>
+<circle class="point" cx="63.6" cy="615.3" r="10.0"/>
+<circle class="point" cx="107.7" cy="618.0" r="4.0"/>
+<circle class="point" cx="175.0" cy="618.0" r="4.0"/>
+<circle class="point" cx="274.1" cy="618.0" r="4.4"/>
+<circle class="point" cx="353.2" cy="503.0" r="5.0"/>
+<circle class="point" cx="391.0" cy="404.4" r="8.3"/>
+<text x="130" y="657" font-size="11">Mean predicted probability</text>
+<text x="12" y="533" font-size="11" transform="rotate(-90 12 533)">Observed event rate</text>
+<text x="478" y="364" font-size="15" font-weight="600">Learned Ensemble</text>
+<line class="grid" x1="518.0" y1="388" x2="518.0" y2="618"/>
+<line class="grid" x1="518" y1="618.0" x2="858" y2="618.0"/>
+<text x="510.0" y="638" font-size="10">0</text>
+<text x="484" y="621.0" font-size="10">0</text>
+<line class="grid" x1="603.0" y1="388" x2="603.0" y2="618"/>
+<line class="grid" x1="518" y1="560.5" x2="858" y2="560.5"/>
+<text x="595.0" y="638" font-size="10">0.25</text>
+<text x="484" y="563.5" font-size="10">0.25</text>
+<line class="grid" x1="688.0" y1="388" x2="688.0" y2="618"/>
+<line class="grid" x1="518" y1="503.0" x2="858" y2="503.0"/>
+<text x="680.0" y="638" font-size="10">0.5</text>
+<text x="484" y="506.0" font-size="10">0.5</text>
+<line class="grid" x1="773.0" y1="388" x2="773.0" y2="618"/>
+<line class="grid" x1="518" y1="445.5" x2="858" y2="445.5"/>
+<text x="765.0" y="638" font-size="10">0.75</text>
+<text x="484" y="448.5" font-size="10">0.75</text>
+<line class="grid" x1="858.0" y1="388" x2="858.0" y2="618"/>
+<line class="grid" x1="518" y1="388.0" x2="858" y2="388.0"/>
+<text x="850.0" y="638" font-size="10">1</text>
+<text x="484" y="391.0" font-size="10">1</text>
+<line class="axis" x1="518" y1="618" x2="858" y2="618"/>
+<line class="axis" x1="518" y1="618" x2="518" y2="388"/>
+<line class="diag" x1="518" y1="618" x2="858" y2="388"/>
+<polyline class="line" points="523.2,618.0 566.7,618.0 607.2,618.0 626.6,618.0 678.6,388.0 789.3,618.0 818.1,618.0 853.0,416.8"/>
+<circle class="point" cx="523.2" cy="618.0" r="10.0"/>
+<circle class="point" cx="566.7" cy="618.0" r="4.4"/>
+<circle class="point" cx="607.2" cy="618.0" r="4.0"/>
+<circle class="point" cx="626.6" cy="618.0" r="4.0"/>
+<circle class="point" cx="678.6" cy="388.0" r="4.0"/>
+<circle class="point" cx="789.3" cy="618.0" r="4.0"/>
+<circle class="point" cx="818.1" cy="618.0" r="4.0"/>
+<circle class="point" cx="853.0" cy="416.8" r="8.7"/>
+<text x="590" y="657" font-size="11">Mean predicted probability</text>
+<text x="472" y="533" font-size="11" transform="rotate(-90 472 533)">Observed event rate</text>
+<text x="18" y="704" font-size="15" font-weight="600">Torch Logistic Regression</text>
+<line class="grid" x1="58.0" y1="728" x2="58.0" y2="958"/>
+<line class="grid" x1="58" y1="958.0" x2="398" y2="958.0"/>
+<text x="50.0" y="978" font-size="10">0</text>
+<text x="24" y="961.0" font-size="10">0</text>
+<line class="grid" x1="143.0" y1="728" x2="143.0" y2="958"/>
+<line class="grid" x1="58" y1="900.5" x2="398" y2="900.5"/>
+<text x="135.0" y="978" font-size="10">0.25</text>
+<text x="24" y="903.5" font-size="10">0.25</text>
+<line class="grid" x1="228.0" y1="728" x2="228.0" y2="958"/>
+<line class="grid" x1="58" y1="843.0" x2="398" y2="843.0"/>
+<text x="220.0" y="978" font-size="10">0.5</text>
+<text x="24" y="846.0" font-size="10">0.5</text>
+<line class="grid" x1="313.0" y1="728" x2="313.0" y2="958"/>
+<line class="grid" x1="58" y1="785.5" x2="398" y2="785.5"/>
+<text x="305.0" y="978" font-size="10">0.75</text>
+<text x="24" y="788.5" font-size="10">0.75</text>
+<line class="grid" x1="398.0" y1="728" x2="398.0" y2="958"/>
+<line class="grid" x1="58" y1="728.0" x2="398" y2="728.0"/>
+<text x="390.0" y="978" font-size="10">1</text>
+<text x="24" y="731.0" font-size="10">1</text>
+<line class="axis" x1="58" y1="958" x2="398" y2="958"/>
+<line class="axis" x1="58" y1="958" x2="58" y2="728"/>
+<line class="diag" x1="58" y1="958" x2="398" y2="728"/>
+<polyline class="line" points="81.9,958.0 110.6,958.0 144.4,958.0 170.5,958.0 209.0,944.5 245.2,932.4 278.4,793.7 316.4,760.9 342.8,728.0 376.5,728.0"/>
+<circle class="point" cx="81.9" cy="958.0" r="5.2"/>
+<circle class="point" cx="110.6" cy="958.0" r="8.1"/>
+<circle class="point" cx="144.4" cy="958.0" r="7.5"/>
+<circle class="point" cx="170.5" cy="958.0" r="6.9"/>
+<circle class="point" cx="209.0" cy="944.5" r="7.1"/>
+<circle class="point" cx="245.2" cy="932.4" r="6.0"/>
+<circle class="point" cx="278.4" cy="793.7" r="5.6"/>
+<circle class="point" cx="316.4" cy="760.9" r="5.6"/>
+<circle class="point" cx="342.8" cy="728.0" r="5.4"/>
+<circle class="point" cx="376.5" cy="728.0" r="6.2"/>
+<text x="130" y="997" font-size="11">Mean predicted probability</text>
+<text x="12" y="873" font-size="11" transform="rotate(-90 12 873)">Observed event rate</text>
+<text x="478" y="704" font-size="15" font-weight="600">MLP</text>
+<line class="grid" x1="518.0" y1="728" x2="518.0" y2="958"/>
+<line class="grid" x1="518" y1="958.0" x2="858" y2="958.0"/>
+<text x="510.0" y="978" font-size="10">0</text>
+<text x="484" y="961.0" font-size="10">0</text>
+<line class="grid" x1="603.0" y1="728" x2="603.0" y2="958"/>
+<line class="grid" x1="518" y1="900.5" x2="858" y2="900.5"/>
+<text x="595.0" y="978" font-size="10">0.25</text>
+<text x="484" y="903.5" font-size="10">0.25</text>
+<line class="grid" x1="688.0" y1="728" x2="688.0" y2="958"/>
+<line class="grid" x1="518" y1="843.0" x2="858" y2="843.0"/>
+<text x="680.0" y="978" font-size="10">0.5</text>
+<text x="484" y="846.0" font-size="10">0.5</text>
+<line class="grid" x1="773.0" y1="728" x2="773.0" y2="958"/>
+<line class="grid" x1="518" y1="785.5" x2="858" y2="785.5"/>
+<text x="765.0" y="978" font-size="10">0.75</text>
+<text x="484" y="788.5" font-size="10">0.75</text>
+<line class="grid" x1="858.0" y1="728" x2="858.0" y2="958"/>
+<line class="grid" x1="518" y1="728.0" x2="858" y2="728.0"/>
+<text x="850.0" y="978" font-size="10">1</text>
+<text x="484" y="731.0" font-size="10">1</text>
+<line class="axis" x1="518" y1="958" x2="858" y2="958"/>
+<line class="axis" x1="518" y1="958" x2="518" y2="728"/>
+<line class="diag" x1="518" y1="958" x2="858" y2="728"/>
+<polyline class="line" points="519.0,958.0 629.4,958.0 668.9,958.0 809.8,843.0 854.4,735.9"/>
+<circle class="point" cx="519.0" cy="958.0" r="10.0"/>
+<circle class="point" cx="629.4" cy="958.0" r="4.0"/>
+<circle class="point" cx="668.9" cy="958.0" r="4.0"/>
+<circle class="point" cx="809.8" cy="843.0" r="4.4"/>
+<circle class="point" cx="854.4" cy="735.9" r="8.4"/>
+<text x="590" y="997" font-size="11">Mean predicted probability</text>
+<text x="472" y="873" font-size="11" transform="rotate(-90 472 873)">Observed event rate</text>
+<text x="18" y="1044" font-size="15" font-weight="600">Sklearn Logistic Regression</text>
+<line class="grid" x1="58.0" y1="1068" x2="58.0" y2="1298"/>
+<line class="grid" x1="58" y1="1298.0" x2="398" y2="1298.0"/>
+<text x="50.0" y="1318" font-size="10">0</text>
+<text x="24" y="1301.0" font-size="10">0</text>
+<line class="grid" x1="143.0" y1="1068" x2="143.0" y2="1298"/>
+<line class="grid" x1="58" y1="1240.5" x2="398" y2="1240.5"/>
+<text x="135.0" y="1318" font-size="10">0.25</text>
+<text x="24" y="1243.5" font-size="10">0.25</text>
+<line class="grid" x1="228.0" y1="1068" x2="228.0" y2="1298"/>
+<line class="grid" x1="58" y1="1183.0" x2="398" y2="1183.0"/>
+<text x="220.0" y="1318" font-size="10">0.5</text>
+<text x="24" y="1186.0" font-size="10">0.5</text>
+<line class="grid" x1="313.0" y1="1068" x2="313.0" y2="1298"/>
+<line class="grid" x1="58" y1="1125.5" x2="398" y2="1125.5"/>
+<text x="305.0" y="1318" font-size="10">0.75</text>
+<text x="24" y="1128.5" font-size="10">0.75</text>
+<line class="grid" x1="398.0" y1="1068" x2="398.0" y2="1298"/>
+<line class="grid" x1="58" y1="1068.0" x2="398" y2="1068.0"/>
+<text x="390.0" y="1318" font-size="10">1</text>
+<text x="24" y="1071.0" font-size="10">1</text>
+<line class="axis" x1="58" y1="1298" x2="398" y2="1298"/>
+<line class="axis" x1="58" y1="1298" x2="58" y2="1068"/>
+<line class="diag" x1="58" y1="1298" x2="398" y2="1068"/>
+<polyline class="line" points="62.4,1298.0 101.4,1298.0 141.1,1298.0 172.3,1298.0 207.1,1183.0 247.7,1298.0 298.3,1183.0 343.3,1068.0 392.4,1077.2"/>
+<circle class="point" cx="62.4" cy="1298.0" r="10.0"/>
+<circle class="point" cx="101.4" cy="1298.0" r="4.0"/>
+<circle class="point" cx="141.1" cy="1298.0" r="4.0"/>
+<circle class="point" cx="172.3" cy="1298.0" r="4.0"/>
+<circle class="point" cx="207.1" cy="1183.0" r="4.4"/>
+<circle class="point" cx="247.7" cy="1298.0" r="4.0"/>
+<circle class="point" cx="298.3" cy="1183.0" r="4.4"/>
+<circle class="point" cx="343.3" cy="1068.0" r="4.7"/>
+<circle class="point" cx="392.4" cy="1077.2" r="8.0"/>
+<text x="130" y="1337" font-size="11">Mean predicted probability</text>
+<text x="12" y="1213" font-size="11" transform="rotate(-90 12 1213)">Observed event rate</text>
+<text x="478" y="1044" font-size="15" font-weight="600">Random Forest</text>
+<line class="grid" x1="518.0" y1="1068" x2="518.0" y2="1298"/>
+<line class="grid" x1="518" y1="1298.0" x2="858" y2="1298.0"/>
+<text x="510.0" y="1318" font-size="10">0</text>
+<text x="484" y="1301.0" font-size="10">0</text>
+<line class="grid" x1="603.0" y1="1068" x2="603.0" y2="1298"/>
+<line class="grid" x1="518" y1="1240.5" x2="858" y2="1240.5"/>
+<text x="595.0" y="1318" font-size="10">0.25</text>
+<text x="484" y="1243.5" font-size="10">0.25</text>
+<line class="grid" x1="688.0" y1="1068" x2="688.0" y2="1298"/>
+<line class="grid" x1="518" y1="1183.0" x2="858" y2="1183.0"/>
+<text x="680.0" y="1318" font-size="10">0.5</text>
+<text x="484" y="1186.0" font-size="10">0.5</text>
+<line class="grid" x1="773.0" y1="1068" x2="773.0" y2="1298"/>
+<line class="grid" x1="518" y1="1125.5" x2="858" y2="1125.5"/>
+<text x="765.0" y="1318" font-size="10">0.75</text>
+<text x="484" y="1128.5" font-size="10">0.75</text>
+<line class="grid" x1="858.0" y1="1068" x2="858.0" y2="1298"/>
+<line class="grid" x1="518" y1="1068.0" x2="858" y2="1068.0"/>
+<text x="850.0" y="1318" font-size="10">1</text>
+<text x="484" y="1071.0" font-size="10">1</text>
+<line class="axis" x1="518" y1="1298" x2="858" y2="1298"/>
+<line class="axis" x1="518" y1="1298" x2="518" y2="1068"/>
+<line class="diag" x1="518" y1="1298" x2="858" y2="1068"/>
+<polyline class="line" points="527.5,1298.0 560.7,1298.0 599.8,1298.0 635.9,1221.3 668.0,1221.3 716.3,1160.0 740.8,1114.0 770.5,1114.0 810.4,1068.0 842.1,1068.0"/>
+<circle class="point" cx="527.5" cy="1298.0" r="10.0"/>
+<circle class="point" cx="560.7" cy="1298.0" r="5.6"/>
+<circle class="point" cx="599.8" cy="1298.0" r="5.6"/>
+<circle class="point" cx="635.9" cy="1221.3" r="4.7"/>
+<circle class="point" cx="668.0" cy="1221.3" r="4.7"/>
+<circle class="point" cx="716.3" cy="1160.0" r="5.2"/>
+<circle class="point" cx="740.8" cy="1114.0" r="5.2"/>
+<circle class="point" cx="770.5" cy="1114.0" r="5.2"/>
+<circle class="point" cx="810.4" cy="1068.0" r="5.4"/>
+<circle class="point" cx="842.1" cy="1068.0" r="6.2"/>
+<text x="590" y="1337" font-size="11">Mean predicted probability</text>
+<text x="472" y="1213" font-size="11" transform="rotate(-90 472 1213)">Observed event rate</text>
+<text x="18" y="1384" font-size="15" font-weight="600">HistGradientBoosting</text>
+<line class="grid" x1="58.0" y1="1408" x2="58.0" y2="1638"/>
+<line class="grid" x1="58" y1="1638.0" x2="398" y2="1638.0"/>
+<text x="50.0" y="1658" font-size="10">0</text>
+<text x="24" y="1641.0" font-size="10">0</text>
+<line class="grid" x1="143.0" y1="1408" x2="143.0" y2="1638"/>
+<line class="grid" x1="58" y1="1580.5" x2="398" y2="1580.5"/>
+<text x="135.0" y="1658" font-size="10">0.25</text>
+<text x="24" y="1583.5" font-size="10">0.25</text>
+<line class="grid" x1="228.0" y1="1408" x2="228.0" y2="1638"/>
+<line class="grid" x1="58" y1="1523.0" x2="398" y2="1523.0"/>
+<text x="220.0" y="1658" font-size="10">0.5</text>
+<text x="24" y="1526.0" font-size="10">0.5</text>
+<line class="grid" x1="313.0" y1="1408" x2="313.0" y2="1638"/>
+<line class="grid" x1="58" y1="1465.5" x2="398" y2="1465.5"/>
+<text x="305.0" y="1658" font-size="10">0.75</text>
+<text x="24" y="1468.5" font-size="10">0.75</text>
+<line class="grid" x1="398.0" y1="1408" x2="398.0" y2="1638"/>
+<line class="grid" x1="58" y1="1408.0" x2="398" y2="1408.0"/>
+<text x="390.0" y="1658" font-size="10">1</text>
+<text x="24" y="1411.0" font-size="10">1</text>
+<line class="axis" x1="58" y1="1638" x2="398" y2="1638"/>
+<line class="axis" x1="58" y1="1638" x2="58" y2="1408"/>
+<line class="diag" x1="58" y1="1638" x2="398" y2="1408"/>
+<polyline class="line" points="58.7,1635.4 109.3,1408.0 219.0,1638.0 288.8,1408.0 307.6,1638.0 349.7,1523.0 395.9,1416.8"/>
+<circle class="point" cx="58.7" cy="1635.4" r="10.0"/>
+<circle class="point" cx="109.3" cy="1408.0" r="4.0"/>
+<circle class="point" cx="219.0" cy="1638.0" r="4.0"/>
+<circle class="point" cx="288.8" cy="1408.0" r="4.0"/>
+<circle class="point" cx="307.6" cy="1638.0" r="4.0"/>
+<circle class="point" cx="349.7" cy="1523.0" r="4.4"/>
+<circle class="point" cx="395.9" cy="1416.8" r="8.1"/>
+<text x="130" y="1677" font-size="11">Mean predicted probability</text>
+<text x="12" y="1553" font-size="11" transform="rotate(-90 12 1553)">Observed event rate</text>
+<text x="478" y="1384" font-size="15" font-weight="600">XGBoost</text>
+<line class="grid" x1="518.0" y1="1408" x2="518.0" y2="1638"/>
+<line class="grid" x1="518" y1="1638.0" x2="858" y2="1638.0"/>
+<text x="510.0" y="1658" font-size="10">0</text>
+<text x="484" y="1641.0" font-size="10">0</text>
+<line class="grid" x1="603.0" y1="1408" x2="603.0" y2="1638"/>
+<line class="grid" x1="518" y1="1580.5" x2="858" y2="1580.5"/>
+<text x="595.0" y="1658" font-size="10">0.25</text>
+<text x="484" y="1583.5" font-size="10">0.25</text>
+<line class="grid" x1="688.0" y1="1408" x2="688.0" y2="1638"/>
+<line class="grid" x1="518" y1="1523.0" x2="858" y2="1523.0"/>
+<text x="680.0" y="1658" font-size="10">0.5</text>
+<text x="484" y="1526.0" font-size="10">0.5</text>
+<line class="grid" x1="773.0" y1="1408" x2="773.0" y2="1638"/>
+<line class="grid" x1="518" y1="1465.5" x2="858" y2="1465.5"/>
+<text x="765.0" y="1658" font-size="10">0.75</text>
+<text x="484" y="1468.5" font-size="10">0.75</text>
+<line class="grid" x1="858.0" y1="1408" x2="858.0" y2="1638"/>
+<line class="grid" x1="518" y1="1408.0" x2="858" y2="1408.0"/>
+<text x="850.0" y="1658" font-size="10">1</text>
+<text x="484" y="1411.0" font-size="10">1</text>
+<line class="axis" x1="518" y1="1638" x2="858" y2="1638"/>
+<line class="axis" x1="518" y1="1638" x2="518" y2="1408"/>
+<line class="diag" x1="518" y1="1638" x2="858" y2="1408"/>
+<polyline class="line" points="519.6,1638.0 554.8,1638.0 660.8,1408.0 710.5,1523.0 740.7,1484.7 768.5,1484.7 821.0,1638.0 852.4,1417.6"/>
+<circle class="point" cx="519.6" cy="1638.0" r="10.0"/>
+<circle class="point" cx="554.8" cy="1638.0" r="4.0"/>
+<circle class="point" cx="660.8" cy="1408.0" r="4.0"/>
+<circle class="point" cx="710.5" cy="1523.0" r="4.4"/>
+<circle class="point" cx="740.7" cy="1484.7" r="4.7"/>
+<circle class="point" cx="768.5" cy="1484.7" r="4.7"/>
+<circle class="point" cx="821.0" cy="1638.0" r="4.0"/>
+<circle class="point" cx="852.4" cy="1417.6" r="7.9"/>
+<text x="590" y="1677" font-size="11">Mean predicted probability</text>
+<text x="472" y="1553" font-size="11" transform="rotate(-90 472 1553)">Observed event rate</text>
+</svg>

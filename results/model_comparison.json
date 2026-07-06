@@ -1,0 +1,112 @@
+[
+  {
+    "model": "MLP",
+    "run_dir": "results/baselines/torch_mlp",
+    "auroc": 0.9985168705969596,
+    "auprc": 0.9951528477687811,
+    "accuracy": 0.9836065573770492,
+    "sensitivity": 1.0,
+    "specificity": 0.978494623655914,
+    "f1": 0.9666666666666667,
+    "precision": 0.9354838709677419
+  },
+  {
+    "model": "Sklearn Logistic Regression",
+    "run_dir": "results/baselines/sklearn_logistic_regression",
+    "auroc": 0.996292176492399,
+    "auprc": 0.9878173726018553,
+    "accuracy": 0.9672131147540983,
+    "sensitivity": 0.9655172413793104,
+    "specificity": 0.967741935483871,
+    "f1": 0.9333333333333333,
+    "precision": 0.9032258064516129
+  },
+  {
+    "model": "Ensemble",
+    "run_dir": "results/ensemble",
+    "auroc": 0.9933259176863182,
+    "auprc": 0.9805506529059316,
+    "accuracy": 0.9426229508196722,
+    "sensitivity": 0.9655172413793104,
+    "specificity": 0.9354838709677419,
+    "f1": 0.888888888888889,
+    "precision": 0.8235294117647058
+  },
+  {
+    "model": "Learned Ensemble",
+    "run_dir": "results/ensemble_learned",
+    "auroc": 0.9933259176863182,
+    "auprc": 0.9807312357646062,
+    "accuracy": 0.9426229508196722,
+    "sensitivity": 0.9655172413793104,
+    "specificity": 0.9354838709677419,
+    "f1": 0.888888888888889,
+    "precision": 0.8235294117647058
+  },
+  {
+    "model": "HistGradientBoosting",
+    "run_dir": "results/baselines/hist_gradient_boosting",
+    "auroc": 0.9933259176863182,
+    "auprc": 0.978389596410586,
+    "accuracy": 0.9590163934426229,
+    "sensitivity": 0.9310344827586207,
+    "specificity": 0.967741935483871,
+    "f1": 0.9152542372881356,
+    "precision": 0.9
+  },
+  {
+    "model": "XGBoost",
+    "run_dir": "results/baselines/xgboost",
+    "auroc": 0.9911012235817576,
+    "auprc": 0.9728733735456891,
+    "accuracy": 0.9508196721311475,
+    "sensitivity": 0.9655172413793104,
+    "specificity": 0.946236559139785,
+    "f1": 0.9032258064516129,
+    "precision": 0.8484848484848485
+  },
+  {
+    "model": "Random Forest",
+    "run_dir": "results/baselines/random_forest",
+    "auroc": 0.9909158324063775,
+    "auprc": 0.9704962872271459,
+    "accuracy": 0.9508196721311475,
+    "sensitivity": 0.9310344827586207,
+    "specificity": 0.956989247311828,
+    "f1": 0.9,
+    "precision": 0.8709677419354839
+  },
+  {
+    "model": "FETA-Transformer",
+    "run_dir": "results/feta_transformer",
+    "auroc": 0.989618094178717,
+    "auprc": 0.9727902126609023,
+    "accuracy": 0.9344262295081968,
+    "sensitivity": 0.896551724137931,
+    "specificity": 0.946236559139785,
+    "f1": 0.8666666666666666,
+    "precision": 0.8387096774193549
+  },
+  {
+    "model": "Logistic Regression",
+    "run_dir": "results/baselines/torch_logistic_regression",
+    "auroc": 0.9888765294771968,
+    "auprc": 0.9660531639611926,
+    "accuracy": 0.9016393442622951,
+    "sensitivity": 0.9655172413793104,
+    "specificity": 0.8817204301075269,
+    "f1": 0.8235294117647058,
+    "precision": 0.717948717948718
+  },
+  {
+    "model": "PREG-Net",
+    "run_dir": "results/preg_net",
+    "auroc": 0.985539488320356,
+    "auprc": 0.956755138477886,
+    "accuracy": 0.9508196721311475,
+    "sensitivity": 0.9655172413793104,
+    "specificity": 0.946236559139785,
+    "f1": 0.9032258064516129,
+    "precision": 0.8484848484848485
+  }
+]

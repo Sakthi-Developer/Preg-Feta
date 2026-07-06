@@ -1,0 +1,46 @@
+model_a,model_b,auroc_a_minus_b,ci_lower,ci_upper,p_value_bootstrap,n_bootstrap,method_note
+PREG-Net,MLP,-0.01297738227660361,-0.0296907216494845,-0.002278261729513672,0.012,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+FETA-Transformer,MLP,-0.008898776418242549,-0.02315498464550427,-0.0006806540287208052,0.029,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+PREG-Net,Sklearn Logistic Regression,-0.010752688172043001,-0.02734711233728413,-0.00069379456327986,0.037,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+MLP,XGBoost,0.0074156470152020315,0.00038986354775838173,0.019379974505658426,0.043,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+MLP,HistGradientBoosting,0.005190952910641422,0.0,0.014450182742729977,0.066,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+Torch Logistic Regression,MLP,-0.009640341119762752,-0.0260423629679144,0.0,0.07,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+MLP,Random Forest,0.00760103819058211,-0.00037101127223431173,0.021021045328399622,0.101,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+PREG-Net,Learned Ensemble,-0.007786429365962189,-0.020917478265000768,0.0015197568389057087,0.133,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+FETA-Transformer,Sklearn Logistic Regression,-0.006674082313681939,-0.019753915994385467,0.0016500254975467363,0.164,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+Sklearn Logistic Regression,Random Forest,0.005376344086021501,-0.001318007440130267,0.016907468413301322,0.173,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+Learned Ensemble,MLP,-0.005190952910641422,-0.016315351810306473,0.001885902876001877,0.197,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+PREG-Net,Ensemble,-0.007786429365962189,-0.023360204867435147,0.0029777735562309835,0.2,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+PREG-Net,HistGradientBoosting,-0.007786429365962189,-0.02224793806210171,0.0038993264799716014,0.229,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+Torch Logistic Regression,Sklearn Logistic Regression,-0.0074156470152021425,-0.0218329414601797,0.0033370411568409697,0.247,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+Ensemble,MLP,-0.005190952910641422,-0.01636397058823529,0.0020844226338177806,0.252,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+Sklearn Logistic Regression,XGBoost,0.005190952910641422,-0.002907896673535479,0.017799042587001428,0.275,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+HistGradientBoosting,XGBoost,0.0022246941045606095,-0.0017366257685550556,0.008360032587093759,0.359,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+Ensemble,Sklearn Logistic Regression,-0.0029662588060808126,-0.011237011066993352,0.0016025641025640969,0.37,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+FETA-Transformer,Ensemble,-0.0037078235076011268,-0.013115916341722711,0.0034978941790086496,0.378,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+PREG-Net,Random Forest,-0.005376344086021501,-0.020145620748299356,0.0077981171860533145,0.43,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+Torch Logistic Regression,HistGradientBoosting,-0.00444938820912133,-0.017045454545454586,0.005109779324140207,0.442,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+PREG-Net,XGBoost,-0.005561735261401579,-0.021687036178107563,0.008507733054670397,0.462,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+Learned Ensemble,Sklearn Logistic Regression,-0.0029662588060808126,-0.012273331137461624,0.0038224805008210405,0.464,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+FETA-Transformer,Learned Ensemble,-0.0037078235076011268,-0.014880952380952328,0.005562264950473982,0.485,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+Learned Ensemble,Torch Logistic Regression,0.00444938820912133,-0.0076549165120592955,0.01972019102612025,0.529,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+Ensemble,Torch Logistic Regression,0.00444938820912133,-0.009269558769002595,0.020202109718238766,0.541,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+Sklearn Logistic Regression,HistGradientBoosting,0.0029662588060808126,-0.00601667509755742,0.012917982218452303,0.542,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+FETA-Transformer,HistGradientBoosting,-0.0037078235076011268,-0.018387751798028155,0.0068840579710145455,0.545,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+Random Forest,HistGradientBoosting,-0.002410085279940688,-0.011958995942092654,0.005527210884353706,0.586,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+PREG-Net,FETA-Transformer,-0.004078605858361062,-0.02083333333333337,0.010870730570387253,0.601,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+MLP,Sklearn Logistic Regression,0.0022246941045606095,-0.0023411790415467787,0.009502026765076152,0.607,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+PREG-Net,Torch Logistic Regression,-0.0033370411568408587,-0.016866705731191624,0.010917758823937326,0.651,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+Learned Ensemble,Random Forest,0.002410085279940688,-0.0074237453465063165,0.014237140920910607,0.661,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+Ensemble,Random Forest,0.002410085279940688,-0.006843190862657819,0.014237715994211777,0.679,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+Learned Ensemble,XGBoost,0.0022246941045606095,-0.009663008301674339,0.014423123781676471,0.718,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+Ensemble,XGBoost,0.0022246941045606095,-0.009547202797202775,0.017029660572939365,0.73,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+Torch Logistic Regression,XGBoost,-0.0022246941045607205,-0.016473417645648556,0.008961389034398493,0.73,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+Torch Logistic Regression,Random Forest,-0.002039302929180642,-0.01361998657977368,0.007228353297840895,0.743,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+FETA-Transformer,Random Forest,-0.0012977382276604388,-0.013255948007574223,0.010639720104676252,0.835,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+FETA-Transformer,XGBoost,-0.0014831294030405173,-0.01581361078991287,0.01041666666666663,0.849,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+FETA-Transformer,Torch Logistic Regression,0.0007415647015202032,-0.016027061855670155,0.017006802721088454,0.955,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+Random Forest,XGBoost,-0.00018539117538007854,-0.007798117186053316,0.00724750905797104,0.994,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+Ensemble,Learned Ensemble,0.0,-0.0063638591800357445,0.007753071308762871,1.0,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+Ensemble,HistGradientBoosting,0.0,-0.012480771675565813,0.012262861216143218,1.0,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
+Learned Ensemble,HistGradientBoosting,0.0,-0.012160562560815352,0.011695955295993992,1.0,2000,Bootstrap paired AUROC difference; documented alternative to DeLong.
