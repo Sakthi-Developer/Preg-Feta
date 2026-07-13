@@ -1,72 +1,64 @@
-# AVM Pregnancy Loss Prediction
+# FETA-PREGNet: First-Trimester Pregnancy-Loss Prediction
 
-This repo implements the two research models described in `Research.pdf`:
+Two complementary deep models for first-trimester pregnancy-loss prediction and a
+fusion of them, implementing the proposal in `Research.pdf`. All data is **synthetic**.
 
-- PREG-Net: a knowledge-guided graph attention model for clinical relationships.
-- FETA-Transformer: a temporal attention model for longitudinal ultrasound scans.
+- **FETA-Transformer** — temporal attention over the longitudinal ultrasound sequence
+  (the ultrasound specialist).
+- **PREG-Net** — a knowledge-guided Graph Attention Network over clinical variables,
+  pure PyTorch, run as a maternal-only clinical specialist (`--clinical-only`).
+- **HybridFusionPredictor** — intermediate cross-attention fusion of the two, with a
+  gated per-patient routing variant (`--gated`). This is the model of interest: it
+  recovers losses that neither single-modality specialist sees alone.
+
+## Layout
+
+```
+synthetic_generator_v2.py   synthetic data generator (single- / dual-etiology)
+models/                     feta_transformer, preg_net, hybrid_fusion, ensemble
+data/                       dataset.py, graph_builder.py + generated CSV cohorts
+utils/                      training.py (unified Trainer), metrics.py
+scripts/                    train_{feta,preg,hybrid,ensemble}, cross_validate,
+                            train_baselines, smoke_test, overfit_batch
+FETA_PREG.ipynb             self-contained notebook (older single-etiology pipeline)
+FETA_PREGNet_Manuscript.md  research paper draft
+```
 
 ## Setup
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install -r requirements.txt
+python -m venv .venv
+.venv/Scripts/python.exe -m pip install -r requirements.txt   # Windows
+# (on macOS/Linux: source .venv/bin/activate && pip install -r requirements.txt)
 ```
 
-## Generate Synthetic Data
+The environment lives in `.venv/` (git-ignored). On Windows call
+`.venv/Scripts/python.exe` directly — the system `python` does not have torch.
+
+## Quick start (run from the repo root)
 
 ```bash
-python synthetic_generator_v2.py --out data/generated --seed 42 --n-patients 800
+# 1. generate a dual-etiology cohort
+.venv/Scripts/python.exe synthetic_generator_v2.py --out data/generated_dual \
+    --etiology dual --seed 42 --n-patients 3000
+
+# 2. verify the model wiring
+.venv/Scripts/python.exe scripts/smoke_test.py
+
+# 3. train the two specialists and the hybrid fusion
+.venv/Scripts/python.exe scripts/train_feta.py   --patients-csv data/generated_dual/patients.csv --scans-csv data/generated_dual/scans.csv --out-dir results/feta   --epochs 60
+.venv/Scripts/python.exe scripts/train_preg.py   --patients-csv data/generated_dual/patients.csv --scans-csv data/generated_dual/scans.csv --out-dir results/preg   --clinical-only --epochs 60
+.venv/Scripts/python.exe scripts/train_hybrid.py --patients-csv data/generated_dual/patients.csv --scans-csv data/generated_dual/scans.csv --out-dir results/hybrid --clinical-only --gated --aux-weight 0.3 --epochs 80
+
+# 4. cross-validate for stable numbers
+.venv/Scripts/python.exe scripts/cross_validate.py --patients-csv data/generated_dual/patients.csv --scans-csv data/generated_dual/scans.csv --clinical-only --hybrid-gated --n-folds 5
 ```
 
-This writes:
+## Dual-etiology synthetic design
 
-- `data/generated/patients.csv`
-- `data/generated/scans.csv`
-- `data/generated/dataset_summary.json`
-
-## Smoke Test
-
-```bash
-python scripts/smoke_test.py
-```
-
-The smoke test runs forward passes through FETA-Transformer, PREG-Net, and the
-ensemble on synthetic tensors.
-
-## Evaluation
-
-```bash
-python scripts/compare_models.py --split test
-python scripts/cross_validate.py --models preg,feta,ensemble,learned_ensemble,torch_mlp,sklearn_logistic_regression,random_forest,hist_gradient_boosting,xgboost --n-folds 5 --epochs 80 --batch-size 32 --out-dir results/cross_validation --device cpu
-python scripts/statistical_analysis.py --iterations 2000 --out-dir results/statistical_analysis
-python scripts/export_explainability.py --out-dir results/explainability --device cpu
-python scripts/generate_paper_artifacts.py --out-dir results/paper_artifacts
-```
-
-The statistical analysis command writes bootstrap confidence intervals,
-McNemar tests, paired bootstrap AUROC comparisons, calibration metrics, and
-calibration curves.
-
-The explainability export writes FETA temporal attention summaries, post-hoc
-maternal-to-time maps, PREG-Net node and edge rankings, patient graph SVGs,
-trajectory overlays, and TP/TN/FP/FN case studies.
-
-The paper artifact command writes SVG figures plus CSV, Markdown, and LaTeX
-tables under `results/paper_artifacts`. Real ablation results are still pending;
-the generated ablation files are status artifacts only.
-
-## Manuscript Drafts
-
-Manuscript-facing drafts are under `results/manuscript`:
-
-- `synopsis.md`
-- `manuscript_draft.md`
-- `methods.md`
-- `limitations.md`
-- `alignment_checklist.md`
-
-## Current Priority
-
-The next research milestone is to implement and run the FETA/PREG-Net ablation
-experiments, then regenerate the paper artifacts with real ablation results.
+`--etiology dual` generates each loss as the logical OR of an independent **sonographic**
+channel (visible to FETA) and a **maternal** channel (visible to PREG-Net), so the two
+modalities carry genuinely complementary information and their fusion is testable. This
+is a deliberate modelling assumption for an in-silico benchmark, **not** a property of
+real pregnancies; any reported fusion gains must be described as such. See `CLAUDE.md`
+for the current tuning status and the full run reference.
