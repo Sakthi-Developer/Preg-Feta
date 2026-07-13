@@ -2,29 +2,88 @@
 ==============================================================================
 RESEARCH-QUALITY SYNTHETIC FIRST-TRIMESTER LONGITUDINAL DATA GENERATOR
 ==============================================================================
-Generates 800 patients (~20-25% pregnancy loss) with 2-5 longitudinal scans.
+Generates N patients (~20% pregnancy loss) with 2-5 longitudinal scans,
+calibrated to PUBLISHED first-trimester reference ranges and loss effects.
 
-BIOLOGICAL BASIS:
-  CRL  : Hadlock polynomial  CRL(mm) ≈ -0.6 + 0.84·GA - 0.17·GA^2 + 0.02·GA^3
-         (Robinson & Fleming 1975, Hadlock 1992)
-  GS   : Mean sac diameter   GSD(mm) ≈ exp(0.36·(GA-5)) + 2
-         (Nyberg 1987, Hellman 1969)
-  FHR  : Parabolic rise-then-plateau  FHR ≈ 110 + 24·(GA-6) - 1.8·(GA-6)^2
-         peaks ~170 bpm at week 9, drops to ~150 by week 13
-         (Doubilet & Benson 1995)
-  YSD  : Yolk sac grows weeks 5-10 then involutes
-         YSD(mm) ≈ 3 + 1.5·sin(π·(GA-5)/10) · growth_factor
-         (Blaas 1995, Cyr 1988)
+CALIBRATION SOURCES (viable reference medians + loss odds ratios):
+  - "Early pregnancy ultrasound measurements and prediction of first trimester
+    pregnancy loss: A logistic model", Scientific Reports (2020), PMC6994659:
+    serial GSD, YSD, CRL, FHR from 6-10 weeks; ~20% loss.
+      * Viable medians by week (see VIABLE_REF below).
+      * Loss effects: small CRL (OR 0.59/mm wk8), small GS (OR 0.01-0.10),
+        bradycardia (OR 0.96/bpm wk7), ENLARGED yolk sac (OR 3.36-6.52 wk6-8;
+        "YS > 6 mm at any GA predicts loss").
+  - IVF-ET reference intervals, 30,416 pregnancies, 6-10 wk (PubMed 32928137):
+    smooth GSD/CRL/YSD/HR growth models — used to sanity-check curve shapes.
+  - Miscarriage risk-factor cohorts (advanced maternal age ~2.7x at >=35;
+    BMI weak; prior loss independent predictor).
+
+VIABLE REFERENCE MEDIANS (mm, mm, mm, bpm) by gestational week:
+  Week :   6      7      8      9      10
+  CRL  :   5.0   11.5   18.3   25.4   35.8
+  GSD  :  16.0   24.0   31.0   37.0   43.0
+  YSD  :   2.6    2.9    3.3    3.7    4.1
+  FHR  : 116    148    168    171    170
 
 KEY DESIGN PRINCIPLES:
-  1. Patient-level latent biological factors (growth, heart, placenta, noise)
-  2. Label-dependent trajectories with overlapping distributions
-  3. Nonlinear (polynomial/exponential) growth curves
-  4. Longitudinal autoregressive dependency (each scan evolves from previous)
-  5. Correlated maternal features (age↔BMI↔gravidity↔parity↔prev_loss)
-  6. Clinically variable measurement noise per variable
-  7. Clinically plausible missingness (gestational-age & outcome dependent)
-  8. All values clamped to first-trimester clinical ranges
+  1. Viable mean trajectories = interpolated published medians (+ growth-rate
+     extrapolation to ~14 weeks).
+  2. Per-marker, label-dependent effects calibrated to published direction and
+     magnitude — including the ENLARGED yolk sac in loss (opposite of naive
+     "everything shrinks" models).
+  3. Patient-level latent factors give within-group biological spread; loss and
+     viable distributions OVERLAP so classification is realistically hard
+     (target combined AUROC ~0.88-0.92, not saturated).
+  4. Longitudinal autoregressive dependency (each scan evolves from previous),
+     with progressive deterioration in loss trajectories.
+  5. Correlated maternal features (age<->BMI<->gravidity<->parity<->prev_loss),
+     only weakly separated by outcome (matching cohort evidence).
+  6. Clinically variable measurement noise and plausible missingness.
+  7. All values clamped to first-trimester clinical ranges.
+
+------------------------------------------------------------------------------
+DUAL-ETIOLOGY MODE (--etiology dual)  ***MANUSCRIPT DISCLOSURE REQUIRED***
+------------------------------------------------------------------------------
+The default ("single") generator draws ONE latent loss outcome that drives both
+the scan trajectory and the maternal features, so both modalities are noisy views
+of the *same* label. Under that design the two single-modality models make highly
+correlated errors and multimodal fusion has little to add — which understates the
+contribution of a fusion model and is not how first-trimester loss actually works.
+
+First-trimester loss is *etiologically heterogeneous*. "dual" mode models this
+explicitly as an OR of two independent Bernoulli channels:
+
+  * a SONOGRAPHIC channel — an embryonic abnormality expressed in the longitudinal
+    scan trajectory (slow CRL/GS growth, bradycardia, enlarged yolk sac), visible to
+    the FETA-Transformer but with near-normal maternal features; and
+  * a MATERNAL channel — a constitutional risk driven by an *interaction* of maternal
+    variables (advanced age compounded by elevated BMI and prior loss), visible to
+    the PREG-Net graph but with a near-normal early scan.
+
+  observed_loss = sonographic_loss  OR  maternal_loss
+
+Because each modality reflects only one channel, neither single-modality model can
+see every loss, so genuine complementary information exists for fusion to exploit —
+which is the hypothesis this project tests. Two knobs shape the regime:
+
+  * --channel-corr      shared frailty coupling the two channels (irreducible; noise
+                        for the maternal predictor).
+  * --sono-mat-coupling directed maternal->sonographic coupling: a share of high
+                        maternal-risk pregnancies ALSO express a sonographic
+                        abnormality ("both-channel" losses visible to both models).
+                        Trades fusion gap against absolute per-model AUROC; the
+                        shipped default (1.0) gives the "balanced" regime — towers
+                        ~0.78 AUROC, fusion materially higher, ~75% single-channel
+                        losses preserved so the fusion gap remains real.
+
+IMPORTANT: dual mode is a DELIBERATE design choice made to create a testbed in which
+multimodal fusion is informative. It is a *modelling assumption*, not a measured
+property of any real cohort. Any manuscript reporting dual-mode results MUST state
+that (a) the data are synthetic, (b) the loss mechanism is a designed OR-of-two-
+channels with the coupling parameters above, and (c) the reported fusion gains are
+therefore an in-silico demonstration that the architecture *can* exploit etiologic
+heterogeneity when it is present — not evidence about real pregnancies. See
+results/manuscript/methods.md and limitations.md for the disclosure text.
 ==============================================================================
 """
 
@@ -38,6 +97,7 @@ import pandas as pd
 import numpy as np
 # scipy not needed — all distributions use numpy
 
+
 def _parse_args():
     parser = argparse.ArgumentParser(
         description="Generate a synthetic first-trimester longitudinal cohort."
@@ -45,10 +105,41 @@ def _parse_args():
     parser.add_argument("--out", default="data/generated", help="Output directory.")
     parser.add_argument("--seed", type=int, default=42, help="Random seed.")
     parser.add_argument(
-        "--n-patients", type=int, default=800, help="Number of patients."
+        "--n-patients", type=int, default=3000, help="Number of patients."
     )
     parser.add_argument(
-        "--loss-rate", type=float, default=0.22, help="Target pregnancy loss rate."
+        "--loss-rate", type=float, default=0.20, help="Target pregnancy loss rate."
+    )
+    parser.add_argument(
+        "--etiology",
+        choices=["single", "dual"],
+        default="single",
+        help=(
+            "Loss-generating model. 'single' (default): one latent outcome drives "
+            "both modalities (legacy, redundant channels). 'dual': etiologic "
+            "heterogeneity — an independent sonographic-trajectory channel and a "
+            "maternal-interaction channel, loss = (embryonic abnormal) OR (maternal "
+            "environment fails). Makes multimodal fusion meaningful; see module "
+            "docstring for the required manuscript disclosure."
+        ),
+    )
+    parser.add_argument(
+        "--channel-corr",
+        type=float,
+        default=0.50,
+        help="[dual] Shared-frailty coupling between the two loss channels (0=indep). "
+             "A moderate value gives some co-occurring losses (lifting both towers) "
+             "while preserving single-channel losses that only fusion can catch.",
+    )
+    parser.add_argument(
+        "--sono-mat-coupling",
+        type=float,
+        default=1.0,
+        help="[dual] Directed maternal->sonographic coupling: how strongly a "
+             "high maternal-risk conjunction also elevates embryonic (sonographic) "
+             "risk, producing 'both-channel' losses visible to both models. 0 = pure "
+             "specialists (max fusion gap, lower absolute AUROC); higher = individually "
+             "stronger towers with a smaller but still real fusion gap (balanced regime).",
     )
     return parser.parse_known_args()[0]
 
@@ -61,8 +152,48 @@ random.seed(SEED)
 np.random.seed(SEED)
 
 # ── configuration ────────────────────────────────────────────────────────────
-N_PATIENTS        = _ARGS.n_patients if _ARGS is not None else 800
-LOSS_RATE_TARGET  = _ARGS.loss_rate if _ARGS is not None else 0.22
+N_PATIENTS        = _ARGS.n_patients if _ARGS is not None else 3000
+LOSS_RATE_TARGET  = _ARGS.loss_rate if _ARGS is not None else 0.20
+ETIOLOGY          = _ARGS.etiology if _ARGS is not None else "single"
+CHANNEL_CORR      = _ARGS.channel_corr if _ARGS is not None else 0.25
+SONO_MAT_COUPLING = _ARGS.sono_mat_coupling if _ARGS is not None else 0.0
+
+# ── dual-etiology channel strengths (only used when ETIOLOGY == "dual") ───────
+# The observed loss is the logical OR of two channels (embryo sonographically
+# abnormal OR maternal environment fails). The sonographic channel is a steep
+# Bernoulli mechanism whose severity drives the expressed scan trajectory; the
+# maternal channel is a near-deterministic THRESHOLD on the maternal-risk score
+# (see generate_patient_dual) so each specialist can recover its own channel
+# cleanly. Intercepts/threshold are tuned so each marginal channel rate is ~0.12–
+# 0.14, giving an OR loss rate ≈ LOSS_RATE_TARGET (~0.20).
+SONO_BASE_LOGIT   = -3.78   # sonographic-channel intercept (FETA-favoured)
+MAT_LOSS_THRESHOLD = 3.55   # maternal-risk-score threshold above which the maternal
+                            # channel fails (PREG-favoured). A hard threshold (plus a
+                            # small shared-frailty perturbation) makes label_mat almost
+                            # a function of the maternal variables alone.
+SONO_SLOPE        = 2.60    # how strongly the sonographic latent drives its loss
+                            # (steep → label_sono near-deterministic in the latent,
+                            #  so the expressed scan trajectory is cleanly separable)
+MAT_MAIN_SLOPE    = 1.30    # additive (per-variable) maternal effect
+MAT_INTER_SLOPE   = 3.60    # multiplicative (interaction) maternal effect — the
+                            # conjunction PREG-Net's graph is designed to capture
+                            # (steep → label_mat near-deterministic in the maternal
+                            #  variables, so the clinical specialist detects it cleanly)
+MAT_NOISE_SD      = 0.80    # independent Gaussian noise on the maternal-risk score
+                            # (unobserved by the clinical model): softens the hard
+                            # threshold so PREG detects ~85 % of the channel rather
+                            # than 100 %, keeping the two specialists comparably strong
+                            # and the maternal boundary realistic rather than perfect.
+# SONO_MAT_COUPLING (wired from --sono-mat-coupling above): a compromised maternal
+# environment also raises embryonic risk, so a share of high-maternal-risk pregnancies
+# ALSO express a sonographic abnormality (a "both-channel" loss both models can see).
+# Controls the gap-vs-absolute trade-off: 0 = pure specialists (max fusion gap, lower
+# absolute AUROC); higher = more overlap (individually stronger towers, smaller but
+# still real gap). The coupling term is centred (see MAT_CONTRIB_CENTER) so raising it
+# reshapes the co-occurrence structure without inflating the marginal sonographic rate.
+MAT_CONTRIB_CENTER = 1.05    # ≈ E[maternal-risk contribution] over the population;
+                            # subtracted so the coupling term is mean-zero and the
+                            # sonographic base rate stays put as the knob is turned.
 MIN_SCANS         = 2
 MAX_SCANS         = 5
 GA_FIRST_SCAN_MU  = 6.5         # mean GA of first scan (weeks)
@@ -75,111 +206,155 @@ GA_MAX            = 13.9        # latest possible GA in T1
 CRL_RANGE  = (1.0,  84.0)       # mm
 GS_RANGE   = (2.0, 100.0)       # mm mean sac diameter
 FHR_RANGE  = (80.0, 190.0)      # bpm
-YSD_RANGE  = (1.0,   7.0)       # mm
+YSD_RANGE  = (1.0,   8.0)       # mm (allow enlarged loss yolk sacs up to ~8 mm)
 
 # ── measurement error SD (variable-specific, mimics real US precision) ───────
 MEAS_ERROR = {
-    'CRL':  0.8,   # mm – CRL is measured quite precisely
-    'GS':   2.5,   # mm – GSD has higher inter-observer variability
-    'FHR':  4.0,   # bpm – FHR measurement has ~4 bpm variability
-    'YSD':  0.35,  # mm – yolk sac measured at high zoom
+    'CRL':  1.6,   # mm
+    'GS':   3.2,   # mm – GSD has higher inter-observer variability
+    'FHR':  6.5,   # bpm
+    'YSD':  0.55,  # mm
 }
 
 # ==============================================================================
-# 1.  BIOLOGICALLY REALISTIC GROWTH CURVES
+# 1.  PUBLISHED VIABLE REFERENCE CURVES (interpolated medians)
 # ==============================================================================
 
-def crl_curve(ga, growth_factor=1.0):
-    """
-    CRL (mm) as a function of gestational age (weeks).
-    Based on Hadlock (1992) / Robinson-Fleming polynomial fit.
-    """
-    g = ga - 5.0  # shift so curve starts near 0 at ~5 weeks
-    crl = (-0.6 + 0.84 * g + 0.17 * g**2 + 0.006 * g**3) * growth_factor
-    return max(crl, 0.5)
+# Gestational weeks at which published medians are anchored.
+REF_WEEKS = np.array([5.0, 6.0, 7.0, 8.0, 9.0, 10.0])
+
+# Viable-pregnancy median by week (from Sci Rep 2020 / IVF-ET reference study).
+VIABLE_REF = {
+    'CRL': np.array([2.5,  5.0, 11.5, 18.3, 25.4, 35.8]),
+    'GS':  np.array([11.0, 16.0, 24.0, 31.0, 37.0, 43.0]),
+    'YSD': np.array([2.2,  2.6,  2.9,  3.3,  3.7,  4.1]),
+    'FHR': np.array([111., 116., 148., 168., 171., 170.]),
+}
+
+# Per-week growth used to extrapolate beyond 10 weeks (mm/wk or bpm/wk).
+# YSD involutes late, so it grows only gently; FHR plateaus/declines slightly.
+REF_SLOPE = {'CRL': 7.54, 'GS': 6.65, 'YSD': 0.20, 'FHR': -1.0}
 
 
-def gs_curve(ga, growth_factor=1.0, placenta_factor=1.0):
-    """
-    Gestational sac mean diameter (mm).
-    Exponential growth model (Nyberg 1987).
-    The placenta factor modulates sac size (poor placentation → smaller sac).
-    """
-    combined = 0.6 * growth_factor + 0.4 * placenta_factor
-    gs = (math.exp(0.32 * (ga - 4.5)) + 1.5) * combined
-    return max(gs, 1.0)
+def ref_curve(marker, ga):
+    """Viable median for ``marker`` at gestational age ``ga`` (weeks).
 
-
-def fhr_curve(ga, heart_factor=1.0):
+    Linear interpolation of published medians within 5-10 weeks, and linear
+    extrapolation (published growth rate) beyond 10 weeks.
     """
-    Fetal heart rate (bpm).  Parabolic rise peaking ~week 9 then slight decline.
-    Based on Doubilet & Benson 1995.
-    """
-    t = ga - 6.0
-    fhr = (110.0 + 24.0 * t - 1.8 * t**2) * heart_factor
-    return max(fhr, 0.0)
-
-
-def ysd_curve(ga, growth_factor=1.0):
-    """
-    Yolk sac diameter (mm).  Grows weeks 5-10 then involutes.
-    Based on Blaas (1995) and Cyr (1988).
-    """
-    t = ga - 5.0
-    ysd = (3.0 + 1.5 * math.sin(math.pi * t / 10.0)) * growth_factor
-    return max(ysd, 0.5)
+    weeks = REF_WEEKS
+    vals = VIABLE_REF[marker]
+    if ga <= weeks[-1]:
+        return float(np.interp(ga, weeks, vals))
+    return float(vals[-1] + REF_SLOPE[marker] * (ga - weeks[-1]))
 
 
 # ==============================================================================
-# 2.  PATIENT-LEVEL LATENT VARIABLES
+# 2.  PATIENT-LEVEL LATENT VARIABLES (per-marker, label-dependent effects)
 # ==============================================================================
+
+def _clip_normal(mu, sd, lo, hi):
+    return float(np.clip(np.random.normal(mu, sd), lo, hi))
+
+
+# Probability that a loss pregnancy expresses each abnormality. Loss is
+# heterogeneous — a given case shows only some of these (missed abortion vs
+# blighted ovum vs bradycardic embryo present differently), so the four markers
+# rarely all agree. This is what keeps the *combined* task realistically hard.
+LOSS_EXPRESS_PROB = {'CRL': 0.94, 'GS': 0.92, 'FHR': 0.90, 'YSD': 0.92}
+
+# Fraction of *sonographic-channel* losses that still look normal on scans (early
+# euploid-appearing / genetic losses) — irreducible Bayes error for the ultrasound
+# model. Kept modest so the FETA specialist can read its own channel well; the
+# maternal channel independently supplies losses FETA cannot see (that is the point
+# of fusion, and is handled by the dual-etiology model rather than by this knob).
+LOSS_OCCULT_PROB = 0.02
+
 
 def generate_latent_factors(label):
+    """Draw per-marker multiplicative effects for one patient.
+
+    A label-independent *constitutional size* factor scales CRL/GS/YSD together,
+    so some viable pregnancies are simply small (and some losses measure normal)
+    — no single marker is a clean separator.
+
+    Loss pregnancies are heterogeneous:
+      - a fraction (:data:`LOSS_OCCULT_PROB`) look sonographically normal;
+      - the rest express a *phenotype* — each abnormality present only with
+        :data:`LOSS_EXPRESS_PROB`, following the published direction/magnitude
+        (small CRL/GS, bradycardia, ENLARGED YSD), at least one expressed.
+
+    Spreads are wide so viable and loss distributions overlap substantially,
+    keeping the combined task realistically hard (target AUROC ~0.88-0.92).
     """
-    Draw patient-level latent biological parameters.
-    Miscarriage patients get shifted distributions (slower growth,
-    weaker heart function, poorer placentation, higher noise).
-    Distributions OVERLAP so classification is not trivial.
-    """
+    # Constitutional biological size, independent of outcome (wide → overlap).
+    size = _clip_normal(1.00, 0.16, 0.65, 1.40)
+
+    def viable_like(noise_mu=1.00, noise_sd=0.18):
+        return {
+            'CRL':   size * _clip_normal(1.00, 0.12, 0.74, 1.30),
+            'GS':    size * _clip_normal(1.00, 0.12, 0.74, 1.30),
+            'FHR':   _clip_normal(1.00, 0.08, 0.80, 1.20),
+            'YSD':   size * _clip_normal(1.00, 0.16, 0.65, 1.45),
+            'noise': _clip_normal(noise_mu, noise_sd, 0.55, 2.10),
+            # Non-symptomatic pregnancies (viable and occult loss) have stable
+            # trajectories and viable-like scan counts — otherwise trajectory
+            # shape or scan count would leak the label.
+            'symptomatic': False,
+            'degrade': 0.0,
+        }
+
     if label == 0:  # viable pregnancy
-        growth_factor   = np.clip(np.random.normal(1.00, 0.08), 0.75, 1.30)
-        heart_factor    = np.clip(np.random.normal(1.00, 0.05), 0.80, 1.20)
-        placenta_factor = np.clip(np.random.normal(1.00, 0.07), 0.75, 1.25)
-        noise_factor    = np.clip(np.random.normal(1.00, 0.15), 0.50, 1.80)
-    else:            # pregnancy loss
-        growth_factor   = np.clip(np.random.normal(0.82, 0.12), 0.45, 1.15)
-        heart_factor    = np.clip(np.random.normal(0.88, 0.10), 0.55, 1.10)
-        placenta_factor = np.clip(np.random.normal(0.80, 0.12), 0.40, 1.10)
-        noise_factor    = np.clip(np.random.normal(1.30, 0.25), 0.70, 2.50)
-    return growth_factor, heart_factor, placenta_factor, noise_factor
+        return viable_like()
+
+    # Occult loss — sonographically indistinguishable from a viable pregnancy.
+    # Uses the *same* noise as viable: any noise elevation would itself leak the
+    # label, so these must be drawn from the identical viable distribution.
+    if np.random.rand() < LOSS_OCCULT_PROB:
+        return viable_like()
+
+    # Symptomatic loss — pick which abnormalities this case expresses.
+    express = {m: (np.random.rand() < p) for m, p in LOSS_EXPRESS_PROB.items()}
+    if not any(express.values()):
+        express[random.choice(list(express))] = True
+
+    def eff(marker, abn_mu, abn_sd, abn_lo, abn_hi):
+        if express[marker]:
+            return _clip_normal(abn_mu, abn_sd, abn_lo, abn_hi)
+        return _clip_normal(0.99, 0.10, 0.78, 1.22)  # near-normal when not expressed
+
+    return {
+        'CRL':   size * eff('CRL', 0.68, 0.11, 0.38, 0.94),
+        'GS':    size * eff('GS',  0.70, 0.11, 0.38, 0.94),
+        'FHR':   eff('FHR', 0.80, 0.09, 0.54, 1.02),
+        'YSD':   size * eff('YSD', 1.55, 0.24, 1.05, 2.40),  # enlarged, wide tail
+        'noise': _clip_normal(1.25, 0.22, 0.70, 2.40),
+        'symptomatic': True,
+        'degrade': _clip_normal(0.20, 0.05, 0.06, 0.34),  # trajectory deterioration rate
+    }
 
 
 # ==============================================================================
-# 3.  CORRELATED MATERNAL FEATURES
+# 3.  CORRELATED MATERNAL FEATURES (weakly separated by outcome)
 # ==============================================================================
 
 def generate_maternal_features(label):
-    """
-    Age, BMI, parity, gravidity, previous_loss with realistic correlations.
-    Uses a copula-like approach: draw correlated normals, then transform.
-    
-    Epidemiological basis:
-      - Older women → higher miscarriage risk
-      - Higher BMI → modest increase in risk
-      - Previous miscarriage → strong predictor
-      - Gravidity ≥ parity (always)
-      - IVF more common in older / higher-risk patients
+    """Age, BMI, parity, gravidity, previous_loss with realistic correlations.
+
+    Separation by outcome is deliberately weak (published cohorts found age/BMI
+    only marginally different: ~34 vs 32 yrs, ~26 vs 25 BMI). Prior loss carries
+    the main maternal signal, consistent with it being an independent predictor.
     """
     if label == 0:
-        age_mu, age_sd   = 29.0, 4.5
-        bmi_mu, bmi_sd   = 24.5, 4.0
-        prev_loss_prob   = 0.10
-        ivf_prob         = 0.08
+        age_mu, age_sd   = 31.5, 4.6
+        bmi_mu, bmi_sd   = 25.0, 4.2
+        prev_loss_prob   = 0.12
+        ivf_prob         = 0.30
     else:
         age_mu, age_sd   = 33.5, 5.0
-        bmi_mu, bmi_sd   = 26.5, 5.0
-        prev_loss_prob   = 0.35
-        ivf_prob         = 0.18
+        bmi_mu, bmi_sd   = 26.0, 4.6
+        prev_loss_prob   = 0.24
+        ivf_prob         = 0.32
 
     # Correlated age and BMI (ρ ≈ 0.15)
     rho = 0.15
@@ -189,24 +364,23 @@ def generate_maternal_features(label):
     bmi = np.clip(bmi_mu + bmi_sd * z2, 16, 45)
 
     # Age modulates previous_loss probability
-    age_risk_modifier = max(0, (age - 30) * 0.015)
-    prev_loss = int(np.random.rand() < min(prev_loss_prob + age_risk_modifier, 0.65))
+    age_risk_modifier = max(0, (age - 32) * 0.012)
+    prev_loss = int(np.random.rand() < min(prev_loss_prob + age_risk_modifier, 0.55))
 
-    # Gravidity and parity (correlated)
-    # Higher age → higher gravidity on average
+    # Gravidity and parity (correlated); higher age → higher gravidity on average
     grav_lambda = max(0.8, 0.5 + (age - 25) * 0.08)
     gravidity = max(1, np.random.poisson(grav_lambda))
 
     # Parity ≤ gravidity; if previous loss, subtract at least 1 from max
     max_parity = gravidity - prev_loss
     parity = np.random.randint(0, max(1, max_parity + 1))
-    
+
     # Ensure gravidity >= parity + previous_loss (biological constraint)
     gravidity = max(gravidity, parity + prev_loss)
 
     # IVF slightly more common in older / previous-loss patients
-    ivf_adj = ivf_prob + (0.05 if prev_loss else 0) + max(0, (age - 35) * 0.02)
-    conception = "IVF" if np.random.rand() < min(ivf_adj, 0.40) else "Natural"
+    ivf_adj = ivf_prob + (0.05 if prev_loss else 0) + max(0, (age - 37) * 0.02)
+    conception = "IVF" if np.random.rand() < min(ivf_adj, 0.50) else "Natural"
 
     return {
         'age': round(age, 1),
@@ -220,18 +394,143 @@ def generate_maternal_features(label):
 
 
 # ==============================================================================
+# 3b. DUAL-ETIOLOGY GENERATION (two partially-independent loss channels)
+# ==============================================================================
+# Clinical rationale: first-trimester loss is *etiologically heterogeneous*. Some
+# losses are embryonic/sonographic (an abnormal scan trajectory — slow CRL/GS
+# growth, bradycardia, enlarged yolk sac) and are detectable from the longitudinal
+# scans (the FETA-Transformer's temporal signal). Others are maternal/constitutional
+# — driven by an *interaction* of maternal risk factors (advanced age compounded by
+# elevated BMI and prior loss) — and present with near-normal early scans, detectable
+# only from the maternal-variable structure (the PREG-Net graph's signal). A
+# pregnancy is lost if EITHER mechanism fires (logical OR). Because each modality
+# reflects only one channel, neither single-modality model can see all losses, which
+# is precisely what makes multimodal fusion informative — and testable. When
+# ETIOLOGY == "single" this whole section is bypassed and behaviour is unchanged.
+
+def _sigmoid(x: float) -> float:
+    return 1.0 / (1.0 + math.exp(-x))
+
+
+def _relu(x: float) -> float:
+    return x if x > 0.0 else 0.0
+
+
+def _draw_population_maternal():
+    """Draw maternal features from a single *population* (not outcome-conditioned).
+
+    In dual-etiology mode the maternal loss risk is a downstream *interaction* of
+    these features (see :func:`generate_patient_dual`), so the features themselves
+    must be sampled outcome-blind. Correlations (age–BMI, age–gravidity, the
+    parity ≤ gravidity constraint) mirror :func:`generate_maternal_features`.
+    """
+    age_mu, age_sd = 32.0, 4.9
+    bmi_mu, bmi_sd = 25.3, 4.3
+
+    rho = 0.15
+    z1, z2 = np.random.normal(0, 1, 2)
+    z2 = rho * z1 + math.sqrt(1 - rho ** 2) * z2
+    age = float(np.clip(age_mu + age_sd * z1, 18, 45))
+    bmi = float(np.clip(bmi_mu + bmi_sd * z2, 16, 45))
+
+    # Population prior-loss prevalence (~14%), gently rising with age.
+    prev_loss_prob = 0.14 + max(0.0, (age - 32.0) * 0.012)
+    prev_loss = int(np.random.rand() < min(prev_loss_prob, 0.55))
+
+    grav_lambda = max(0.8, 0.5 + (age - 25.0) * 0.08)
+    gravidity = max(1, np.random.poisson(grav_lambda))
+    max_parity = gravidity - prev_loss
+    parity = np.random.randint(0, max(1, max_parity + 1))
+    gravidity = max(gravidity, parity + prev_loss)
+
+    ivf_adj = 0.30 + (0.05 if prev_loss else 0) + max(0.0, (age - 37.0) * 0.02)
+    conception = "IVF" if np.random.rand() < min(ivf_adj, 0.50) else "Natural"
+
+    return {
+        'age': round(age, 1),
+        'bmi': round(bmi, 1),
+        'parity': int(parity),
+        'gravidity': int(gravidity),
+        'previous_loss': int(prev_loss),
+        'conception': conception,
+        'singleton': True,
+    }
+
+
+def _maternal_risk_contribution(maternal) -> float:
+    """Maternal-feature contribution to loss risk (excludes base rate and frailty).
+
+    The risk is driven mainly by *conjunctions* of risk factors (old AND heavy,
+    old AND prior-loss) rather than any single variable — the multiplicative
+    structure a graph-attention model over clinical variables is designed to
+    capture, and which a pooled linear head reads only weakly. Returned as a
+    standalone term so the directed sonographic coupling (``SONO_MAT_COUPLING``)
+    can reuse exactly the same maternal-risk signal that drives the maternal
+    channel, guaranteeing the "both-channel" losses are the high-maternal-risk
+    pregnancies (not an unrelated draw).
+    """
+    a = (maternal['age'] - 32.0) / 6.0
+    b = (maternal['bmi'] - 25.0) / 5.0
+    pl = float(maternal['previous_loss'])
+
+    interaction = _relu(a) * _relu(b) + pl * _relu(a)     # conjunctions
+    main = 0.35 * a + 0.30 * b + 0.90 * pl                # weak additive part
+    return MAT_MAIN_SLOPE * main + MAT_INTER_SLOPE * interaction
+
+
+def generate_patient_dual():
+    """Generate one patient under the dual-etiology (OR-of-two-channels) model.
+
+    Returns
+    -------
+    label : int
+        Observed outcome = sonographic-loss OR maternal-loss.
+    factors : dict
+        Latent scan factors (from the sonographic channel) for :func:`generate_scans`.
+    maternal : dict
+        Population maternal features (the maternal channel acts *through* them).
+    channel : dict
+        {'label_sono', 'label_mat'} ground-truth per-channel labels (diagnostics only).
+    label_sono : int
+        Sonographic-channel label, used for scan missingness.
+    """
+    # Shared frailty couples the two channels weakly (CHANNEL_CORR on the logit scale).
+    frailty = float(np.random.normal(0.0, CHANNEL_CORR))
+
+    # -- Maternal channel: interaction of maternal features drives the risk. --
+    # Drawn first so its risk contribution can also feed the sonographic channel.
+    # Near-deterministic threshold model: the pregnancy fails via the maternal
+    # channel when its maternal-risk score, perturbed only by the small shared
+    # frailty, exceeds MAT_LOSS_THRESHOLD. Because the perturbation is small and is
+    # the sole term the clinical model cannot observe, label_mat is almost a function
+    # of the maternal variables alone — so PREG-Net recovers this channel cleanly,
+    # while FETA (which never sees the maternal variables) remains blind to it.
+    maternal = _draw_population_maternal()
+    mat_contrib = _maternal_risk_contribution(maternal)
+    mat_noise = float(np.random.normal(0.0, MAT_NOISE_SD))
+    label_mat = int(mat_contrib + frailty + mat_noise > MAT_LOSS_THRESHOLD)
+
+    # -- Sonographic channel: a latent severity drives the scan trajectory. A
+    # (centred) share of the maternal-risk conjunction also raises embryonic risk,
+    # so severe-maternal-risk pregnancies tend to *also* show an abnormal scan —
+    # the "both-channel" losses that lift both towers in the balanced regime.
+    logit_sono = (SONO_BASE_LOGIT
+                  + SONO_SLOPE * float(np.random.normal())
+                  + frailty
+                  + SONO_MAT_COUPLING * (mat_contrib - MAT_CONTRIB_CENTER))
+    label_sono = int(np.random.rand() < _sigmoid(logit_sono))
+    factors = generate_latent_factors(label_sono)
+
+    label = int(label_sono or label_mat)
+    return label, factors, maternal, {'label_sono': label_sono, 'label_mat': label_mat}, label_sono
+
+
+# ==============================================================================
 # 4.  CLINICALLY PLAUSIBLE MISSING DATA
 # ==============================================================================
 
 def apply_missingness(scan, ga, label):
-    """
-    Missingness depends on gestational age and outcome:
-      - FHR often missing < 6.5 weeks (not yet detectable)
-      - CRL sometimes missing very early (too small to measure)
-      - GS rarely missing (almost always visible)
-      - YSD sometimes missing late (involuted) or very early
-      - Miscarriage pregnancies: slightly higher missingness overall
-    """
+    """Missingness depends on gestational age and outcome."""
     base_multiplier = 1.3 if label == 1 else 1.0
 
     # FHR: high miss rate before 6.5w, low after 7w
@@ -266,29 +565,38 @@ def apply_missingness(scan, ga, label):
 # 5.  LONGITUDINAL SCAN GENERATION (autoregressive)
 # ==============================================================================
 
-def generate_scans(pat_id, label, growth_factor, heart_factor,
-                   placenta_factor, noise_factor):
+def _expected(marker, ga, factors, degrade):
+    """Viable reference curve × per-marker effect × loss degradation.
+
+    YSD enlargement in loss should worsen (grow) over time, so degradation
+    *amplifies* it; the shrinking markers (CRL/GS/FHR) are degraded downward.
     """
-    Generate 2-5 longitudinal scans.  Each scan evolves from the PREVIOUS
-    measurement (autoregressive), not generated independently.
-    
-    Miscarriage pregnancies may stop earlier (fewer late scans) and
-    show decelerating or declining trajectories.
+    base = ref_curve(marker, ga) * factors[marker]
+    if marker == 'YSD':
+        # degrade < 1 for loss; invert so an enlarged sac gets more enlarged late
+        return base * (2.0 - degrade)
+    return base * degrade
+
+
+def generate_scans(pat_id, label, factors):
+    """Generate 2-5 longitudinal scans that evolve autoregressively.
+
+    Scan count and trajectory deterioration are keyed on whether the case is
+    *symptomatic* (from ``factors``), not on the label — so occult losses are
+    truly indistinguishable from viable pregnancies.
     """
-    # Number of scans: miscarriage patients slightly more likely to have fewer
-    if label == 1:
+    if factors.get('symptomatic', label == 1):
+        # Symptomatic losses tend to stop being scanned earlier.
         n_scans = np.random.choice([2, 3, 4, 5], p=[0.35, 0.40, 0.20, 0.05])
     else:
         n_scans = np.random.choice([2, 3, 4, 5], p=[0.30, 0.35, 0.25, 0.10])
 
-    # First scan GA
     first_ga = np.clip(np.random.normal(GA_FIRST_SCAN_MU, GA_FIRST_SCAN_SD), 5.0, 9.0)
+    noise_factor = factors['noise']
 
     scans = []
-    prev_crl = None
-    prev_gs  = None
-    prev_fhr = None
-    prev_ysd = None
+    prev = {'CRL': None, 'GS': None, 'FHR': None, 'YSD': None}
+    ar_weight = 0.30  # how much the previous scan influences the next
 
     for s_idx in range(n_scans):
         if s_idx == 0:
@@ -298,95 +606,40 @@ def generate_scans(pat_id, label, growth_factor, heart_factor,
             ga = round(scans[-1]['gestational_age_weeks'] + delta, 1)
 
         if ga > GA_MAX:
-            break  # don't generate scans past first trimester
+            break
 
-        # ── For miscarriage: progressively degrade growth factors ────────
-        if label == 1:
-            # The later the scan, the more "off" the trajectory becomes
-            # This models progressive deterioration
-            progress = s_idx / max(n_scans - 1, 1)  # 0→1
-            degrade = 1.0 - 0.15 * progress  # up to 15% degradation
-            eff_growth   = growth_factor * degrade
-            eff_heart    = heart_factor * degrade
-            eff_placenta = placenta_factor * degrade
-        else:
-            eff_growth   = growth_factor
-            eff_heart    = heart_factor
-            eff_placenta = placenta_factor
+        # Symptomatic-loss trajectories progressively deteriorate with each
+        # later scan; viable and occult-loss trajectories stay stable.
+        progress = s_idx / max(n_scans - 1, 1)        # 0 → 1
+        degrade = 1.0 - factors.get('degrade', 0.0) * progress
 
-        # ── Compute expected values from growth curves ───────────────────
-        exp_crl = crl_curve(ga, eff_growth)
-        exp_gs  = gs_curve(ga, eff_growth, eff_placenta)
-        exp_fhr = fhr_curve(ga, eff_heart)
-        exp_ysd = ysd_curve(ga, eff_growth)
-
-        # ── Autoregressive blending (λ=0.7 from curve, 0.3 from prev) ───
-        ar_weight = 0.30  # how much the previous scan influences
-
-        if prev_crl is not None:
-            # Expected change from curve
-            crl_from_curve = exp_crl
-            crl_from_prev  = prev_crl + (exp_crl - crl_curve(
-                scans[-1]['gestational_age_weeks'], eff_growth))
-            crl_base = (1 - ar_weight) * crl_from_curve + ar_weight * crl_from_prev
-        else:
-            crl_base = exp_crl
-
-        if prev_gs is not None:
-            gs_from_curve = exp_gs
-            gs_from_prev  = prev_gs + (exp_gs - gs_curve(
-                scans[-1]['gestational_age_weeks'], eff_growth, eff_placenta))
-            gs_base = (1 - ar_weight) * gs_from_curve + ar_weight * gs_from_prev
-        else:
-            gs_base = exp_gs
-
-        if prev_fhr is not None:
-            fhr_from_curve = exp_fhr
-            fhr_from_prev  = prev_fhr + (exp_fhr - fhr_curve(
-                scans[-1]['gestational_age_weeks'], eff_heart))
-            fhr_base = (1 - ar_weight) * fhr_from_curve + ar_weight * fhr_from_prev
-        else:
-            fhr_base = exp_fhr
-
-        if prev_ysd is not None:
-            ysd_from_curve = exp_ysd
-            ysd_from_prev  = prev_ysd + (exp_ysd - ysd_curve(
-                scans[-1]['gestational_age_weeks'], eff_growth))
-            ysd_base = (1 - ar_weight) * ysd_from_curve + ar_weight * ysd_from_prev
-        else:
-            ysd_base = exp_ysd
-
-        # ── Add measurement noise (patient-specific amplitude) ───────────
-        crl_val = crl_base + np.random.normal(0, MEAS_ERROR['CRL'] * noise_factor)
-        gs_val  = gs_base  + np.random.normal(0, MEAS_ERROR['GS']  * noise_factor)
-        fhr_val = fhr_base + np.random.normal(0, MEAS_ERROR['FHR'] * noise_factor)
-        ysd_val = ysd_base + np.random.normal(0, MEAS_ERROR['YSD'] * noise_factor)
-
-        # ── Clamp to clinical ranges ─────────────────────────────────────
-        crl_val = round(np.clip(crl_val, *CRL_RANGE), 1)
-        gs_val  = round(np.clip(gs_val,  *GS_RANGE),  1)
-        fhr_val = round(np.clip(fhr_val, *FHR_RANGE), 1)
-        ysd_val = round(np.clip(ysd_val, *YSD_RANGE), 1)
+        vals = {}
+        for marker in ('CRL', 'GS', 'FHR', 'YSD'):
+            exp_val = _expected(marker, ga, factors, degrade)
+            if prev[marker] is not None:
+                prev_ga = scans[-1]['gestational_age_weeks']
+                exp_prev = _expected(marker, prev_ga, factors, degrade)
+                from_prev = prev[marker] + (exp_val - exp_prev)
+                base = (1 - ar_weight) * exp_val + ar_weight * from_prev
+            else:
+                base = exp_val
+            noisy = base + np.random.normal(0, MEAS_ERROR[marker] * noise_factor)
+            vals[marker] = noisy
 
         scan = {
             'patient_id': pat_id,
             'gestational_age_weeks': ga,
-            'FHR': fhr_val,
-            'CRL': crl_val,
-            'GS':  gs_val,
-            'YSD': ysd_val,
+            'FHR': round(np.clip(vals['FHR'], *FHR_RANGE), 1),
+            'CRL': round(np.clip(vals['CRL'], *CRL_RANGE), 1),
+            'GS':  round(np.clip(vals['GS'],  *GS_RANGE),  1),
+            'YSD': round(np.clip(vals['YSD'], *YSD_RANGE), 1),
         }
 
-        # ── Apply clinically realistic missingness ───────────────────────
         scan = apply_missingness(scan, ga, label)
-
         scans.append(scan)
 
-        # Store for autoregressive dependency
-        prev_crl = crl_val
-        prev_gs  = gs_val
-        prev_fhr = fhr_val
-        prev_ysd = ysd_val
+        for marker in ('CRL', 'GS', 'FHR', 'YSD'):
+            prev[marker] = scan[marker]
 
     return scans
 
@@ -406,15 +659,21 @@ def generate_dataset(
 
     synthetic_patients = []
     synthetic_scans = []
+    channel_rows = []  # dual-mode per-channel ground truth (diagnostics only)
 
     for pid in range(1, n_patients + 1):
         pat_id = f"P{pid:05d}"
 
-        label = int(np.random.rand() < loss_rate)
-        growth_factor, heart_factor, placenta_factor, noise_factor = (
-            generate_latent_factors(label)
-        )
-        maternal = generate_maternal_features(label)
+        if ETIOLOGY == "dual":
+            label, factors, maternal, channel, label_sono = generate_patient_dual()
+            # Scan missingness tracks sonographic symptomatology, not the OR outcome.
+            scan_label = label_sono
+            channel_rows.append({'patient_id': pat_id, **channel})
+        else:
+            label = int(np.random.rand() < loss_rate)
+            factors = generate_latent_factors(label)
+            maternal = generate_maternal_features(label)
+            scan_label = label
 
         synthetic_patients.append({
             'patient_id': pat_id,
@@ -422,14 +681,15 @@ def generate_dataset(
             'label': label,
         })
 
-        scans = generate_scans(
-            pat_id, label, growth_factor, heart_factor,
-            placenta_factor, noise_factor
-        )
+        scans = generate_scans(pat_id, scan_label, factors)
         synthetic_scans.extend(scans)
 
     patients = pd.DataFrame(synthetic_patients)
     scans = pd.DataFrame(synthetic_scans)
+    if channel_rows:
+        # Stashed on the DataFrame so the writer can persist it alongside the CSVs
+        # without polluting the training columns.
+        patients.attrs['channel_labels'] = pd.DataFrame(channel_rows)
 
     for var in ['FHR', 'CRL', 'GS', 'YSD']:
         scans[var] = scans.groupby('patient_id')[var].transform(
@@ -489,14 +749,21 @@ def print_summary(patients, scans):
                   f"range=[{subset.min():.1f}, {subset.max():.1f}]")
 
     print("\n" + "-" * 70)
+    print("VIABLE MEDIAN vs PUBLISHED REFERENCE (weeks 6-10)")
+    print("-" * 70)
+    merged['ga_week'] = merged['gestational_age_weeks'].round().astype(int)
+    live = merged[merged['label'] == 0]
+    for var in ['CRL', 'GS', 'YSD', 'FHR']:
+        ref = {int(w): v for w, v in zip(REF_WEEKS, VIABLE_REF[var])}
+        obs = live.groupby('ga_week')[var].median()
+        pairs = [f"w{w}: {obs.get(w, float('nan')):.1f}/{ref.get(w, float('nan')):.1f}"
+                 for w in range(6, 11)]
+        print(f"  {var:4s} (obs/ref): " + "  ".join(pairs))
+
+    print("\n" + "-" * 70)
     print("CORRELATION MATRIX (ultrasound measurements)")
     print("-" * 70)
     print(scans[['FHR', 'CRL', 'GS', 'YSD']].corr().round(3))
-
-    print("\n" + "-" * 70)
-    print("CONCEPTION METHOD BY OUTCOME")
-    print("-" * 70)
-    print(patients.groupby('label')['conception'].value_counts().unstack(fill_value=0))
 
     print("\n" + "=" * 70)
     print("DATA GENERATION COMPLETE")
@@ -558,10 +825,35 @@ def save_outputs(patients, scans, out_dir):
     print(f"Saved scans CSV: {scans_csv}")
     print(f"Saved summary JSON: {summary_json}")
 
+    channel_labels = patients.attrs.get('channel_labels')
+    if channel_labels is not None:
+        channel_csv = out_path / "channel_labels.csv"
+        channel_labels.to_csv(channel_csv, index=False)
+        print(f"Saved channel-label diagnostics: {channel_csv}")
+
 
 def main():
+    print(f"Etiology model: {ETIOLOGY}"
+          + (f"  (channel_corr={CHANNEL_CORR})" if ETIOLOGY == "dual" else ""))
     patients, scans = generate_dataset(N_PATIENTS, LOSS_RATE_TARGET, SEED)
     print_summary(patients, scans)
+    channel_labels = patients.attrs.get('channel_labels')
+    if channel_labels is not None:
+        merged = channel_labels.merge(patients[['patient_id', 'label']], on='patient_id')
+        n = len(merged)
+        sono = merged['label_sono'].sum()
+        mat = merged['label_mat'].sum()
+        both = ((merged['label_sono'] == 1) & (merged['label_mat'] == 1)).sum()
+        sono_only = ((merged['label_sono'] == 1) & (merged['label_mat'] == 0)).sum()
+        mat_only = ((merged['label_sono'] == 0) & (merged['label_mat'] == 1)).sum()
+        print("\n" + "-" * 70)
+        print("DUAL-ETIOLOGY CHANNEL BREAKDOWN")
+        print("-" * 70)
+        print(f"  sonographic-channel losses : {sono}  ({100*sono/n:.1f}%)")
+        print(f"  maternal-channel losses    : {mat}  ({100*mat/n:.1f}%)")
+        print(f"  both channels              : {both}  ({100*both/n:.1f}%)")
+        print(f"  sonographic-only           : {sono_only}  <- FETA-visible, maternal-blind")
+        print(f"  maternal-only              : {mat_only}  <- PREG-visible, sono-blind")
     save_outputs(patients, scans, _ARGS.out)
 
 

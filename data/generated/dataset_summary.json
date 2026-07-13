@@ -1,14 +1,14 @@
 {
   "seed": 42,
-  "n_patients": 800,
-  "n_scans": 2408,
-  "n_loss": 188,
-  "n_live": 612,
-  "loss_rate": 0.235,
+  "n_patients": 3000,
+  "n_scans": 9100,
+  "n_loss": 619,
+  "n_live": 2381,
+  "loss_rate": 0.20633333333333334,
   "scans_per_patient": {
     "min": 2,
     "max": 5,
-    "mean": 3.01,
+    "mean": 3.033333333333333,
     "median": 3.0
   },
   "columns": {

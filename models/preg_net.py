@@ -335,14 +335,18 @@ class PREGNet(nn.Module):
                 if m.bias is not None:
                     nn.init.zeros_(m.bias)
 
-    def forward(
+    def encode_nodes(
         self,
         node_features: torch.Tensor,
         edge_index: torch.Tensor,
         node_types: torch.Tensor,
         node_mask: Optional[torch.Tensor] = None,
-    ) -> Tuple[torch.Tensor, Dict[str, torch.Tensor]]:
-        """
+    ) -> Tuple[torch.Tensor, list]:
+        """Encode nodes and run the GAT stack, up to (but not including) readout.
+
+        This is the fusion point for intermediate cross-attention: it returns the
+        per-node embeddings before they are collapsed by :meth:`head`.
+
         Parameters
         ----------
         node_features : (B, N, 1) — scalar feature value per node
@@ -352,10 +356,8 @@ class PREGNet(nn.Module):
 
         Returns
         -------
-        logits : (B, 1) — raw logits
-        attn   : dict with:
-            'node_importance' : (B, N)
-            'edge_attention'  : list of (B, n_heads, E) per layer
+        h               : (B, N, hidden_dim) — node embeddings
+        edge_attentions : list of (B, n_heads, E) per GAT layer
         """
         B = node_features.shape[0]
 
@@ -384,15 +386,60 @@ class PREGNet(nn.Module):
 
             edge_attentions.append(edge_attn)
 
+        return h, edge_attentions
+
+    def head(
+        self,
+        h: torch.Tensor,
+        node_mask: Optional[torch.Tensor] = None,
+    ) -> Tuple[torch.Tensor, Dict[str, torch.Tensor], torch.Tensor]:
+        """Readout the node embeddings and classify.
+
+        Parameters
+        ----------
+        h         : (B, N, hidden_dim) — node embeddings from :meth:`encode_nodes`
+        node_mask : (B, N) — 1.0 for valid, 0.0 for padded
+
+        Returns
+        -------
+        logits : (B, 1) — raw logits
+        attn   : dict with 'node_importance' (B, N)
+        z      : (B, hidden_dim) — penultimate graph representation
+        """
         # 3. Graph readout
         z, node_imp = self.readout(h, node_mask)  # (B, hidden)
 
         # 4. Classification
         logits = self.classifier(z)  # (B, 1)
 
-        attention_weights = {
-            'node_importance': node_imp,
-            'edge_attention': edge_attentions,
-        }
+        return logits, {'node_importance': node_imp}, z
+
+    def forward(
+        self,
+        node_features: torch.Tensor,
+        edge_index: torch.Tensor,
+        node_types: torch.Tensor,
+        node_mask: Optional[torch.Tensor] = None,
+    ) -> Tuple[torch.Tensor, Dict[str, torch.Tensor]]:
+        """
+        Parameters
+        ----------
+        node_features : (B, N, 1) — scalar feature value per node
+        edge_index    : (2, E) — graph connectivity (shared across batch)
+        node_types    : (N,) — integer type for each node
+        node_mask     : (B, N) — 1.0 for valid, 0.0 for padded
+
+        Returns
+        -------
+        logits : (B, 1) — raw logits
+        attn   : dict with:
+            'node_importance' : (B, N)
+            'edge_attention'  : list of (B, n_heads, E) per layer
+        """
+        h, edge_attentions = self.encode_nodes(
+            node_features, edge_index, node_types, node_mask
+        )
+        logits, attention_weights, _ = self.head(h, node_mask)
+        attention_weights['edge_attention'] = edge_attentions
 
         return logits, attention_weights

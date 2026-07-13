@@ -1,0 +1,20 @@
+{
+  "title": "Synthetic Longitudinal First-Trimester Ultrasound Cohort",
+  "id": "USERNAME/synthetic-first-trimester-ultrasound-cohort",
+  "licenses": [
+    {
+      "name": "CC-BY-4.0"
+    }
+  ],
+  "keywords": [
+    "healthcare",
+    "medicine",
+    "biology",
+    "classification",
+    "binary classification",
+    "time series",
+    "tabular",
+    "deep learning"
+  ],
+  "subtitle": "3,000 synthetic pregnancies with serial scans, calibrated to published curves"
+}

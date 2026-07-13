@@ -16,7 +16,12 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from data.dataset import get_dataloaders
-from models import EnsemblePredictor, FETATransformer, PREGNet
+from models import (
+    EnsemblePredictor,
+    FETATransformer,
+    HybridFusionPredictor,
+    PREGNet,
+)
 from utils.training import Trainer, get_best_device
 
 
@@ -26,7 +31,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--mode",
-        choices=["feta", "preg", "ensemble", "all"],
+        choices=["feta", "preg", "ensemble", "hybrid", "all"],
         default="all",
         help="Model path to test.",
     )
@@ -75,7 +80,14 @@ def build_model(mode: str) -> nn.Module:
         return PREGNet()
     if mode == "ensemble":
         return EnsemblePredictor()
+    if mode == "hybrid":
+        return HybridFusionPredictor()
     raise ValueError(f"Unsupported mode: {mode}")
+
+
+def collate_for(mode: str) -> str:
+    """The hybrid uses the same batch layout as the ensemble."""
+    return "ensemble" if mode == "hybrid" else mode
 
 
 def get_logits(outputs):
@@ -100,7 +112,7 @@ def run_mode(
         model=model,
         train_loader=loader,
         val_loader=loader,
-        collate_mode=mode,
+        collate_mode=collate_for(mode),
         checkpoint_dir=f"tmp/overfit_{mode}",
         device=device,
     )
@@ -161,7 +173,7 @@ def main() -> None:
         f"negatives={int(labels.numel() - labels.sum())}"
     )
 
-    modes = ["feta", "preg", "ensemble"] if args.mode == "all" else [args.mode]
+    modes = ["feta", "preg", "ensemble", "hybrid"] if args.mode == "all" else [args.mode]
     results = [
         run_mode(mode, batch, loaders["train"], device, args.steps, args.lr, args.min_drop)
         for mode in modes

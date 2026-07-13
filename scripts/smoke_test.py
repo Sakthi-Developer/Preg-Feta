@@ -12,7 +12,12 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from data.graph_builder import PatientGraphBuilder
-from models import EnsemblePredictor, FETATransformer, PREGNet
+from models import (
+    EnsemblePredictor,
+    FETATransformer,
+    HybridFusionPredictor,
+    PREGNet,
+)
 
 
 def make_batch(batch_size: int = 2, max_scans: int = 5):
@@ -69,7 +74,29 @@ def main() -> None:
     )
     assert outputs["logits"].shape == (2, 1)
 
-    print("Smoke test passed: FETA, PREG-Net, and ensemble forward paths work.")
+    hybrid = HybridFusionPredictor()
+    hybrid_out = hybrid(
+        temporal_features=batch["temporal_features"],
+        gestational_ages=batch["gestational_ages"],
+        temporal_mask=batch["temporal_mask"],
+        maternal_features=batch["maternal_features"],
+        node_features=graph["node_features"],
+        edge_index=graph["edge_index"],
+        node_types=graph["node_types"],
+        node_mask=graph["node_mask"],
+    )
+    assert hybrid_out["logits"].shape == (2, 1)
+    assert hybrid_out["feta_logits"].shape == (2, 1)
+    assert hybrid_out["preg_logits"].shape == (2, 1)
+    cross = hybrid_out["cross_modal_attention"]
+    # feta_to_preg: (B, n_heads, T, N); preg_to_feta: (B, n_heads, N, T)
+    assert cross["feta_to_preg"].shape[0] == 2
+    assert cross["feta_to_preg"].shape[2:] == (5, 27)
+    assert cross["preg_to_feta"].shape[2:] == (27, 5)
+
+    print(
+        "Smoke test passed: FETA, PREG-Net, ensemble, and hybrid forward paths work."
+    )
 
 
 if __name__ == "__main__":

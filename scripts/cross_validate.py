@@ -20,7 +20,13 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from data.dataset import PregnancyDataset, compute_norm_stats
-from models import EnsemblePredictor, FETATransformer, PREGNet
+from data.graph_builder import PatientGraphBuilder
+from models import (
+    EnsemblePredictor,
+    FETATransformer,
+    HybridFusionPredictor,
+    PREGNet,
+)
 from scripts.train_baselines import (
     TorchLogisticRegression,
     TorchMLP,
@@ -39,7 +45,9 @@ except ModuleNotFoundError as exc:
     ) from exc
 
 
-DEEP_MODELS = {"preg", "feta", "ensemble", "learned_ensemble"}
+DEEP_MODELS = {"preg", "feta", "ensemble", "learned_ensemble", "hybrid"}
+# Anti-collapse auxiliary per-branch loss weight applied to the hybrid model.
+HYBRID_AUX_WEIGHT = 0.3
 TORCH_BASELINES = {"torch_logistic_regression", "torch_mlp"}
 SKLEARN_BASELINES = {
     "sklearn_logistic_regression",
@@ -74,7 +82,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--models",
-        default="preg,feta,ensemble,learned_ensemble,torch_mlp,sklearn_logistic_regression,random_forest,hist_gradient_boosting,xgboost",
+        default="preg,feta,ensemble,learned_ensemble,hybrid,torch_mlp,sklearn_logistic_regression,random_forest,hist_gradient_boosting,xgboost",
         help="Comma-separated model names or 'all'.",
     )
     parser.add_argument("--epochs", type=int, default=80)
@@ -84,6 +92,25 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--weight-decay", type=float, default=1e-4)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--val-ratio", type=float, default=0.15)
+    parser.add_argument(
+        "--clinical-only",
+        action="store_true",
+        help=(
+            "Build the graph-based models (preg, hybrid) as clinical specialists: a "
+            "knowledge graph over the 7 maternal variables only (no ultrasound nodes). "
+            "Match the train_preg.py/train_hybrid.py --clinical-only configuration so "
+            "the cross-validated numbers reflect the complementary-specialist design."
+        ),
+    )
+    parser.add_argument(
+        "--hybrid-gated",
+        action="store_true",
+        help=(
+            "Use the gated pure-branch fusion variant of HybridFusionPredictor (per-"
+            "patient gate routing between complementary branches). Matches the "
+            "train_hybrid.py --gated configuration."
+        ),
+    )
     parser.add_argument(
         "--device",
         choices=["cpu", "auto", "cuda", "mps"],
@@ -181,7 +208,7 @@ def build_loaders(
     return loaders, norm_stats
 
 
-def build_deep_model(model_name: str):
+def build_deep_model(model_name: str, args: argparse.Namespace):
     if model_name == "preg":
         return PREGNet(), "preg"
     if model_name == "feta":
@@ -190,6 +217,8 @@ def build_deep_model(model_name: str):
         return EnsemblePredictor(), "ensemble"
     if model_name == "learned_ensemble":
         return EnsemblePredictor(learned_fusion=True), "ensemble"
+    if model_name == "hybrid":
+        return HybridFusionPredictor(gated=args.hybrid_gated), "ensemble"
     raise ValueError(f"Not a deep model: {model_name}")
 
 
@@ -202,17 +231,31 @@ def extract_logits(outputs):
 
 
 @torch.no_grad()
-def evaluate_deep_model(trainer: Trainer, loader) -> Dict[str, float]:
+def evaluate_deep_model(
+    trainer: Trainer, loader
+) -> Tuple[Dict[str, float], pd.DataFrame]:
     trainer.model.eval()
     all_probs = []
     all_labels = []
+    all_ids: List[str] = []
     for batch in loader:
         inputs, labels = trainer._unpack_batch(batch)
         outputs = trainer.model(**inputs)
         logits = extract_logits(outputs).squeeze(-1)
         all_probs.append(torch.sigmoid(logits).detach().cpu().numpy())
         all_labels.append(labels.detach().cpu().numpy())
-    return compute_all_metrics(np.concatenate(all_labels), np.concatenate(all_probs))
+        all_ids.extend(batch.get("patient_id", []))
+    probs = np.concatenate(all_probs)
+    labels_np = np.concatenate(all_labels)
+    metrics = compute_all_metrics(labels_np, probs)
+    preds = pd.DataFrame(
+        {
+            "patient_id": all_ids,
+            "label": labels_np.astype(int),
+            "probability": probs,
+        }
+    )
+    return metrics, preds
 
 
 def run_deep_model(
@@ -223,9 +266,15 @@ def run_deep_model(
     args: argparse.Namespace,
     device: torch.device,
 ) -> Dict[str, Dict[str, float]]:
-    model, collate_mode = build_deep_model(model_name)
+    model, collate_mode = build_deep_model(model_name, args)
     train_labels = loaders["train"].dataset.patients["label"].to_numpy()
     checkpoint_dir = out_dir / model_name / f"fold_{fold_idx}" / "checkpoints"
+
+    # Graph-based models (preg, hybrid) honour --clinical-only so CV matches the
+    # complementary-specialist training configuration (maternal-only 7-node graph).
+    graph_builder = PatientGraphBuilder(
+        max_scans=5, include_ultrasound=not args.clinical_only
+    )
 
     trainer = Trainer(
         model=model,
@@ -238,6 +287,8 @@ def run_deep_model(
         checkpoint_dir=str(checkpoint_dir),
         device=device,
         collate_mode=collate_mode,
+        graph_builder=graph_builder,
+        aux_loss_weight=HYBRID_AUX_WEIGHT if model_name == "hybrid" else 0.0,
     )
     trainer.fit(args.epochs)
 
@@ -245,10 +296,17 @@ def run_deep_model(
     if best_checkpoint.exists():
         trainer.load_checkpoint(str(best_checkpoint))
 
-    return {
-        split: evaluate_deep_model(trainer, loader)
-        for split, loader in loaders.items()
-    }
+    split_metrics: Dict[str, Dict[str, float]] = {}
+    for split, loader in loaders.items():
+        metrics, preds = evaluate_deep_model(trainer, loader)
+        split_metrics[split] = metrics
+        # Persist per-fold predictions so complementary fusions (e.g. a post-hoc
+        # simple logit-average of the separately trained specialists) can be
+        # reconstructed and cross-validated downstream.
+        pred_path = out_dir / model_name / f"fold_{fold_idx}" / f"{split}_predictions.csv"
+        pred_path.parent.mkdir(parents=True, exist_ok=True)
+        preds.to_csv(pred_path, index=False)
+    return split_metrics
 
 
 def make_tabular_splits(

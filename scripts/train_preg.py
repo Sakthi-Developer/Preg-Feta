@@ -18,6 +18,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from data.dataset import get_dataloaders
+from data.graph_builder import PatientGraphBuilder
 from models import PREGNet
 from utils.metrics import compute_all_metrics
 from utils.training import Trainer, compute_class_weights, get_best_device
@@ -46,6 +47,15 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--gat-layers", type=int, default=2)
     parser.add_argument("--heads", type=int, default=4)
     parser.add_argument("--dropout", type=float, default=0.2)
+    parser.add_argument(
+        "--clinical-only",
+        action="store_true",
+        help=(
+            "Build PREG-Net as a clinical specialist: a knowledge graph over the 7 "
+            "maternal variables only, with no ultrasound nodes (the ultrasound is "
+            "owned by FETA-Transformer). Makes the two models complementary."
+        ),
+    )
     parser.add_argument(
         "--device",
         choices=["cpu", "auto", "cuda", "mps"],
@@ -162,6 +172,13 @@ def main() -> None:
         dropout=args.dropout,
     )
 
+    graph_builder = PatientGraphBuilder(
+        max_scans=5, include_ultrasound=not args.clinical_only
+    )
+    if args.clinical_only:
+        print("PREG-Net mode: clinical specialist (maternal-only graph, "
+              f"{graph_builder.n_nodes} nodes)")
+
     trainer = Trainer(
         model=model,
         train_loader=loaders["train"],
@@ -173,6 +190,7 @@ def main() -> None:
         checkpoint_dir=str(checkpoint_dir),
         device=device,
         collate_mode="preg",
+        graph_builder=graph_builder,
     )
 
     history = trainer.fit(args.epochs)

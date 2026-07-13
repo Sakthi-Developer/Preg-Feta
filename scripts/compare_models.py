@@ -12,6 +12,7 @@ from typing import Dict, List
 DEFAULT_RUNS = {
     "PREG-Net": "results/preg_net",
     "FETA-Transformer": "results/feta_transformer",
+    "Hybrid (PREG-HYBRID)": "results/hybrid",
     "Ensemble": "results/ensemble",
     "Learned Ensemble": "results/ensemble_learned",
 }

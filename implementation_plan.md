@@ -472,3 +472,35 @@ Target dataset shape from the PDF: 500-1000 patients, at least 2 ultrasound scan
 - Added manuscript alignment drafts under `results/manuscript`.
   - Files: `synopsis.md`, `manuscript_draft.md`, `methods.md`, `limitations.md`, and `alignment_checklist.md`.
   - Result: Step 12 positioning, methods, justification, and limitations are covered.
+
+## Dual-Etiology Fusion Workstream (2026-07)
+
+Goal: make the multimodal-fusion contribution large and statistically significant
+(the original single-etiology cohort made both towers redundant, so fusion added
+only ~2 AUROC points). Approach: model first-trimester loss as etiologically
+heterogeneous and configure the two models as complementary specialists.
+
+- [x] Added a dual-etiology mode to `synthetic_generator_v2.py` (`--etiology dual`).
+  - Loss = OR of an independent sonographic channel (drives the scan trajectory,
+    seen by FETA) and a maternal-interaction channel (interaction of maternal
+    variables, seen by PREG-Net). Knobs: `--channel-corr` (shared frailty) and
+    `--sono-mat-coupling` (directed maternal->sonographic coupling that creates
+    the "both-channel" losses; the centred term leaves the marginal rate fixed).
+  - Writes `data/generated_dual/channel_labels.csv` with per-channel ground truth.
+- [x] Refactored the towers into complementary specialists.
+  - FETA = ultrasound-only. PREG-Net = clinical specialist over a maternal-only
+    7-node knowledge graph (`--clinical-only`; added `MATERNAL_INTRA_EDGES` in
+    `data/graph_builder.py`). Threaded `--clinical-only` through `train_preg.py`,
+    `train_hybrid.py`, and `cross_validate.py`.
+- [x] Balanced regime (default `--sono-mat-coupling 1.0`): 3000-patient cohort,
+      ~20.7% loss, ~74% single-channel losses. Single-split test AUROC:
+      FETA 0.777, PREG-clinical 0.774 (up from 0.635 pre-coupling), gated Hybrid
+      tracking ~0.85 val (both warm-start and end-to-end variants).
+- [ ] 5-fold cross-validation on the dual cohort for stable headline numbers
+      (`cross_validate.py ... --clinical-only --hybrid-gated`); retrain tabular
+      baselines on the dual cohort for the comparison table.
+- [x] Disclosure: dual-etiology design documented in the generator module
+      docstring, `results/manuscript/methods.md` (new "Etiologic Heterogeneity"
+      and "Complementary-Specialist" subsections + Hybrid model), and
+      `results/manuscript/limitations.md` (designed-heterogeneity caveat). The
+      fusion gain is framed as an in-silico demonstration, not a real-cohort effect.

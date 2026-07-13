@@ -30,6 +30,7 @@ except Exception:  # pragma: no cover - fallback for older scipy
 MODEL_PATHS = {
     "PREG-Net": "results/preg_net/test_predictions.csv",
     "FETA-Transformer": "results/feta_transformer/test_predictions.csv",
+    "Hybrid (PREG-HYBRID)": "results/hybrid/test_predictions.csv",
     "Ensemble": "results/ensemble/test_predictions.csv",
     "Learned Ensemble": "results/ensemble_learned/test_predictions.csv",
     "Torch Logistic Regression": "results/baselines/torch_logistic_regression/test_predictions.csv",

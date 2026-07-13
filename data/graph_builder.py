@@ -46,6 +46,7 @@ N_NODE_TYPES = N_US_TYPES + N_MATERNAL_TYPES  # 11
 EDGE_PHYSIOLOGICAL = 0
 EDGE_TEMPORAL = 1
 EDGE_MATERNAL_TO_US = 2
+EDGE_MATERNAL_INTRA = 3   # clinical-specialist: edges among maternal variables
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -81,19 +82,46 @@ MATERNAL_TO_US_MAPPING = {
     NODE_CONCEPTION: [NODE_FHR, NODE_CRL, NODE_GS],
 }
 
+# Maternal ↔ maternal knowledge edges for the *clinical-specialist* graph
+# (``include_ultrasound=False``). These encode the risk-factor interactions the
+# GAT is meant to exploit: age compounds BMI/parity/prior-loss; metabolic status
+# (BMI) compounds prior loss; reproductive history variables are mutually informative.
+# Made bidirectional in the builder.
+MATERNAL_INTRA_EDGES = [
+    (NODE_AGE, NODE_BMI),
+    (NODE_AGE, NODE_PARITY),
+    (NODE_AGE, NODE_GRAVIDITY),
+    (NODE_AGE, NODE_PREV_LOSS),
+    (NODE_AGE, NODE_CONCEPTION),
+    (NODE_BMI, NODE_PREV_LOSS),
+    (NODE_BMI, NODE_PARITY),
+    (NODE_GRAVIDITY, NODE_PARITY),
+    (NODE_GRAVIDITY, NODE_PREV_LOSS),
+    (NODE_PARITY, NODE_PREV_LOSS),
+    (NODE_CONCEPTION, NODE_PREV_LOSS),
+    (NODE_CONCEPTION, NODE_GRAVIDITY),
+]
+
 
 def build_knowledge_graph(
     n_time_steps: int = 5,
+    include_ultrasound: bool = True,
 ) -> Tuple[torch.Tensor, torch.Tensor]:
     """
     Build the knowledge-guided graph structure.
 
-    The graph has:
+    With ``include_ultrasound=True`` (default) the graph has:
       - n_time_steps * 4 temporal nodes (FHR, CRL, GS, YSD at each time step)
       - 7 static maternal nodes
       - Total = n_time_steps * 4 + 7 nodes
 
-    Node indexing:
+    With ``include_ultrasound=False`` PREG-Net becomes a **clinical specialist**:
+    the graph is the 7 maternal nodes only, wired by :data:`MATERNAL_INTRA_EDGES`.
+    The longitudinal ultrasound is then owned exclusively by the FETA-Transformer,
+    so the two models are complementary rather than overlapping. Node indices map
+    to node *types* ``NODE_AGE..NODE_SINGLETON`` (4..10).
+
+    Node indexing (ultrasound mode):
       [0 .. n_time_steps*4 - 1]  : temporal nodes (grouped by time step)
         time t: [t*4 + 0] = FHR_t, [t*4 + 1] = CRL_t,
                 [t*4 + 2] = GS_t,  [t*4 + 3] = YSD_t
@@ -102,12 +130,26 @@ def build_knowledge_graph(
     Returns
     -------
     edge_index : (2, E) long tensor — COO format
-    edge_type  : (E,) long tensor — 0=physiological, 1=temporal, 2=maternal_to_us
+    edge_type  : (E,) long tensor — 0=physiological, 1=temporal, 2=maternal_to_us,
+                 3=maternal_intra
     """
-    n_temporal = n_time_steps * N_US_TYPES
     edges_src: List[int] = []
     edges_dst: List[int] = []
     edge_types: List[int] = []
+
+    if not include_ultrasound:
+        # Clinical-specialist graph: maternal nodes only, indexed 0..6.
+        for src_type, dst_type in MATERNAL_INTRA_EDGES:
+            s = src_type - N_US_TYPES
+            d = dst_type - N_US_TYPES
+            edges_src.extend([s, d])
+            edges_dst.extend([d, s])
+            edge_types.extend([EDGE_MATERNAL_INTRA, EDGE_MATERNAL_INTRA])
+        edge_index = torch.tensor([edges_src, edges_dst], dtype=torch.long)
+        edge_type = torch.tensor(edge_types, dtype=torch.long)
+        return edge_index, edge_type
+
+    n_temporal = n_time_steps * N_US_TYPES
 
     # 1. Intra-time-step physiological edges
     for t in range(n_time_steps):
@@ -162,19 +204,23 @@ class PatientGraphBuilder:
       - Knowledge-guided edges shared across all patients
     """
 
-    def __init__(self, max_scans: int = 5):
+    def __init__(self, max_scans: int = 5, include_ultrasound: bool = True):
         self.max_scans = max_scans
-        self.n_temporal = max_scans * N_US_TYPES
+        self.include_ultrasound = include_ultrasound
+        self.n_temporal = max_scans * N_US_TYPES if include_ultrasound else 0
         self.n_maternal = N_MATERNAL_TYPES
         self.n_nodes = self.n_temporal + self.n_maternal
 
         # Pre-build shared graph structure
-        self.edge_index, self.edge_type = build_knowledge_graph(max_scans)
+        self.edge_index, self.edge_type = build_knowledge_graph(
+            max_scans, include_ultrasound=include_ultrasound
+        )
 
         # Pre-build node type assignments
         node_types = []
-        for t in range(max_scans):
-            node_types.extend([NODE_FHR, NODE_CRL, NODE_GS, NODE_YSD])
+        if include_ultrasound:
+            for t in range(max_scans):
+                node_types.extend([NODE_FHR, NODE_CRL, NODE_GS, NODE_YSD])
         node_types.extend([
             NODE_AGE, NODE_BMI, NODE_PARITY, NODE_GRAVIDITY,
             NODE_PREV_LOSS, NODE_CONCEPTION, NODE_SINGLETON
@@ -203,13 +249,23 @@ class PatientGraphBuilder:
         """
         B = batch['temporal_features'].shape[0]
         T = self.max_scans
+        maternal = batch['maternal_features']  # (B, 7)
+
+        if not self.include_ultrasound:
+            # Clinical-specialist graph: maternal nodes only.
+            node_features = maternal.unsqueeze(-1)  # (B, 7, 1)
+            node_mask = torch.ones(B, self.n_maternal, device=maternal.device)
+            return {
+                'node_features': node_features,
+                'edge_index': self.edge_index,
+                'edge_type': self.edge_type,
+                'node_types': self.node_types,
+                'node_mask': node_mask,
+            }
 
         # Temporal features: (B, T, 4) → (B, T*4)
         temporal = batch['temporal_features']  # (B, T, 4)
         temporal_flat = temporal.reshape(B, T * N_US_TYPES)  # (B, T*4)
-
-        # Maternal features: (B, 7)
-        maternal = batch['maternal_features']  # (B, 7)
 
         # Concatenate: (B, T*4 + 7)
         node_features = torch.cat([temporal_flat, maternal], dim=1)

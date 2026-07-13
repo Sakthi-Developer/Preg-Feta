@@ -348,6 +348,84 @@ class FETATransformer(nn.Module):
                 if m.bias is not None:
                     nn.init.zeros_(m.bias)
 
+    def encode_tokens(
+        self,
+        temporal_features: torch.Tensor,
+        gestational_ages: torch.Tensor,
+        temporal_mask: torch.Tensor,
+    ) -> torch.Tensor:
+        """Run the encoder up to (but not including) temporal pooling.
+
+        This is the fusion point for intermediate cross-attention: it returns the
+        per-time-step token sequence before it is collapsed by :meth:`head`.
+
+        Parameters
+        ----------
+        temporal_features : (B, T, 4) — FHR, CRL, GS, YSD
+        gestational_ages  : (B, T) — actual gestational age in weeks
+        temporal_mask     : (B, T) — 1.0 for real scans, 0.0 for padding
+
+        Returns
+        -------
+        h : (B, T, d_model) — contextualized token sequence
+        """
+        # 1. Modality-specific projections
+        h = self.modality_proj(temporal_features)  # (B, T, d_model)
+
+        # 2. Add continuous positional encoding
+        pe = self.pos_encoder(gestational_ages)    # (B, T, d_model)
+        h = h + pe
+
+        # 3. Input normalization
+        h = self.input_norm(h)
+        h = self.input_dropout(h)
+
+        # 4. Transformer encoder
+        # Create attention mask: True = IGNORE, so invert mask
+        src_key_padding_mask = (temporal_mask == 0)  # (B, T)
+        h = self.transformer_encoder(
+            h, src_key_padding_mask=src_key_padding_mask
+        )  # (B, T, d_model)
+
+        return h
+
+    def head(
+        self,
+        h: torch.Tensor,
+        temporal_mask: torch.Tensor,
+        maternal_features: torch.Tensor,
+    ) -> Tuple[torch.Tensor, Dict[str, torch.Tensor], torch.Tensor]:
+        """Pool the token sequence, apply maternal cross-attention, and classify.
+
+        Parameters
+        ----------
+        h                 : (B, T, d_model) — token sequence from :meth:`encode_tokens`
+        temporal_mask     : (B, T) — 1.0 for real scans, 0.0 for padding
+        maternal_features : (B, 7) — static maternal features
+
+        Returns
+        -------
+        logits : (B, 1) — raw logits
+        attn   : dict with 'temporal_pooling_weights' (B, T) and
+                 'cross_attention_weights' (B, n_heads)
+        z      : (B, d_model) — penultimate pooled representation
+        """
+        # 5. Attention-based temporal pooling
+        z, pool_weights = self.attn_pool(h, mask=temporal_mask)  # (B, d_model)
+
+        # 6. Maternal cross-attention
+        z, cross_weights = self.maternal_cross_attn(z, maternal_features)
+
+        # 7. Classification
+        logits = self.classifier(z)  # (B, 1)
+
+        attention_weights = {
+            'temporal_pooling_weights': pool_weights,
+            'cross_attention_weights': cross_weights,
+        }
+
+        return logits, attention_weights, z
+
     def forward(
         self,
         temporal_features: torch.Tensor,
@@ -370,36 +448,6 @@ class FETATransformer(nn.Module):
             'temporal_pooling_weights' : (B, T)
             'cross_attention_weights'  : (B, n_heads)
         """
-        # 1. Modality-specific projections
-        h = self.modality_proj(temporal_features)  # (B, T, d_model)
-
-        # 2. Add continuous positional encoding
-        pe = self.pos_encoder(gestational_ages)    # (B, T, d_model)
-        h = h + pe
-
-        # 3. Input normalization
-        h = self.input_norm(h)
-        h = self.input_dropout(h)
-
-        # 4. Transformer encoder
-        # Create attention mask: True = IGNORE, so invert mask
-        src_key_padding_mask = (temporal_mask == 0)  # (B, T)
-        h = self.transformer_encoder(
-            h, src_key_padding_mask=src_key_padding_mask
-        )  # (B, T, d_model)
-
-        # 5. Attention-based temporal pooling
-        z, pool_weights = self.attn_pool(h, mask=temporal_mask)  # (B, d_model)
-
-        # 6. Maternal cross-attention
-        z, cross_weights = self.maternal_cross_attn(z, maternal_features)
-
-        # 7. Classification
-        logits = self.classifier(z)  # (B, 1)
-
-        attention_weights = {
-            'temporal_pooling_weights': pool_weights,
-            'cross_attention_weights': cross_weights,
-        }
-
+        h = self.encode_tokens(temporal_features, gestational_ages, temporal_mask)
+        logits, attention_weights, _ = self.head(h, temporal_mask, maternal_features)
         return logits, attention_weights

@@ -178,6 +178,7 @@ class Trainer:
         collate_mode: str = "ensemble",
         graph_builder: Optional[PatientGraphBuilder] = None,
         max_scans: int = 5,
+        aux_loss_weight: float = 0.0,
     ) -> None:
         self.device = device or get_best_device()
         logger.info("Using device: %s", self.device)
@@ -189,6 +190,12 @@ class Trainer:
             raise ValueError("collate_mode must be 'feta', 'preg', or 'ensemble'")
         self.collate_mode = collate_mode
         self.graph_builder = graph_builder or PatientGraphBuilder(max_scans=max_scans)
+
+        # Auxiliary per-branch loss weight. When > 0 and the model returns per-branch
+        # logits (``feta_logits``/``preg_logits``, as the hybrid fusion model does),
+        # the trainer adds a BCE on each branch to keep both towers individually
+        # predictive and prevent one branch from collapsing during joint training.
+        self.aux_loss_weight = aux_loss_weight
 
         # Loss
         self.criterion = nn.BCEWithLogitsLoss(
@@ -273,6 +280,23 @@ class Trainer:
         }
         return inputs, labels
 
+    def _aux_loss(
+        self, outputs: Any, labels: torch.Tensor
+    ) -> torch.Tensor:
+        """Auxiliary per-branch BCE, or zero when disabled/unavailable.
+
+        Returns ``aux_loss_weight * (BCE(feta_logits) + BCE(preg_logits))`` when the
+        weight is positive and both per-branch logits are present in a dict output.
+        This keeps each tower individually predictive under joint training.
+        """
+        if self.aux_loss_weight <= 0 or not isinstance(outputs, dict):
+            return torch.zeros((), device=self.device)
+        if "feta_logits" not in outputs or "preg_logits" not in outputs:
+            return torch.zeros((), device=self.device)
+        feta = self.criterion(outputs["feta_logits"].squeeze(-1), labels.float())
+        preg = self.criterion(outputs["preg_logits"].squeeze(-1), labels.float())
+        return self.aux_loss_weight * (feta + preg)
+
     # ------------------------------------------------------------------ #
     # Train / Validate
     # ------------------------------------------------------------------ #
@@ -304,6 +328,7 @@ class Trainer:
                 logits = outputs
 
             loss = self.criterion(logits.squeeze(-1), labels.float())
+            loss = loss + self._aux_loss(outputs, labels)
             loss.backward()
 
             # Gradient clipping
