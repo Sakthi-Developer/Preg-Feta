@@ -1,0 +1,5 @@
+Model,Test AUROC,Test AUPRC,Sensitivity,Specificity,Folds
+Ensemble (logit avg),0.989 ± 0.006,0.976 ± 0.012,0.926,0.985,5
+Gated hybrid (fusion),0.988 ± 0.004,0.972 ± 0.006,0.943,0.975,5
+PREG-Net (maternal tower),0.981 ± 0.006,0.958 ± 0.013,0.902,0.976,5
+FETA (scan tower),0.884 ± 0.014,0.844 ± 0.017,0.739,0.981,5

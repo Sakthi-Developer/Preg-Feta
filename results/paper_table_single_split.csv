@@ -1,0 +1,5 @@
+Model,AUROC,AUPRC,Accuracy,Sensitivity,Specificity,F1
+FETA (scan tower),0.9141,0.8663,0.9469,0.7674,0.9891,0.8462
+PREG-Net (maternal tower),0.9938,0.9782,0.9668,0.9186,0.9781,0.9133
+Ensemble (logit avg),0.9944,0.9792,0.9712,0.9186,0.9836,0.924
+Gated hybrid (fusion),0.985,0.9508,0.9358,0.9535,0.9317,0.8497

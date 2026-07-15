@@ -478,8 +478,89 @@ def _maternal_risk_contribution(maternal) -> float:
     return MAT_MAIN_SLOPE * main + MAT_INTER_SLOPE * interaction
 
 
+# ── Published epidemiology backing the dual-etiology channels ────────────────
+# Every constant below is a reported figure, not a value tuned to hit a target
+# AUROC. Sources are cited inline and reproduced in the manuscript.
+#
+# [1] Magnus MC et al. "Role of maternal age and pregnancy history in risk of
+#     miscarriage: prospective register based study." BMJ 2019;364:l869.
+#     (421,201 pregnancies) — age-specific risk, and adjusted ORs for prior loss.
+# [2] Cavalcante MB et al. "Obesity and recurrent miscarriage: a systematic
+#     review and meta-analysis." J Obstet Gynaecol Res 2019;45(1):30-38.
+# [3] Volkova N et al. "Chromosomal Abnormalities in Miscarriages and Maternal
+#     Age: New Insights from the Study of 7118 Cases." Cells 2025;14(1):8.
+
+# [1] Table 1 — miscarriage risk by maternal age band, at the band midpoints.
+MAGNUS_AGE_KNOTS = [19.0, 22.0, 27.0, 32.0, 37.0, 42.0, 46.0]
+MAGNUS_AGE_RISK  = [0.158, 0.113, 0.098, 0.108, 0.167, 0.322, 0.536]
+
+OR_PREVIOUS_LOSS = 1.54   # [1] adjusted OR, one previous miscarriage (1.48–1.60)
+OR_BMI_OVERWEIGHT = 1.67  # [2] OR for BMI >= 25 (1.25–2.25)
+
+# [3] Share of miscarriages that are chromosomally abnormal — i.e. embryonic in
+# origin, and therefore expressed in the scan trajectory (the sonographic
+# channel). Rises with maternal age: +0.704 %/yr from 23–37, a documented step
+# up to 79.0 % at 38, then rising to ~94 % by 44.
+CHROM_SHARE_AT_23 = 0.55
+CHROM_SLOPE_YOUNG = 0.00704   # per year, ages 23–37   [3]
+CHROM_SHARE_AT_38 = 0.79      # documented step        [3]
+CHROM_SLOPE_OLD   = 0.025     # per year, ages 38–44   [3]
+CHROM_SHARE_MAX   = 0.94      # [3]
+
+
+def _total_loss_risk(maternal) -> float:
+    """Total miscarriage probability for this woman, from published risk factors.
+
+    Baseline is the age-specific risk from the Magnus BMJ 2019 register study [1],
+    interpolated between age-band midpoints. Previous loss [1] and overweight [2]
+    are applied as odds ratios. This is the *observed* loss risk from all causes —
+    it is split into the two etiologic channels by :func:`_chromosomal_share`.
+    """
+    p_age = float(np.interp(maternal['age'], MAGNUS_AGE_KNOTS, MAGNUS_AGE_RISK))
+    odds = p_age / (1.0 - p_age)
+    if maternal['previous_loss']:
+        odds *= OR_PREVIOUS_LOSS
+    if maternal['bmi'] >= 25.0:
+        odds *= OR_BMI_OVERWEIGHT
+    return float(odds / (1.0 + odds))
+
+
+def _chromosomal_share(age: float) -> float:
+    """Fraction of this woman's loss risk that is embryonic (chromosomal) [3].
+
+    The remainder is attributed to the maternal environment. Because the
+    chromosomal share rises steeply with age, older women's losses are
+    increasingly embryonic — which is why the two channels are not independent
+    of age, and why the maternal channel is *not* simply "the age channel".
+    """
+    if age <= 23.0:
+        share = CHROM_SHARE_AT_23
+    elif age <= 37.0:
+        share = CHROM_SHARE_AT_23 + CHROM_SLOPE_YOUNG * (age - 23.0)
+    else:
+        share = CHROM_SHARE_AT_38 + CHROM_SLOPE_OLD * (age - 38.0)
+    return float(np.clip(share, 0.40, CHROM_SHARE_MAX))
+
+
+def _std_normal_cdf(x: float) -> float:
+    return 0.5 * (1.0 + math.erf(x / math.sqrt(2.0)))
+
+
 def generate_patient_dual():
     """Generate one patient under the dual-etiology (OR-of-two-channels) model.
+
+    The observed loss risk ``p`` is taken from published epidemiology
+    (:func:`_total_loss_risk`) and split into an embryonic/sonographic channel and
+    a maternal channel using the published chromosomal share ``f``
+    (:func:`_chromosomal_share`)::
+
+        p_sono = 1 - (1 - p) ** f
+        p_mat  = 1 - (1 - p) ** (1 - f)
+
+    which makes ``P(sono OR mat) == p`` exactly, so the cohort's loss rate is the
+    published risk rather than a tuned constant, while the two channels carry the
+    published etiologic shares. ``--channel-corr`` couples the two draws through a
+    Gaussian copula, which correlates them *without* changing either marginal.
 
     Returns
     -------
@@ -494,31 +575,23 @@ def generate_patient_dual():
     label_sono : int
         Sonographic-channel label, used for scan missingness.
     """
-    # Shared frailty couples the two channels weakly (CHANNEL_CORR on the logit scale).
-    frailty = float(np.random.normal(0.0, CHANNEL_CORR))
-
-    # -- Maternal channel: interaction of maternal features drives the risk. --
-    # Drawn first so its risk contribution can also feed the sonographic channel.
-    # Near-deterministic threshold model: the pregnancy fails via the maternal
-    # channel when its maternal-risk score, perturbed only by the small shared
-    # frailty, exceeds MAT_LOSS_THRESHOLD. Because the perturbation is small and is
-    # the sole term the clinical model cannot observe, label_mat is almost a function
-    # of the maternal variables alone — so PREG-Net recovers this channel cleanly,
-    # while FETA (which never sees the maternal variables) remains blind to it.
     maternal = _draw_population_maternal()
-    mat_contrib = _maternal_risk_contribution(maternal)
-    mat_noise = float(np.random.normal(0.0, MAT_NOISE_SD))
-    label_mat = int(mat_contrib + frailty + mat_noise > MAT_LOSS_THRESHOLD)
 
-    # -- Sonographic channel: a latent severity drives the scan trajectory. A
-    # (centred) share of the maternal-risk conjunction also raises embryonic risk,
-    # so severe-maternal-risk pregnancies tend to *also* show an abnormal scan —
-    # the "both-channel" losses that lift both towers in the balanced regime.
-    logit_sono = (SONO_BASE_LOGIT
-                  + SONO_SLOPE * float(np.random.normal())
-                  + frailty
-                  + SONO_MAT_COUPLING * (mat_contrib - MAT_CONTRIB_CENTER))
-    label_sono = int(np.random.rand() < _sigmoid(logit_sono))
+    p_total = _total_loss_risk(maternal)
+    f_chrom = _chromosomal_share(maternal['age'])
+
+    p_sono = 1.0 - (1.0 - p_total) ** f_chrom
+    p_mat = 1.0 - (1.0 - p_total) ** (1.0 - f_chrom)
+
+    # Gaussian copula: correlate the channels (shared frailty) with exact marginals.
+    z1, z2 = np.random.normal(0.0, 1.0, 2)
+    z2 = CHANNEL_CORR * z1 + math.sqrt(max(0.0, 1.0 - CHANNEL_CORR ** 2)) * z2
+    label_sono = int(_std_normal_cdf(float(z1)) < p_sono)
+    label_mat = int(_std_normal_cdf(float(z2)) < p_mat)
+
+    # The embryonic channel is what the scan trajectory expresses: an embryonic
+    # loss shows the published abnormality phenotype (small CRL/GS, bradycardia,
+    # enlarged yolk sac); a maternal-channel loss does not.
     factors = generate_latent_factors(label_sono)
 
     label = int(label_sono or label_mat)

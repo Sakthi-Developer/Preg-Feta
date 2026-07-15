@@ -1,0 +1,136 @@
+Using device: cpu
+Starting training for up to 80 epochs
+Epoch   1/80 | train_loss=1.1309  val_loss=1.1153 | val_AUROC=0.5679  val_AUPRC=0.2588 | 2.8s
+Saved checkpoint at epoch 1 (AUROC=0.5679) -> results\cv_kaggle\preg\fold_0\checkpoints\best_model.pt
+Epoch   2/80 | train_loss=1.0702  val_loss=1.1099 | val_AUROC=0.5876  val_AUPRC=0.2608 | 3.0s
+Saved checkpoint at epoch 2 (AUROC=0.5876) -> results\cv_kaggle\preg\fold_0\checkpoints\best_model.pt
+Epoch   3/80 | train_loss=1.0706  val_loss=1.1165 | val_AUROC=0.5973  val_AUPRC=0.2717 | 2.8s
+Saved checkpoint at epoch 3 (AUROC=0.5973) -> results\cv_kaggle\preg\fold_0\checkpoints\best_model.pt
+Epoch   4/80 | train_loss=1.0557  val_loss=1.1859 | val_AUROC=0.5817  val_AUPRC=0.2602 | 2.9s
+Epoch   5/80 | train_loss=1.0625  val_loss=1.1167 | val_AUROC=0.5893  val_AUPRC=0.2650 | 2.8s
+Epoch   6/80 | train_loss=1.0584  val_loss=1.1122 | val_AUROC=0.5897  val_AUPRC=0.2734 | 3.0s
+Epoch   7/80 | train_loss=1.0534  val_loss=1.1113 | val_AUROC=0.5944  val_AUPRC=0.2684 | 2.9s
+Epoch   8/80 | train_loss=1.0520  val_loss=1.1237 | val_AUROC=0.5885  val_AUPRC=0.2739 | 2.8s
+Epoch   9/80 | train_loss=1.0471  val_loss=1.1187 | val_AUROC=0.5892  val_AUPRC=0.2709 | 3.2s
+Epoch  10/80 | train_loss=1.0459  val_loss=1.1218 | val_AUROC=0.5884  val_AUPRC=0.2718 | 3.0s
+Epoch  11/80 | train_loss=1.0582  val_loss=1.1144 | val_AUROC=0.5897  val_AUPRC=0.2729 | 3.0s
+Epoch  12/80 | train_loss=1.0835  val_loss=1.1090 | val_AUROC=0.5836  val_AUPRC=0.2555 | 2.8s
+Epoch  13/80 | train_loss=1.0625  val_loss=1.1135 | val_AUROC=0.5842  val_AUPRC=0.2627 | 2.9s
+Epoch  14/80 | train_loss=1.0474  val_loss=1.1287 | val_AUROC=0.5495  val_AUPRC=0.2478 | 2.8s
+Epoch  15/80 | train_loss=1.0643  val_loss=1.1066 | val_AUROC=0.5899  val_AUPRC=0.2563 | 2.8s
+Epoch  16/80 | train_loss=1.0571  val_loss=1.1301 | val_AUROC=0.5906  val_AUPRC=0.2635 | 3.2s
+Epoch  17/80 | train_loss=1.0543  val_loss=1.1094 | val_AUROC=0.5884  val_AUPRC=0.2594 | 3.5s
+Epoch  18/80 | train_loss=1.0647  val_loss=1.1061 | val_AUROC=0.5924  val_AUPRC=0.2644 | 3.8s
+Early stopping triggered at epoch 18 (best AUROC=0.5973)
+Loaded checkpoint from results\cv_kaggle\preg\fold_0\checkpoints\best_model.pt (epoch 3)
+C:\Users\sakth\OneDrive\Desktop\Preg-Feta\models\feta_transformer.py:317: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  self.transformer_encoder = nn.TransformerEncoder(
+Using device: cpu
+Starting training for up to 80 epochs
+Epoch   1/80 | train_loss=0.8920  val_loss=0.6492 | val_AUROC=0.9001  val_AUPRC=0.8030 | 3.3s
+Saved checkpoint at epoch 1 (AUROC=0.9001) -> results\cv_kaggle\feta\fold_0\checkpoints\best_model.pt
+Epoch   2/80 | train_loss=0.7905  val_loss=0.6210 | val_AUROC=0.9112  val_AUPRC=0.8341 | 3.2s
+Saved checkpoint at epoch 2 (AUROC=0.9112) -> results\cv_kaggle\feta\fold_0\checkpoints\best_model.pt
+Epoch   3/80 | train_loss=0.7776  val_loss=0.6076 | val_AUROC=0.9082  val_AUPRC=0.8276 | 3.6s
+Epoch   4/80 | train_loss=0.7588  val_loss=0.6154 | val_AUROC=0.9132  val_AUPRC=0.8345 | 3.7s
+Saved checkpoint at epoch 4 (AUROC=0.9132) -> results\cv_kaggle\feta\fold_0\checkpoints\best_model.pt
+Epoch   5/80 | train_loss=0.7498  val_loss=0.5872 | val_AUROC=0.9106  val_AUPRC=0.8329 | 3.4s
+Epoch   6/80 | train_loss=0.7333  val_loss=0.6018 | val_AUROC=0.9082  val_AUPRC=0.8271 | 3.2s
+Epoch   7/80 | train_loss=0.7092  val_loss=0.5770 | val_AUROC=0.9119  val_AUPRC=0.8316 | 3.1s
+Epoch   8/80 | train_loss=0.7194  val_loss=0.5735 | val_AUROC=0.9128  val_AUPRC=0.8356 | 3.0s
+Epoch   9/80 | train_loss=0.6919  val_loss=0.5755 | val_AUROC=0.9119  val_AUPRC=0.8347 | 3.0s
+Epoch  10/80 | train_loss=0.7112  val_loss=0.5750 | val_AUROC=0.9119  val_AUPRC=0.8340 | 3.1s
+Epoch  11/80 | train_loss=0.7419  val_loss=0.5791 | val_AUROC=0.9117  val_AUPRC=0.8365 | 3.0s
+Epoch  12/80 | train_loss=0.7384  val_loss=0.5936 | val_AUROC=0.9108  val_AUPRC=0.8382 | 3.2s
+Epoch  13/80 | train_loss=0.7267  val_loss=0.5837 | val_AUROC=0.9090  val_AUPRC=0.8292 | 2.9s
+Epoch  14/80 | train_loss=0.7373  val_loss=0.5887 | val_AUROC=0.9134  val_AUPRC=0.8373 | 3.2s
+Saved checkpoint at epoch 14 (AUROC=0.9134) -> results\cv_kaggle\feta\fold_0\checkpoints\best_model.pt
+Epoch  15/80 | train_loss=0.6971  val_loss=0.6168 | val_AUROC=0.9105  val_AUPRC=0.8332 | 3.1s
+Epoch  16/80 | train_loss=0.7002  val_loss=0.6109 | val_AUROC=0.9108  val_AUPRC=0.8223 | 3.1s
+Epoch  17/80 | train_loss=0.7333  val_loss=0.5896 | val_AUROC=0.9123  val_AUPRC=0.8341 | 3.1s
+Epoch  18/80 | train_loss=0.6859  val_loss=0.5823 | val_AUROC=0.9092  val_AUPRC=0.8386 | 3.2s
+Epoch  19/80 | train_loss=0.6707  val_loss=0.5643 | val_AUROC=0.9115  val_AUPRC=0.8402 | 3.1s
+Epoch  20/80 | train_loss=0.6905  val_loss=0.5970 | val_AUROC=0.9061  val_AUPRC=0.8305 | 3.2s
+Epoch  21/80 | train_loss=0.6957  val_loss=0.5904 | val_AUROC=0.9105  val_AUPRC=0.8323 | 3.1s
+Epoch  22/80 | train_loss=0.6758  val_loss=0.5806 | val_AUROC=0.9083  val_AUPRC=0.8363 | 3.1s
+Epoch  23/80 | train_loss=0.6801  val_loss=0.5869 | val_AUROC=0.9099  val_AUPRC=0.8380 | 3.3s
+Epoch  24/80 | train_loss=0.6644  val_loss=0.5771 | val_AUROC=0.9092  val_AUPRC=0.8376 | 3.4s
+Epoch  25/80 | train_loss=0.6668  val_loss=0.5804 | val_AUROC=0.9099  val_AUPRC=0.8411 | 3.1s
+Epoch  26/80 | train_loss=0.6690  val_loss=0.5701 | val_AUROC=0.9111  val_AUPRC=0.8403 | 3.3s
+Epoch  27/80 | train_loss=0.6605  val_loss=0.5710 | val_AUROC=0.9122  val_AUPRC=0.8409 | 3.4s
+Epoch  28/80 | train_loss=0.6696  val_loss=0.5672 | val_AUROC=0.9129  val_AUPRC=0.8435 | 3.0s
+Epoch  29/80 | train_loss=0.6447  val_loss=0.5674 | val_AUROC=0.9130  val_AUPRC=0.8434 | 3.1s
+Early stopping triggered at epoch 29 (best AUROC=0.9134)
+Loaded checkpoint from results\cv_kaggle\feta\fold_0\checkpoints\best_model.pt (epoch 14)
+C:\Users\sakth\OneDrive\Desktop\Preg-Feta\models\feta_transformer.py:317: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  self.transformer_encoder = nn.TransformerEncoder(
+Using device: cpu
+Starting training for up to 80 epochs
+Epoch   1/80 | train_loss=0.9586  val_loss=0.6151 | val_AUROC=0.9006  val_AUPRC=0.8152 | 3.7s
+Saved checkpoint at epoch 1 (AUROC=0.9006) -> results\cv_kaggle\ensemble\fold_0\checkpoints\best_model.pt
+Epoch   2/80 | train_loss=0.7985  val_loss=0.7100 | val_AUROC=0.8847  val_AUPRC=0.7861 | 3.8s
+Epoch   3/80 | train_loss=0.7655  val_loss=0.6470 | val_AUROC=0.8988  val_AUPRC=0.8074 | 3.7s
+Epoch   4/80 | train_loss=0.7283  val_loss=0.6629 | val_AUROC=0.8760  val_AUPRC=0.7935 | 3.5s
+Epoch   5/80 | train_loss=0.7080  val_loss=0.6447 | val_AUROC=0.8739  val_AUPRC=0.8027 | 3.6s
+Epoch   6/80 | train_loss=0.6925  val_loss=0.6517 | val_AUROC=0.8837  val_AUPRC=0.8004 | 3.7s
+Epoch   7/80 | train_loss=0.6707  val_loss=0.6658 | val_AUROC=0.8850  val_AUPRC=0.7998 | 3.6s
+Epoch   8/80 | train_loss=0.6386  val_loss=0.6654 | val_AUROC=0.8811  val_AUPRC=0.7959 | 3.6s
+Epoch   9/80 | train_loss=0.6806  val_loss=0.6433 | val_AUROC=0.8852  val_AUPRC=0.8015 | 3.6s
+Epoch  10/80 | train_loss=0.6454  val_loss=0.6428 | val_AUROC=0.8832  val_AUPRC=0.8006 | 3.5s
+Epoch  11/80 | train_loss=0.6829  val_loss=0.6087 | val_AUROC=0.9018  val_AUPRC=0.8209 | 3.8s
+Saved checkpoint at epoch 11 (AUROC=0.9018) -> results\cv_kaggle\ensemble\fold_0\checkpoints\best_model.pt
+Epoch  12/80 | train_loss=0.6664  val_loss=0.6932 | val_AUROC=0.8688  val_AUPRC=0.8000 | 3.8s
+Epoch  13/80 | train_loss=0.7013  val_loss=0.6379 | val_AUROC=0.8810  val_AUPRC=0.8018 | 3.6s
+Epoch  14/80 | train_loss=0.6818  val_loss=0.7579 | val_AUROC=0.8853  val_AUPRC=0.7517 | 3.5s
+Epoch  15/80 | train_loss=0.6767  val_loss=0.6823 | val_AUROC=0.8850  val_AUPRC=0.7829 | 3.7s
+Epoch  16/80 | train_loss=0.6612  val_loss=0.6073 | val_AUROC=0.9052  val_AUPRC=0.8213 | 3.7s
+Saved checkpoint at epoch 16 (AUROC=0.9052) -> results\cv_kaggle\ensemble\fold_0\checkpoints\best_model.pt
+Epoch  17/80 | train_loss=0.6574  val_loss=0.7119 | val_AUROC=0.8811  val_AUPRC=0.7955 | 3.6s
+Epoch  18/80 | train_loss=0.6662  val_loss=0.6537 | val_AUROC=0.8826  val_AUPRC=0.7970 | 3.5s
+Epoch  19/80 | train_loss=0.6197  val_loss=0.6174 | val_AUROC=0.9004  val_AUPRC=0.8131 | 3.9s
+Epoch  20/80 | train_loss=0.6507  val_loss=0.6338 | val_AUROC=0.8970  val_AUPRC=0.8108 | 3.5s
+Epoch  21/80 | train_loss=0.6180  val_loss=0.6060 | val_AUROC=0.9050  val_AUPRC=0.8126 | 3.9s
+Epoch  22/80 | train_loss=0.6353  val_loss=0.6164 | val_AUROC=0.8995  val_AUPRC=0.8143 | 3.8s
+Epoch  23/80 | train_loss=0.6211  val_loss=0.6340 | val_AUROC=0.8985  val_AUPRC=0.8125 | 3.7s
+Epoch  24/80 | train_loss=0.6074  val_loss=0.6130 | val_AUROC=0.8998  val_AUPRC=0.8223 | 3.6s
+Epoch  25/80 | train_loss=0.5837  val_loss=0.6295 | val_AUROC=0.9006  val_AUPRC=0.8162 | 3.8s
+Epoch  26/80 | train_loss=0.6195  val_loss=0.6197 | val_AUROC=0.9010  val_AUPRC=0.8192 | 3.6s
+Epoch  27/80 | train_loss=0.5916  val_loss=0.6274 | val_AUROC=0.8980  val_AUPRC=0.8154 | 3.8s
+Epoch  28/80 | train_loss=0.6058  val_loss=0.6251 | val_AUROC=0.8980  val_AUPRC=0.8146 | 3.6s
+Epoch  29/80 | train_loss=0.6072  val_loss=0.6217 | val_AUROC=0.8998  val_AUPRC=0.8165 | 3.7s
+Epoch  30/80 | train_loss=0.5832  val_loss=0.6212 | val_AUROC=0.9002  val_AUPRC=0.8170 | 3.5s
+Epoch  31/80 | train_loss=0.6259  val_loss=0.6157 | val_AUROC=0.9055  val_AUPRC=0.8300 | 3.4s
+Saved checkpoint at epoch 31 (AUROC=0.9055) -> results\cv_kaggle\ensemble\fold_0\checkpoints\best_model.pt
+Epoch  32/80 | train_loss=0.6385  val_loss=0.6412 | val_AUROC=0.8853  val_AUPRC=0.8030 | 3.6s
+Epoch  33/80 | train_loss=0.6304  val_loss=0.6686 | val_AUROC=0.8926  val_AUPRC=0.8155 | 3.3s
+Epoch  34/80 | train_loss=0.6505  val_loss=0.6636 | val_AUROC=0.8978  val_AUPRC=0.7961 | 3.4s
+Epoch  35/80 | train_loss=0.6213  val_loss=0.6155 | val_AUROC=0.8935  val_AUPRC=0.8103 | 3.4s
+Epoch  36/80 | train_loss=0.6106  val_loss=0.6426 | val_AUROC=0.8977  val_AUPRC=0.8093 | 3.5s
+Epoch  37/80 | train_loss=0.6027  val_loss=0.6838 | val_AUROC=0.8728  val_AUPRC=0.7912 | 3.4s
+Epoch  38/80 | train_loss=0.6259  val_loss=0.6697 | val_AUROC=0.8859  val_AUPRC=0.7910 | 3.3s
+Epoch  39/80 | train_loss=0.5936  val_loss=0.6716 | val_AUROC=0.8824  val_AUPRC=0.7874 | 3.7s
+Epoch  40/80 | train_loss=0.5996  val_loss=0.6704 | val_AUROC=0.8920  val_AUPRC=0.8027 | 3.5s
+Epoch  41/80 | train_loss=0.6087  val_loss=0.6676 | val_AUROC=0.8837  val_AUPRC=0.7985 | 3.3s
+Epoch  42/80 | train_loss=0.5861  val_loss=0.7148 | val_AUROC=0.8774  val_AUPRC=0.7723 | 3.5s
+Epoch  43/80 | train_loss=0.5839  val_loss=0.6782 | val_AUROC=0.8900  val_AUPRC=0.7999 | 3.4s
+Epoch  44/80 | train_loss=0.5776  val_loss=0.6702 | val_AUROC=0.8847  val_AUPRC=0.8108 | 3.3s
+Epoch  45/80 | train_loss=0.6011  val_loss=0.6515 | val_AUROC=0.8830  val_AUPRC=0.8013 | 3.4s
+Epoch  46/80 | train_loss=0.5732  val_loss=0.7030 | val_AUROC=0.8823  val_AUPRC=0.7842 | 3.4s
+Early stopping triggered at epoch 46 (best AUROC=0.9055)
+Loaded checkpoint from results\cv_kaggle\ensemble\fold_0\checkpoints\best_model.pt (epoch 31)
+C:\Users\sakth\OneDrive\Desktop\Preg-Feta\models\feta_transformer.py:317: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  self.transformer_encoder = nn.TransformerEncoder(
+Using device: cpu
+Starting training for up to 80 epochs
+Epoch   1/80 | train_loss=0.9268  val_loss=0.6444 | val_AUROC=0.8909  val_AUPRC=0.8110 | 3.6s
+Saved checkpoint at epoch 1 (AUROC=0.8909) -> results\cv_kaggle\learned_ensemble\fold_0\checkpoints\best_model.pt
+Epoch   2/80 | train_loss=0.7856  val_loss=0.6542 | val_AUROC=0.8712  val_AUPRC=0.7867 | 4.0s
+Epoch   3/80 | train_loss=0.7586  val_loss=0.6328 | val_AUROC=0.8842  val_AUPRC=0.7926 | 4.0s
+Epoch   4/80 | train_loss=0.7032  val_loss=0.6101 | val_AUROC=0.8871  val_AUPRC=0.8114 | 3.7s
+Epoch   5/80 | train_loss=0.7256  val_loss=0.6273 | val_AUROC=0.8914  val_AUPRC=0.8216 | 3.6s
+Saved checkpoint at epoch 5 (AUROC=0.8914) -> results\cv_kaggle\learned_ensemble\fold_0\checkpoints\best_model.pt
+Epoch   6/80 | train_loss=0.7000  val_loss=0.5927 | val_AUROC=0.8999  val_AUPRC=0.8325 | 3.6s
+Saved checkpoint at epoch 6 (AUROC=0.8999) -> results\cv_kaggle\learned_ensemble\fold_0\checkpoints\best_model.pt
+Epoch   7/80 | train_loss=0.6789  val_loss=0.6015 | val_AUROC=0.8966  val_AUPRC=0.8206 | 3.5s
+Epoch   8/80 | train_loss=0.6620  val_loss=0.6026 | val_AUROC=0.8895  val_AUPRC=0.8193 | 4.0s
+Epoch   9/80 | train_loss=0.6486  val_loss=0.6091 | val_AUROC=0.8885  val_AUPRC=0.8165 | 3.8s

@@ -23,6 +23,7 @@ if str(ROOT) not in sys.path:
 
 from data.dataset import create_splits
 from utils.metrics import compute_all_metrics
+from utils.training import get_best_device
 
 
 US_FEATURES = ["FHR", "CRL", "GS", "YSD"]
@@ -73,7 +74,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--lr", type=float, default=1e-3)
     parser.add_argument("--weight-decay", type=float, default=1e-4)
     parser.add_argument("--seed", type=int, default=42)
-    parser.add_argument("--device", choices=["cpu", "mps", "cuda"], default="cpu")
+    parser.add_argument(
+        "--device", choices=["auto", "cpu", "mps", "cuda"], default="auto"
+    )
     return parser.parse_args()
 
 
@@ -172,7 +175,7 @@ def train_torch_model(
     splits: Dict[str, Dict[str, np.ndarray]],
     args: argparse.Namespace,
 ) -> Tuple[Dict[str, Dict[str, float]], Dict[str, np.ndarray]]:
-    device = torch.device(args.device)
+    device = get_best_device() if args.device == "auto" else torch.device(args.device)
     model.to(device)
     optimizer = AdamW(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
     criterion = nn.BCEWithLogitsLoss(

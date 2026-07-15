@@ -58,9 +58,9 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--device",
-        choices=["cpu", "auto", "cuda", "mps"],
-        default="cpu",
-        help="Use cpu by default for widest Mac compatibility.",
+        choices=["auto", "cpu", "cuda", "mps"],
+        default="auto",
+        help="auto picks CUDA > MPS > CPU; pass --device cpu to force CPU.",
     )
     return parser.parse_args()
 
