@@ -1,0 +1,32 @@
+cohort data/gen_hard   n=3000   prevalence=0.203
+5x2 repeated stratified CV, 3 seeds/arm, identical folds for every arm
+NOTE: all-negative accuracy on this cohort = 79.7% -- AUROC/AUPRC only.
+
+  fold  1/10 done
+  fold  2/10 done
+  fold  3/10 done
+  fold  4/10 done
+  fold  5/10 done
+  fold  6/10 done
+  fold  7/10 done
+  fold  8/10 done
+  fold  9/10 done
+  fold 10/10 done
+
+==========================================================================
+family                   AUROC    AUPRC   vs best (2*SD rule)
+--------------------------------------------------------------------------
+LATE-AVG         0.840 +/- 0.019    0.669   +0.000  best
+GBM              0.832 +/- 0.020    0.644   -0.008  tie
+EARLY            0.832 +/- 0.023    0.640   -0.008  tie
+LATE-STACK       0.832 +/- 0.020    0.655   -0.008  tie
+GATED            0.827 +/- 0.022    0.646   -0.012  tie
+MoE              0.827 +/- 0.022    0.646   -0.012  tie
+DEEP2GBM         0.825 +/- 0.020    0.636   -0.015  tie
+INTERMEDIATE     0.825 +/- 0.023    0.647   -0.015  tie
+LOGREG           0.822 +/- 0.023    0.620   -0.018  tie
+==========================================================================
+
+All arms share cohort, folds, features and budget, so differences are
+attributable to architecture. Cross-DATASET AUROC comparisons with published
+numbers are NOT valid and are deliberately not made.

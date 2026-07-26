@@ -119,6 +119,39 @@ class ModalityProjection(nn.Module):
 # Attention-Based Temporal Pooling
 # ──────────────────────────────────────────────────────────────────────────────
 
+class MaternalTokenProjection(nn.Module):
+    """
+    Separate linear projections for each maternal variable → d_model.
+
+    Each of the 7 maternal variables (age, bmi, parity, gravidity, prev_loss,
+    conception, singleton) becomes its own token, mirroring how PREG-Net treats
+    them as 7 peer graph nodes. This is what makes the FETA/PREG-Net comparison
+    apples-to-apples: both give every maternal variable its own representation.
+    """
+
+    def __init__(self, n_maternal: int = 7, d_model: int = 64):
+        super().__init__()
+        self.projections = nn.ModuleList([
+            nn.Linear(1, d_model) for _ in range(n_maternal)
+        ])
+
+    def forward(self, maternal: torch.Tensor) -> torch.Tensor:
+        """
+        Parameters
+        ----------
+        maternal : (B, n_maternal) — static maternal features
+
+        Returns
+        -------
+        m : (B, n_maternal, d_model) — one token per maternal variable
+        """
+        tokens = [
+            proj(maternal[:, i:i+1])            # (B, 1) → (B, d_model)
+            for i, proj in enumerate(self.projections)
+        ]
+        return torch.stack(tokens, dim=1)       # (B, n_maternal, d_model)
+
+
 class AttentionPooling(nn.Module):
     """
     Learnable query vector that computes attention weights over time steps:
@@ -170,14 +203,22 @@ class AttentionPooling(nn.Module):
 
 class MaternalCrossAttention(nn.Module):
     """
-    Static maternal features attend to the temporal representation.
+    Static maternal features attend over the *token sequence*.
 
-    Q = W_q · maternal  (projected maternal features as queries)
-    K = W_k · z         (temporal pooled repr as keys)
-    V = W_v · z         (temporal pooled repr as values)
+    Q = W_q · maternal    (projected maternal features as queries)
+    K = W_k · h           (per-time-step tokens as keys)
+    V = W_v · h           (per-time-step tokens as values)
 
-    This allows the model to dynamically weight different aspects of
-    the temporal trajectory based on maternal characteristics.
+    Lets the model weight different points of the trajectory according to the
+    patient's maternal profile, and exposes which timepoints a given profile
+    makes salient.
+
+    Keys/values MUST be the full ``(B, T, d)`` token sequence, never a pooled
+    ``(B, 1, d)`` vector: a softmax over a single key is identically 1.0, which
+    drops Q — and with it the maternal features — out of the forward pass
+    entirely. That was the case here until 2026-07-16; the module returned
+    plausible-looking *pre-softmax* scores while contributing exactly zero
+    gradient to the maternal inputs.
     """
 
     def __init__(
@@ -202,48 +243,42 @@ class MaternalCrossAttention(nn.Module):
         self,
         temporal_repr: torch.Tensor,
         maternal: torch.Tensor,
+        token_seq: torch.Tensor,
+        token_mask: Optional[torch.Tensor] = None,
     ) -> Tuple[torch.Tensor, torch.Tensor]:
         """
         Parameters
         ----------
-        temporal_repr : (B, d_model) — pooled temporal representation
+        temporal_repr : (B, d_model) — pooled temporal representation (residual base)
         maternal      : (B, n_maternal) — static maternal features
+        token_seq     : (B, T, d_model) — per-time-step tokens (keys/values)
+        token_mask    : (B, T) — 1.0 for real scans, 0.0 for padding
 
         Returns
         -------
-        out     : (B, d_model)
-        attn_w  : (B, n_heads) — cross-attention weights
+        out    : (B, d_model)
+        attn_w : (B, n_heads, T) — post-softmax weights over timepoints
         """
-        B = temporal_repr.shape[0]
+        B, T, _ = token_seq.shape
+        H, dh = self.n_heads, self.d_head
 
-        # Use temporal_repr as a single "token" for K, V
-        kv = temporal_repr.unsqueeze(1)  # (B, 1, d_model)
+        Q = self.W_q(maternal).view(B, 1, H, dh).transpose(1, 2)   # (B, H, 1, dh)
+        K = self.W_k(token_seq).view(B, T, H, dh).transpose(1, 2)  # (B, H, T, dh)
+        V = self.W_v(token_seq).view(B, T, H, dh).transpose(1, 2)  # (B, H, T, dh)
 
-        Q = self.W_q(maternal).unsqueeze(1)  # (B, 1, d_model)
-        K = self.W_k(kv)                     # (B, 1, d_model)
-        V = self.W_v(kv)                     # (B, 1, d_model)
+        scores = torch.matmul(Q, K.transpose(-2, -1)) / math.sqrt(dh)  # (B, H, 1, T)
 
-        # Multi-head reshape
-        Q = Q.view(B, 1, self.n_heads, self.d_head).transpose(1, 2)
-        K = K.view(B, 1, self.n_heads, self.d_head).transpose(1, 2)
-        V = V.view(B, 1, self.n_heads, self.d_head).transpose(1, 2)
+        if token_mask is not None:
+            ignore = (token_mask == 0).view(B, 1, 1, T)  # True = IGNORE
+            scores = scores.masked_fill(ignore, -1e9)
 
-        # Attention
-        scale = math.sqrt(self.d_head)
-        attn_scores = torch.matmul(Q, K.transpose(-2, -1)) / scale
-        attn_w = F.softmax(attn_scores, dim=-1)
-        attn_w = self.dropout(attn_w)
+        attn_w = F.softmax(scores, dim=-1)  # (B, H, 1, T) — over T keys, so Q survives
+        context = torch.matmul(self.dropout(attn_w), V)              # (B, H, 1, dh)
+        context = context.transpose(1, 2).contiguous().view(B, -1)   # (B, d_model)
 
-        context = torch.matmul(attn_w, V)  # (B, n_heads, 1, d_head)
-        context = context.transpose(1, 2).contiguous().view(B, -1)  # (B, d_model)
+        out = self.layer_norm(self.W_o(context) + temporal_repr)     # residual
 
-        out = self.W_o(context)
-        out = self.layer_norm(out + temporal_repr)  # residual connection
-
-        # Return attention weights per head: (B, n_heads)
-        attn_weights = attn_scores.squeeze(-1).squeeze(-1)  # (B, n_heads)
-
-        return out, attn_weights
+        return out, attn_w.squeeze(2)  # (B, n_heads, T)
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -278,6 +313,12 @@ class FETATransformer(nn.Module):
         Number of ultrasound features (default: 4).
     n_maternal : int
         Number of maternal features (default: 7).
+    inject_maternal_tokens : bool
+        If ``True`` (default), each maternal variable enters the encoder as its own
+        token, so scan tokens and maternal tokens co-attend in every layer — the
+        same peer treatment PREG-Net's graph gives them. If ``False``, maternal
+        reaches the model only through :class:`MaternalCrossAttention` at the head.
+        Set ``False`` only to reproduce the pre-2026-07-16 ablation.
     """
 
     def __init__(
@@ -289,13 +330,20 @@ class FETATransformer(nn.Module):
         dropout: float = 0.2,
         n_us_features: int = 4,
         n_maternal: int = 7,
+        inject_maternal_tokens: bool = True,
     ):
         super().__init__()
 
         self.d_model = d_model
+        self.n_maternal = n_maternal
+        self.inject_maternal_tokens = inject_maternal_tokens
 
         # 1. Modality-specific input projections
         self.modality_proj = ModalityProjection(n_us_features, d_model)
+
+        # 1b. One token per maternal variable (peers of the scan tokens)
+        self.maternal_proj = MaternalTokenProjection(n_maternal, d_model)
+        self.maternal_norm = nn.LayerNorm(d_model)
 
         # 2. Continuous positional encoding
         self.pos_encoder = ContinuousPositionalEncoding(d_model)
@@ -353,17 +401,26 @@ class FETATransformer(nn.Module):
         temporal_features: torch.Tensor,
         gestational_ages: torch.Tensor,
         temporal_mask: torch.Tensor,
+        maternal_features: Optional[torch.Tensor] = None,
     ) -> torch.Tensor:
         """Run the encoder up to (but not including) temporal pooling.
 
         This is the fusion point for intermediate cross-attention: it returns the
         per-time-step token sequence before it is collapsed by :meth:`head`.
 
+        When ``inject_maternal_tokens`` is set and ``maternal_features`` is given,
+        the 7 maternal tokens are prepended for the encoder pass and dropped from
+        the return value. Self-attention has by then written maternal context into
+        every scan token, so the maternal signal survives while the returned shape
+        stays ``(B, T, d)`` — which the hybrid's cross-modal block and
+        ``temporal_mask`` both depend on.
+
         Parameters
         ----------
         temporal_features : (B, T, 4) — FHR, CRL, GS, YSD
         gestational_ages  : (B, T) — actual gestational age in weeks
         temporal_mask     : (B, T) — 1.0 for real scans, 0.0 for padding
+        maternal_features : (B, n_maternal), optional — static maternal features
 
         Returns
         -------
@@ -383,9 +440,24 @@ class FETATransformer(nn.Module):
         # 4. Transformer encoder
         # Create attention mask: True = IGNORE, so invert mask
         src_key_padding_mask = (temporal_mask == 0)  # (B, T)
-        h = self.transformer_encoder(
-            h, src_key_padding_mask=src_key_padding_mask
-        )  # (B, T, d_model)
+
+        if self.inject_maternal_tokens and maternal_features is not None:
+            T = h.shape[1]
+            # Maternal tokens carry no positional encoding — they are not events in time.
+            m = self.maternal_norm(self.maternal_proj(maternal_features))  # (B, M, d)
+            h = torch.cat([m, h], dim=1)                                   # (B, M+T, d)
+            m_pad = torch.zeros(
+                h.shape[0], self.n_maternal,
+                dtype=src_key_padding_mask.dtype, device=h.device,
+            )  # maternal tokens are always valid keys
+            src_key_padding_mask = torch.cat([m_pad, src_key_padding_mask], dim=1)
+
+            h = self.transformer_encoder(h, src_key_padding_mask=src_key_padding_mask)
+            h = h[:, self.n_maternal:, :]  # (B, T, d) — scan tokens, maternal absorbed
+        else:
+            h = self.transformer_encoder(
+                h, src_key_padding_mask=src_key_padding_mask
+            )  # (B, T, d_model)
 
         return h
 
@@ -407,14 +479,16 @@ class FETATransformer(nn.Module):
         -------
         logits : (B, 1) — raw logits
         attn   : dict with 'temporal_pooling_weights' (B, T) and
-                 'cross_attention_weights' (B, n_heads)
+                 'cross_attention_weights' (B, n_heads, T)
         z      : (B, d_model) — penultimate pooled representation
         """
         # 5. Attention-based temporal pooling
         z, pool_weights = self.attn_pool(h, mask=temporal_mask)  # (B, d_model)
 
-        # 6. Maternal cross-attention
-        z, cross_weights = self.maternal_cross_attn(z, maternal_features)
+        # 6. Maternal cross-attention (over the token sequence, not the pooled vector)
+        z, cross_weights = self.maternal_cross_attn(
+            z, maternal_features, h, temporal_mask
+        )
 
         # 7. Classification
         logits = self.classifier(z)  # (B, 1)
@@ -446,8 +520,10 @@ class FETATransformer(nn.Module):
         logits : (B, 1) — raw logits (apply sigmoid for probabilities)
         attn   : dict with:
             'temporal_pooling_weights' : (B, T)
-            'cross_attention_weights'  : (B, n_heads)
+            'cross_attention_weights'  : (B, n_heads, T)
         """
-        h = self.encode_tokens(temporal_features, gestational_ages, temporal_mask)
+        h = self.encode_tokens(
+            temporal_features, gestational_ages, temporal_mask, maternal_features
+        )
         logits, attention_weights, _ = self.head(h, temporal_mask, maternal_features)
         return logits, attention_weights

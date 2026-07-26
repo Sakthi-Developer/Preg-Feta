@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from data.dataset import PregnancyDataset, compute_norm_stats
+from data.dataset import PregnancyDataset, compute_impute_stats, compute_norm_stats
 from data.graph_builder import PatientGraphBuilder
 from models import (
     EnsemblePredictor,
@@ -182,6 +182,9 @@ def build_loaders(
     batch_size: int,
 ) -> Tuple[Dict[str, DataLoader], Dict[str, Tuple[float, float]]]:
     norm_stats = compute_norm_stats(patients, scans, train_ids)
+    # Fit on train only, and shared by every model built from these loaders, so a
+    # cohort with missing values degrades all three identically (input parity).
+    impute_stats = compute_impute_stats(patients, scans, train_ids)
     loaders = {}
     for split, ids, shuffle in [
         ("train", train_ids, True),
@@ -195,6 +198,7 @@ def build_loaders(
             scans_df=split_scans,
             max_scans=5,
             norm_stats=norm_stats,
+            impute_stats=impute_stats,
         )
         loaders[split] = DataLoader(
             dataset,

@@ -1,27 +1,47 @@
-# FETA-PREGNet: First-Trimester Pregnancy-Loss Prediction
+# CAFE: Cross-modal Attention-gated Feature Ensemble
 
-Two complementary deep models for first-trimester pregnancy-loss prediction and a
-fusion of them, implementing the proposal in `Research.pdf`. All data is **synthetic**.
+A clinically-grounded hybrid for **first-trimester pregnancy-loss prediction**: engineered
+cross-modal features, per-view expert encoders, and a per-patient learned gate. It reaches
+**AUROC 0.852** and is well calibrated — and it **ties the single gradient-boosted tree it
+is built from**.
 
-- **FETA-Transformer** — temporal attention over the longitudinal ultrasound sequence
-  (the ultrasound specialist).
-- **PREG-Net** — a knowledge-guided Graph Attention Network over clinical variables,
-  pure PyTorch, run as a maternal-only clinical specialist (`--clinical-only`).
-- **HybridFusionPredictor** — intermediate cross-attention fusion of the two, with a
-  gated per-patient routing variant (`--gated`). This is the model of interest: it
-  recovers losses that neither single-modality specialist sees alone.
+The paper reports that honestly and decomposes where the number came from:
+
+| Source | Δ AUROC |
+|---|---|
+| Boosting component (XGBoost → CatBoost) | **+0.021** |
+| Engineered cross-modal features (LOGREG / CatBoost) | +0.015 / +0.002 |
+| **The gated fusion architecture the system is named for** | **+0.001** |
+| Light sequence encoder as a third expert | **−0.005** |
+
+The system is worth having. The explanation for why it works is not the one its
+architecture suggests.
+
+**All data are synthetic.** No patients were involved. The causal channel strengths are
+specified parameters, not measured effect sizes — every clinical reading of this work is
+constrained by that.
+
+## The paper
+
+- **`CAFE_Hybrid_Manuscript.md`** — the manuscript (`.docx` review copy alongside;
+  `CAFE_Hybrid_TemplateFormat.docx` is the camera-ready two-column build).
+- **`CAFE_Tables_and_Figures.md`** — table and figure supplement.
+- **`CAFE_Paper_Assets.ipynb`** — renders and inspects every table and figure.
+- `PREREGISTRATION.md` — the hypothesis and decision rule, fixed before the evaluation
+  cohort existed.
 
 ## Layout
 
 ```
-synthetic_generator_v2.py   synthetic data generator (single- / dual-etiology)
-models/                     feta_transformer, preg_net, hybrid_fusion, ensemble
-data/                       dataset.py, graph_builder.py + generated CSV cohorts
-utils/                      training.py (unified Trainer), metrics.py
-scripts/                    train_{feta,preg,hybrid,ensemble}, cross_validate,
-                            train_baselines, smoke_test, overfit_batch
-FETA_PREG.ipynb             self-contained notebook (older single-etiology pipeline)
-FETA_PREGNet_Manuscript.md  research paper draft
+models/                            feta_transformer, preg_net, hybrid_fusion, ensemble
+utils/                             training.py (unified Trainer), metrics.py
+data/                              dataset.py, graph_builder.py, gen_hard/ (the cohort)
+figures/cafe/                      Figures 1–5 and tables/ (Tables 1–10)
+scripts/                           feature table, CV plumbing, parity check, docx render
+results/xmodal_study_2026-07-22/   the CAFE study — every script and every result CSV
+results/regime_study_2026-07-19/   the fusion-family benchmark cited in §5.4
+results/cv_hard/                   per-fold predictions behind the pre-registered table
+synthetic_generator_tuned.py       the synthetic cohort generator
 ```
 
 ## Setup
@@ -33,32 +53,47 @@ python -m venv .venv
 ```
 
 The environment lives in `.venv/` (git-ignored). On Windows call
-`.venv/Scripts/python.exe` directly — the system `python` does not have torch.
+`.venv/Scripts/python.exe` directly — the system `python` does not have torch. **Run
+everything from the repo root.**
 
-## Quick start (run from the repo root)
+## Quick start
 
 ```bash
-# 1. generate a dual-etiology cohort
-.venv/Scripts/python.exe synthetic_generator_v2.py --out data/generated_dual \
-    --etiology dual --seed 42 --n-patients 3000
+# 1. verify the model wiring reads both modalities
+.venv/Scripts/python.exe scripts/check_input_parity.py
 
-# 2. verify the model wiring
-.venv/Scripts/python.exe scripts/smoke_test.py
+# 2. check every number in the manuscript against its source CSV (163 of them)
+.venv/Scripts/python.exe results/xmodal_study_2026-07-22/verify_cafe_manuscript.py
 
-# 3. train the two specialists and the hybrid fusion
-.venv/Scripts/python.exe scripts/train_feta.py   --patients-csv data/generated_dual/patients.csv --scans-csv data/generated_dual/scans.csv --out-dir results/feta   --epochs 60
-.venv/Scripts/python.exe scripts/train_preg.py   --patients-csv data/generated_dual/patients.csv --scans-csv data/generated_dual/scans.csv --out-dir results/preg   --clinical-only --epochs 60
-.venv/Scripts/python.exe scripts/train_hybrid.py --patients-csv data/generated_dual/patients.csv --scans-csv data/generated_dual/scans.csv --out-dir results/hybrid --clinical-only --gated --aux-weight 0.3 --epochs 80
+# 3. regenerate the paper's figures and tables
+.venv/Scripts/python.exe results/xmodal_study_2026-07-22/make_cafe_figures.py
+.venv/Scripts/python.exe results/xmodal_study_2026-07-22/make_cafe_tables.py
 
-# 4. cross-validate for stable numbers
-.venv/Scripts/python.exe scripts/cross_validate.py --patients-csv data/generated_dual/patients.csv --scans-csv data/generated_dual/scans.csv --clinical-only --hybrid-gated --n-folds 5
+# 4. recompute the study from scratch (slow)
+.venv/Scripts/python.exe results/xmodal_study_2026-07-22/xmodal_features.py
+.venv/Scripts/python.exe results/xmodal_study_2026-07-22/hybrid_better_experts.py
+.venv/Scripts/python.exe results/xmodal_study_2026-07-22/clinical_evaluation.py
 ```
 
-## Dual-etiology synthetic design
+## The evaluation cohort
 
-`--etiology dual` generates each loss as the logical OR of an independent **sonographic**
-channel (visible to FETA) and a **maternal** channel (visible to PREG-Net), so the two
-modalities carry genuinely complementary information and their fusion is testable. This
-is a deliberate modelling assumption for an in-silico benchmark, **not** a property of
-real pregnancies; any reported fusion gains must be described as such. See `CLAUDE.md`
-for the current tuning status and the full run reference.
+`data/gen_hard` — 3000 patients, 9144 scan rows, 20.3 % prevalence, 2–5 irregularly spaced
+visits each. Losses are generated as the logical OR of an independent **sonographic**
+channel and a **maternal** channel, so the two modalities carry genuinely complementary
+information and fusion is testable. This is a deliberate in-silico modelling assumption,
+**not** a property of real pregnancies. Difficulty is calibrated so architecture can be
+measured at all — on easier cohorts every arm saturates at 0.97–0.99.
+
+Reproduce it bit-for-bit:
+
+```bash
+.venv/Scripts/python.exe synthetic_generator_tuned.py --out data/gen_hard \
+    --etiology dual --seed 42 --n-patients 3000 --channel-corr 0.25 \
+    --sono-mat-coupling 0.5 --mat-noise-sd 3.0 --sono-effect-scale 0.35
+```
+
+`channel_labels.csv` is **diagnostics only** — it holds the per-channel labels whose OR is
+the target, so using it as a feature leaks the answer.
+
+See `CLAUDE.md` for the full methodology rules, established results, and the list of tested
+dead ends.

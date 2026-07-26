@@ -1,0 +1,5 @@
+Model,Sees,AUROC,AUPRC,Accuracy,Sensitivity,Specificity,F1
+Model A  FETA-Transformer,scans + maternal,0.818 +/- 0.013,0.612 +/- 0.033,0.777 +/- 0.029,0.680 +/- 0.031,0.802 +/- 0.043,0.555 +/- 0.023
+Model B  PREG-Net,clinical + scans,0.808 +/- 0.020,0.609 +/- 0.022,0.741 +/- 0.047,0.695 +/- 0.031,0.752 +/- 0.064,0.524 +/- 0.037
+HYBRID   gated fusion,"both, gated",0.825 +/- 0.015,0.633 +/- 0.021,0.773 +/- 0.025,0.705 +/- 0.043,0.791 +/- 0.034,0.559 +/- 0.027
+(ref)    logit average,"both, averaged",0.822 +/- 0.022,0.630 +/- 0.032,0.792 +/- 0.016,0.675 +/- 0.073,0.822 +/- 0.037,0.569 +/- 0.015

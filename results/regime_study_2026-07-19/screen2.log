@@ -1,0 +1,59 @@
+ regime    n  prev  sono   mat   AVG   sLR   gLR  sHGB  gHGB  JOINT  ctx@LR  ctx@HGB  best_fuse-AVG  best_fuse-JOINT
+A/clean 3000 0.203 0.731 0.667 0.796 0.796 0.795 0.748 0.729  0.832  -0.001   -0.019         -0.001           -0.038
+      regime    n  prev  sono   mat   AVG   sLR   gLR  sHGB  gHGB  JOINT  ctx@LR  ctx@HGB  best_fuse-AVG  best_fuse-JOINT
+A/miss-light 3000 0.203 0.724 0.659 0.785 0.784 0.782 0.726 0.717  0.818  -0.002   -0.009         -0.003           -0.036
+         regime    n  prev  sono  mat   AVG   sLR   gLR  sHGB  gHGB  JOINT  ctx@LR  ctx@HGB  best_fuse-AVG  best_fuse-JOINT
+A/miss-moderate 3000 0.203 0.708 0.65 0.756 0.755 0.752 0.694 0.701  0.795  -0.002    0.006         -0.004           -0.043
+      regime    n  prev  sono  mat   AVG   sLR   gLR  sHGB  gHGB  JOINT  ctx@LR  ctx@HGB  best_fuse-AVG  best_fuse-JOINT
+A/miss-heavy 3000 0.203 0.691 0.63 0.736 0.734 0.733 0.662 0.678   0.77  -0.001    0.016         -0.003           -0.037
+          regime    n  prev  sono   mat   AVG   sLR   gLR  sHGB  gHGB  JOINT  ctx@LR  ctx@HGB  best_fuse-AVG  best_fuse-JOINT
+B/scan-noise-0.3 3000 0.203 0.674 0.667 0.749 0.747 0.748 0.682 0.685  0.785   0.001    0.003         -0.001           -0.037
+          regime    n  prev  sono   mat   AVG  sLR   gLR  sHGB  gHGB  JOINT  ctx@LR  ctx@HGB  best_fuse-AVG  best_fuse-JOINT
+B/scan-noise-0.5 3000 0.203 0.648 0.667 0.731 0.73 0.727 0.663 0.664  0.763  -0.002    0.001         -0.003           -0.036
+                regime    n  prev  sono   mat   AVG   sLR   gLR  sHGB  gHGB  JOINT  ctx@LR  ctx@HGB  best_fuse-AVG  best_fuse-JOINT
+C/modality-dropout-0.3 3000 0.203 0.707 0.636 0.754 0.751 0.747 0.695 0.694  0.785  -0.004   -0.001         -0.006           -0.038
+                regime    n  prev  sono   mat   AVG   sLR   gLR  sHGB  gHGB  JOINT  ctx@LR  ctx@HGB  best_fuse-AVG  best_fuse-JOINT
+C/modality-dropout-0.5 3000 0.203 0.682 0.624 0.734 0.733 0.733 0.679 0.669  0.764     0.0    -0.01         -0.001           -0.031
+       regime   n  prev  sono   mat   AVG   sLR  gLR  sHGB  gHGB  JOINT  ctx@LR  ctx@HGB  best_fuse-AVG  best_fuse-JOINT
+D/small-n-400 400 0.212 0.718 0.581 0.732 0.728 0.72 0.658 0.617  0.751  -0.008   -0.041         -0.012           -0.031
+       regime   n  prev  sono   mat   AVG   sLR   gLR  sHGB  gHGB  JOINT  ctx@LR  ctx@HGB  best_fuse-AVG  best_fuse-JOINT
+D/small-n-800 800 0.203 0.733 0.615 0.755 0.745 0.738  0.69  0.69  0.809  -0.006     -0.0         -0.017           -0.071
+        regime    n  prev  sono   mat   AVG   sLR   gLR  sHGB  gHGB  JOINT  ctx@LR  ctx@HGB  best_fuse-AVG  best_fuse-JOINT
+D/small-n-1500 1500 0.213 0.729 0.609 0.758 0.756 0.754 0.698 0.704   0.83  -0.002    0.006         -0.005           -0.076
+          regime    n  prev  sono   mat   AVG  sLR   gLR  sHGB  gHGB  JOINT  ctx@LR  ctx@HGB  best_fuse-AVG  best_fuse-JOINT
+E/prevalence-0.1 2655   0.1  0.71 0.644 0.762 0.76 0.757 0.684 0.679  0.785  -0.002   -0.006         -0.004           -0.028
+           regime    n  prev  sono   mat   AVG   sLR   gLR  sHGB  gHGB  JOINT  ctx@LR  ctx@HGB  best_fuse-AVG  best_fuse-JOINT
+E/prevalence-0.05 2515  0.05 0.676 0.679 0.752 0.752 0.754 0.668 0.666  0.789   0.002   -0.002          0.002           -0.035
+
+====================================================================================================
+                regime    n  prev  sono   mat   AVG   sLR   gLR  sHGB  gHGB  JOINT  ctx@LR  ctx@HGB  best_fuse-AVG  best_fuse-JOINT
+               A/clean 3000 0.203 0.731 0.667 0.796 0.796 0.795 0.748 0.729  0.832  -0.001   -0.019         -0.001           -0.038
+          A/miss-light 3000 0.203 0.724 0.659 0.785 0.784 0.782 0.726 0.717  0.818  -0.002   -0.009         -0.003           -0.036
+       A/miss-moderate 3000 0.203 0.708 0.650 0.756 0.755 0.752 0.694 0.701  0.795  -0.002    0.006         -0.004           -0.043
+          A/miss-heavy 3000 0.203 0.691 0.630 0.736 0.734 0.733 0.662 0.678  0.770  -0.001    0.016         -0.003           -0.037
+      B/scan-noise-0.3 3000 0.203 0.674 0.667 0.749 0.747 0.748 0.682 0.685  0.785   0.001    0.003         -0.001           -0.037
+      B/scan-noise-0.5 3000 0.203 0.648 0.667 0.731 0.730 0.727 0.663 0.664  0.763  -0.002    0.001         -0.003           -0.036
+C/modality-dropout-0.3 3000 0.203 0.707 0.636 0.754 0.751 0.747 0.695 0.694  0.785  -0.004   -0.001         -0.006           -0.038
+C/modality-dropout-0.5 3000 0.203 0.682 0.624 0.734 0.733 0.733 0.679 0.669  0.764   0.000   -0.010         -0.001           -0.031
+         D/small-n-400  400 0.212 0.718 0.581 0.732 0.728 0.720 0.658 0.617  0.751  -0.008   -0.041         -0.012           -0.031
+         D/small-n-800  800 0.203 0.733 0.615 0.755 0.745 0.738 0.690 0.690  0.809  -0.006   -0.000         -0.017           -0.071
+        D/small-n-1500 1500 0.213 0.729 0.609 0.758 0.756 0.754 0.698 0.704  0.830  -0.002    0.006         -0.005           -0.076
+      E/prevalence-0.1 2655 0.100 0.710 0.644 0.762 0.760 0.757 0.684 0.679  0.785  -0.002   -0.006         -0.004           -0.028
+     E/prevalence-0.05 2515 0.050 0.676 0.679 0.752 0.752 0.754 0.668 0.666  0.789   0.002   -0.002          0.002           -0.035
+====================================================================================================
+
+Context effect with learner held fixed (positive = routing helps):
+                regime   AVG   sLR   gLR  sHGB  gHGB  JOINT  ctx@LR  ctx@HGB  best_fuse-AVG  best_fuse-JOINT
+     E/prevalence-0.05 0.752 0.752 0.754 0.668 0.666  0.789   0.002   -0.002          0.002           -0.035
+      B/scan-noise-0.3 0.749 0.747 0.748 0.682 0.685  0.785   0.001    0.003         -0.001           -0.037
+C/modality-dropout-0.5 0.734 0.733 0.733 0.679 0.669  0.764   0.000   -0.010         -0.001           -0.031
+          A/miss-heavy 0.736 0.734 0.733 0.662 0.678  0.770  -0.001    0.016         -0.003           -0.037
+               A/clean 0.796 0.796 0.795 0.748 0.729  0.832  -0.001   -0.019         -0.001           -0.038
+       A/miss-moderate 0.756 0.755 0.752 0.694 0.701  0.795  -0.002    0.006         -0.004           -0.043
+          A/miss-light 0.785 0.784 0.782 0.726 0.717  0.818  -0.002   -0.009         -0.003           -0.036
+        D/small-n-1500 0.758 0.756 0.754 0.698 0.704  0.830  -0.002    0.006         -0.005           -0.076
+      B/scan-noise-0.5 0.731 0.730 0.727 0.663 0.664  0.763  -0.002    0.001         -0.003           -0.036
+      E/prevalence-0.1 0.762 0.760 0.757 0.684 0.679  0.785  -0.002   -0.006         -0.004           -0.028
+C/modality-dropout-0.3 0.754 0.751 0.747 0.695 0.694  0.785  -0.004   -0.001         -0.006           -0.038
+         D/small-n-800 0.755 0.745 0.738 0.690 0.690  0.809  -0.006   -0.000         -0.017           -0.071
+         D/small-n-400 0.732 0.728 0.720 0.658 0.617  0.751  -0.008   -0.041         -0.012           -0.031

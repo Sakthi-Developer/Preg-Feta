@@ -1,0 +1,46 @@
+
+==========================================================
+cohort data/gen_hard  n=3000  prev=0.203  scan_d=34 mat_d=9
+  fold 1: OR 0.808  ADD 0.808  CONCAT 0.796  HGB 0.826
+  fold 2: OR 0.826  ADD 0.848  CONCAT 0.832  HGB 0.829
+  fold 3: OR 0.865  ADD 0.839  CONCAT 0.845  HGB 0.846
+  fold 4: OR 0.835  ADD 0.803  CONCAT 0.824  HGB 0.833
+  fold 5: OR 0.839  ADD 0.817  CONCAT 0.827  HGB 0.825
+  fold 6: OR 0.861  ADD 0.863  CONCAT 0.860  HGB 0.834
+  fold 7: OR 0.847  ADD 0.850  CONCAT 0.841  HGB 0.863
+  fold 8: OR 0.763  ADD 0.789  CONCAT 0.765  HGB 0.783
+  fold 9: OR 0.842  ADD 0.835  CONCAT 0.827  HGB 0.841
+  fold 10: OR 0.827  ADD 0.833  CONCAT 0.836  HGB 0.841
+
+----------------------------------------------------------
+  OR      0.831 +/- 0.028
+  ADD     0.828 +/- 0.022
+  CONCAT  0.825 +/- 0.025
+  HGB     0.832 +/- 0.020
+----------------------------------------------------------
+  OR - ADD    = +0.003   2*SD=0.051   sign 5/10   -> tie
+  OR - CONCAT = +0.006   2*SD=0.054   sign 7/10   -> tie
+  OR - HGB    = -0.001   2*SD=0.048   sign 5/10   -> tie
+
+==========================================================
+cohort data/generated  n=3000  prev=0.206  scan_d=34 mat_d=9
+  fold 1: OR 0.882  ADD 0.889  CONCAT 0.863  HGB 0.906
+  fold 2: OR 0.828  ADD 0.836  CONCAT 0.824  HGB 0.849
+  fold 3: OR 0.859  ADD 0.859  CONCAT 0.858  HGB 0.880
+  fold 4: OR 0.866  ADD 0.869  CONCAT 0.853  HGB 0.861
+  fold 5: OR 0.887  ADD 0.867  CONCAT 0.858  HGB 0.903
+  fold 6: OR 0.841  ADD 0.825  CONCAT 0.803  HGB 0.852
+  fold 7: OR 0.876  ADD 0.887  CONCAT 0.868  HGB 0.893
+  fold 8: OR 0.872  ADD 0.890  CONCAT 0.870  HGB 0.889
+  fold 9: OR 0.862  ADD 0.881  CONCAT 0.865  HGB 0.881
+  fold 10: OR 0.893  ADD 0.896  CONCAT 0.882  HGB 0.882
+
+----------------------------------------------------------
+  OR      0.867 +/- 0.019
+  ADD     0.870 +/- 0.023
+  CONCAT  0.854 +/- 0.022
+  HGB     0.880 +/- 0.019
+----------------------------------------------------------
+  OR - ADD    = -0.003   2*SD=0.042   sign 3/10   -> tie
+  OR - CONCAT = +0.013   2*SD=0.044   sign 9/10   -> tie
+  OR - HGB    = -0.013   2*SD=0.040   sign 2/10   -> tie

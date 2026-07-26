@@ -1,0 +1,19 @@
+cohort data/gen_hard  n=3000  prev=0.203  sono+=0.130 mat+=0.104
+aux weight 1.0, 150 epochs, 3 seeds, 5 folds
+
+  HGB baseline (no etiology data)      0.826 +/- 0.017
+
+  etiology known for    0% of train:  label AUROC 0.835 +/- 0.019   | scan tower -> label_sono 0.887
+  etiology known for   10% of train:  label AUROC 0.838 +/- 0.024   | scan tower -> label_sono 0.890
+  etiology known for   25% of train:  label AUROC 0.844 +/- 0.022   | scan tower -> label_sono 0.894
+  etiology known for   50% of train:  label AUROC 0.844 +/- 0.018   | scan tower -> label_sono 0.895
+  etiology known for  100% of train:  label AUROC 0.845 +/- 0.017   | scan tower -> label_sono 0.894
+
+======================================================================
+  current approach (frac=0)        : 0.835
+  HGB baseline                     : 0.826
+  best with etiology supervision   : 0.845 (at frac=100%)
+  lift over current approach       : +0.010
+  lift over HGB                    : +0.019
+  oracle sono ceiling (reference)  : 0.820
+======================================================================

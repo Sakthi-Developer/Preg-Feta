@@ -49,6 +49,13 @@ class PregnancyDataset(Dataset):
     norm_stats : dict, optional
         Pre-computed {feature: (mean, std)} for normalization.
         If None, no normalization is applied.
+    impute_stats : dict, optional
+        Pre-computed {feature: train-split mean} used to fill missing values.
+        Fit on train only (see :func:`compute_impute_stats`), so imputing the
+        val/test splits leaks nothing. If None, missing values fall back to 0.0
+        *after* normalization — i.e. still the mean for normalized features, but
+        wrong for the un-normalized binaries, so pass this whenever the cohort
+        can contain NaN.
     """
 
     US_FEATURES = ['FHR', 'CRL', 'GS', 'YSD']
@@ -60,18 +67,25 @@ class PregnancyDataset(Dataset):
         max_scans: int = 5,
         us_features: Optional[List[str]] = None,
         norm_stats: Optional[Dict[str, Tuple[float, float]]] = None,
+        impute_stats: Optional[Dict[str, float]] = None,
     ):
         self.max_scans = max_scans
         self.us_features = us_features or self.US_FEATURES
         self.norm_stats = norm_stats
+        self.impute_stats = impute_stats or {}
 
         # Store patient-level data
         self.patients = patients_df.copy().reset_index(drop=True)
 
-        # One-hot encode conception method
-        self.patients['conception_ivf'] = (
-            self.patients['conception'].str.upper() == 'IVF'
-        ).astype(float)
+        # One-hot encode conception method. A missing `conception` must stay NaN
+        # here so it is imputed with the train mean downstream: the naive
+        # `.str.upper() == 'IVF'` maps NaN to False, which silently asserts
+        # "not IVF" for every patient whose record simply lacks the field.
+        conception = self.patients['conception']
+        self.patients['conception_ivf'] = np.where(
+            conception.isna(), np.nan,
+            (conception.astype(str).str.upper() == 'IVF').astype(float),
+        )
         self.patients['singleton'] = self.patients['singleton'].astype(float)
 
         # Group scans by patient (sorted by GA)
@@ -105,7 +119,17 @@ class PregnancyDataset(Dataset):
             ga_vals = np.zeros((0,), dtype=np.float32)
             n_real = 0
 
-        # Replace NaN with 0 (mask will handle it)
+        # Impute missing measurements with the TRAIN-split mean, BEFORE
+        # normalization. Order matters: filling with 0.0 first (as this did until
+        # 2026-07-17) and normalizing afterwards turns an unrecorded FHR into
+        # (0 - 140)/10 ~= -14 SD — a fake extreme outlier rather than "no value".
+        # On a cohort with no NaN this is a no-op, so clean-cohort numbers are
+        # unchanged. `temporal_mask` still marks absent *visits*; this handles a
+        # measurement missing from a visit that did happen.
+        for i, feat in enumerate(self.us_features):
+            fill = self.impute_stats.get(feat)
+            if fill is not None:
+                us_vals[:, i] = np.nan_to_num(us_vals[:, i], nan=fill)
         us_vals = np.nan_to_num(us_vals, nan=0.0)
 
         # Apply normalization if stats are provided
@@ -135,6 +159,13 @@ class PregnancyDataset(Dataset):
         maternal = np.array(
             [float(pat_row[c]) for c in mat_cols], dtype=np.float32
         )
+
+        # Impute missing maternal values with the TRAIN-split mean, before
+        # normalization. Without this a NaN propagates straight through the model
+        # into the loss and silently destroys the whole batch's gradient.
+        for i, feat in enumerate(mat_cols):
+            if np.isnan(maternal[i]):
+                maternal[i] = self.impute_stats.get(feat, 0.0)
 
         # Normalize maternal features if stats provided
         if self.norm_stats is not None:
@@ -241,6 +272,41 @@ def compute_norm_stats(
     return stats
 
 
+def compute_impute_stats(
+    patients_df: pd.DataFrame,
+    scans_df: pd.DataFrame,
+    train_ids: List[str],
+) -> Dict[str, float]:
+    """
+    Mean of every feature over the training split only, for imputing missing values.
+
+    Separate from :func:`compute_norm_stats` on purpose. That dict drives
+    *normalization* and deliberately omits the binary features so they stay 0/1;
+    this one must cover them too, because a missing `previous_loss` still has to be
+    filled with something and the cohort prevalence is the honest choice.
+
+    Fit on train only, so imputing val/test leaks no information from them.
+    On a cohort with no missing values these means are never consulted.
+    """
+    train_scans = scans_df[scans_df["patient_id"].isin(train_ids)]
+    train_patients = patients_df[patients_df["patient_id"].isin(train_ids)].copy()
+
+    conception = train_patients["conception"]
+    train_patients["conception_ivf"] = np.where(
+        conception.isna(), np.nan,
+        (conception.astype(str).str.upper() == "IVF").astype(float),
+    )
+
+    stats: Dict[str, float] = {}
+    for feat in ["FHR", "CRL", "GS", "YSD"]:
+        stats[feat] = float(train_scans[feat].dropna().mean())
+    for feat in ["age", "bmi", "parity", "gravidity",
+                 "previous_loss", "conception_ivf", "singleton"]:
+        stats[feat] = float(train_patients[feat].dropna().astype(float).mean())
+
+    return stats
+
+
 # ──────────────────────────────────────────────────────────────────────────────
 # DataLoader factory
 # ──────────────────────────────────────────────────────────────────────────────
@@ -279,8 +345,9 @@ def get_dataloaders(
     # Stratified split
     train_ids, val_ids, test_ids = create_splits(patients_df, seed=seed)
 
-    # Compute normalization stats from training data only
+    # Compute normalization + imputation stats from training data only
     norm_stats = compute_norm_stats(patients_df, scans_df, train_ids)
+    impute_stats = compute_impute_stats(patients_df, scans_df, train_ids)
 
     loaders = {}
     for name, ids in [('train', train_ids), ('val', val_ids), ('test', test_ids)]:
@@ -292,6 +359,7 @@ def get_dataloaders(
             scans_df=subset_scans,
             max_scans=max_scans,
             norm_stats=norm_stats,
+            impute_stats=impute_stats,
         )
 
         loaders[name] = DataLoader(

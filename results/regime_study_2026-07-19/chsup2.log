@@ -1,0 +1,16 @@
+cohort data/gen_hard  n=3000  prev=0.203   5x2 repeated CV, 3 seeds
+
+  HGB (repo features)      0.832 +/- 0.020
+
+  frac=0.00 (current)    label 0.831 +/- 0.028 | scan->sono 0.889
+  frac=0.25 real         label 0.841 +/- 0.026 | scan->sono 0.893
+  frac=1.00 real         label 0.842 +/- 0.025 | scan->sono 0.893
+  frac=1.00 SHUFFLED     label 0.839 +/- 0.024 | scan->sono 0.874
+
+========================================================================
+  real supervision vs current        +0.011   2*SD=0.054  sign 10/10  -> tie
+  real supervision vs HGB            +0.010   2*SD=0.046  sign 7/10  -> tie
+  REAL vs SHUFFLED (the control)     +0.003   2*SD=0.049  sign 7/10  -> tie
+
+  If REAL vs SHUFFLED is a tie, the lift is regularisation, not etiology.
+========================================================================

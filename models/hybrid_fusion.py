@@ -296,8 +296,10 @@ class HybridFusionPredictor(nn.Module):
             - ``fusion_weights``: ``None`` (fusion is a learned head, not a 2-vector).
         """
         # 1. Encode each tower up to its fusion point (pure, pre-fusion).
+        #    maternal_features must reach encode_tokens: without it the FETA tower is
+        #    maternal-blind and the hybrid sees clinical variables only through PREG-Net.
         h_feta_pure = self.feta.encode_tokens(
-            temporal_features, gestational_ages, temporal_mask
+            temporal_features, gestational_ages, temporal_mask, maternal_features
         )
         h_preg_pure, edge_attentions = self.preg.encode_nodes(
             node_features, edge_index, node_types, node_mask
