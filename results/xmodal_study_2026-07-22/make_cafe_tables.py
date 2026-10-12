@@ -38,7 +38,13 @@ OUT = REPO / "figures" / "cafe" / "tables"
 RUNTIME = REPO / "results" / "regime_study_2026-07-19" / "runtime_real_models.csv"
 
 INK, MUTED, RULE, SHADE = "#1f2328", "#6b7280", "#333333", "#eef1f5"
-SYNTH = "Synthetic data (synthetic_generator_tuned.py, data/gen_hard) - not real patients."
+SYNTH = "All data are synthetic — not real patients."
+
+# The descriptive caption lives in the Word document's own numbered Caption paragraph,
+# not baked into the image: a caption inside a PNG cannot be selected, searched, or
+# renumbered, and a second copy above the image would simply duplicate it. Set this True
+# to get standalone images that carry their own caption.
+EMBED_CAPTION = False
 
 plt.rcParams.update({
     "font.family": "serif",
@@ -55,6 +61,21 @@ ARM_ORDER = ["HYBRID-CAT", "CatBoost", "LOGREG", "HYBRID-XGB", "XGBoost"]
 
 
 # ====================================================================== renderer
+def _typo(text: str) -> str:
+    """ASCII stand-ins -> the real glyphs, so the images match the manuscript's typography.
+
+    The negative-sign rule only fires on a hyphen that opens a number ("-0.007"), never on
+    one inside a token, so hyphenated names and dated paths ("2026-07-22") are untouched.
+    """
+    text = text.replace(" -- ", " — ").replace("->", "→")
+    text = re.sub(r"\bdelta\b", "Δ", text)
+    text = re.sub(r"(?<=\d)x(?=\d)", "×", text)                       # 5x2  -> 5×2
+    text = re.sub(r"(?<=\d)x\b", "×", text)                           # 75x  -> 75×
+    text = re.sub(r"(?<=\w) x (?=\w)", " × ", text)          # age x zFHR -> age × zFHR
+    text = re.sub(r"(?<![\w.])-(?=[.\d])", "−", text)            # -0.007 -> −0.007
+    return text
+
+
 def _wrap(text: str, width_in: float, fontsize: float, pad: float) -> list[str]:
     """Wrap a cell to its column width. ~0.54 em average glyph width for Times."""
     chars = max(int((width_in - 2 * pad) / (fontsize * 0.54 / 72)), 6)
@@ -78,7 +99,7 @@ def render_table(name: str, caption: str, headers: list[str], rows: list[list[st
     def strip(cell: str) -> tuple[str, bool]:
         bold = cell.startswith("**") and cell.endswith("**") and len(cell) > 4
         text = cell[2:-2] if bold else cell
-        return re.sub(r"[*`]", "", text), bold
+        return _typo(re.sub(r"[*`]", "", text)), bold
 
     wrapped, heights = [], []
     for row in rows:
@@ -89,13 +110,16 @@ def render_table(name: str, caption: str, headers: list[str], rows: list[list[st
         wrapped.append(cells)
         heights.append(0.055 + 0.175 * max(len(c[0]) for c in cells))
 
-    head_lines = [_wrap(h, colw[j], fontsize, pad) for j, h in enumerate(headers)]
+    head_lines = [_wrap(_typo(h), colw[j], fontsize, pad) for j, h in enumerate(headers)]
     header_h = 0.10 + 0.175 * max(len(h) for h in head_lines)
     # The "Table n." label is dropped from the image: the Word document numbers the table
     # in its own Caption paragraph, and two numbers on one table can disagree.
-    text = re.sub(r"^Table\s+\d+\.\s*", "", re.sub(r"[*`]", "", caption))
-    cap_lines = _wrap(text, total, fontsize + 0.5, 0.0)
-    cap_h = 0.20 * len(cap_lines) + 0.10
+    if EMBED_CAPTION:
+        text = re.sub(r"^Table\s+\d+\.\s*", "", re.sub(r"[*`]", "", caption))
+        cap_lines = _wrap(text, total, fontsize + 0.5, 0.0)
+        cap_h = 0.20 * len(cap_lines) + 0.10
+    else:
+        cap_lines, cap_h = [], 0.10
     note_h = 0.19 * (len(notes) + 1) + 0.10
 
     fig_h = cap_h + header_h + sum(heights) + note_h
@@ -150,7 +174,7 @@ def render_table(name: str, caption: str, headers: list[str], rows: list[list[st
 
     yn = y_row - 0.20
     for note in notes:
-        for line in _wrap(re.sub(r"[*`]", "", note), total, 7.5, 0.0):
+        for line in _wrap(_typo(re.sub(r"[*`]", "", note)), total, 7.5, 0.0):
             ax.text(0, yn, line, ha="left", va="center", fontsize=7.5, color=MUTED)
             yn -= 0.17
     ax.text(0, yn, SYNTH, ha="left", va="center", fontsize=6.5, color=MUTED)
@@ -252,7 +276,7 @@ def table1(s: dict) -> Path:
         colw=[1.55, 2.05, 3.30, 0.45],
         aligns=["left", "left", "left", "center"],
         notes=("Total added: 43 features, over a 23-feature base table, giving a "
-               "66-feature union view. Counts are read from build_xmodal_block().",))
+               "66-feature union view.",))
 
 
 def table2(_s: dict) -> Path:
@@ -261,7 +285,7 @@ def table2(_s: dict) -> Path:
     rows = [
         ["A", "Flat tabular base table (23 features)",
          "Gradient-boosted tree (XGBoost or CatBoost)", "tree ensemble"],
-        ["B", "Raw scan sequence (2-5 visits x 4 measures + GA)",
+        ["B", "Raw scan sequence (2–5 visits × 4 measures + GA)",
          "Temporal attention, d_model 24, 1 layer, 2 heads", "12,585"],
         ["C", "Cross-modal engineered block (43 features)",
          "Gradient-boosted tree (XGBoost or CatBoost)", "tree ensemble"],
@@ -275,8 +299,8 @@ def table2(_s: dict) -> Path:
         ["Encoder", "View", "Model", "Parameters"], rows,
         colw=[0.75, 2.60, 2.85, 1.10],
         aligns=["center", "left", "left", "center"],
-        notes=("Encoder B's 12,585 parameters are the count logged by "
-               "encoder_b_lightattention.py; the gate's 418 are its layer arithmetic.",))
+        notes=("Encoder B's 12,585 parameters are the count logged at training time; "
+               "the gate's 418 are its layer arithmetic.",))
 
 
 def table3(s: dict) -> Path:
@@ -307,7 +331,7 @@ def table3(s: dict) -> Path:
         ["Arm", "AUROC", "AUPRC", "Brier", "Cal. slope", "Cal. intercept", "ECE"], rows,
         colw=[1.95, 1.25, 0.80, 0.80, 0.90, 1.00, 0.80], highlight=0,
         notes=(f"CAFE vs. CatBoost: delta AUROC = {row.delta:+.4f}, sign {row['sign']} "
-               f"-> {row.verdict.upper()} under the decision rule (section 3.7). "
+               f"→ {row.verdict.upper()} under the decision rule (§3.7). "
                "Best value in each column shown in bold.",))
 
 
@@ -329,8 +353,8 @@ def table4(s: dict) -> Path:
         ["Learner", "Base (23 feats)", "+ engineered (66 feats)", "delta AUROC",
          "Sign", "Verdict"], rows,
         colw=[1.85, 1.20, 1.60, 1.00, 0.75, 0.75],
-        notes=("The ordering is the finding: benefit is monotonically inversely "
-               "proportional to the learner's native capacity to represent interactions.",))
+        notes=("The ordering is the finding: the benefit falls monotonically as the "
+               "learner's native capacity to represent interactions rises.",))
 
 
 def table5(s: dict) -> Path:
@@ -346,22 +370,22 @@ def table5(s: dict) -> Path:
     ap = s["encb"].groupby("arm").auprc.mean()
     rows = [
         ["A + C (CatBoost)", f"**{cell('A+C/cat')}**", f"{ap['A+C/cat']:.3f}",
-         "--", "--", "--"],
+         "—", "—", "—"],
         ["A + B + C (CatBoost)", cell("A+B+C/cat"), f"{ap['A+B+C/cat']:.3f}",
          f"{dcat:+.3f}", scat[0], scat[1]],
-        ["A + C (XGBoost)", cell("A+C/xgb"), f"{ap['A+C/xgb']:.3f}", "--", "--", "--"],
+        ["A + C (XGBoost)", cell("A+C/xgb"), f"{ap['A+C/xgb']:.3f}", "—", "—", "—"],
         ["A + B + C (XGBoost)", cell("A+B+C/xgb"), f"{ap['A+B+C/xgb']:.3f}",
          f"{dxgb:+.3f}", sxgb[0], sxgb[1]],
-        ["Encoder B alone", cell("B-alone"), f"{ap['B-alone']:.3f}", "--", "--", "--"],
+        ["Encoder B alone", cell("B-alone"), f"{ap['B-alone']:.3f}", "—", "—", "—"],
     ]
     return render_table(
         "table05_encoder_b_ablation.png",
         "Table 5. Encoder B ablation. Encoder B is the temporal-attention model at "
-        "12,585 parameters; all arms use the standardised-logit gate of section 3.4.3.",
+        "12,585 parameters; all arms use the standardised-logit gate of §3.4.3.",
         ["Configuration", "AUROC", "AUPRC", "delta vs. no Encoder B", "Sign", "Verdict"],
         rows, colw=[1.85, 1.25, 0.80, 1.45, 0.75, 0.75], highlight=0,
         notes=("Mean gate weight assigned to Encoder B: 0.195, against an equal share "
-               "of 0.333 (encoder_b.log).",))
+               "of 0.333.",))
 
 
 def table6(s: dict) -> Path:
@@ -411,7 +435,7 @@ def table7(s: dict) -> Path:
          "Fraction flagged"], rows,
         colw=[1.75, 0.95, 1.05, 1.05, 0.70, 0.70, 1.15], highlight=0,
         notes=("Single-split comparison: the decision rule cannot be applied, and the "
-               "ordering should not be treated as established (section 4.6).",))
+               "ordering should not be treated as established (§4.6).",))
 
 
 def table8(s: dict) -> Path:
@@ -462,7 +486,8 @@ def table9(s: dict) -> Path:
         colw=[2.05, 0.90, 1.55, 1.60],
         aligns=["left", "center", "center", "center"],
         notes=("Inference for the CAFE arms is a component sum -- two tree evaluations "
-               "plus a 418-parameter MLP forward pass -- not an end-to-end measurement.",
+               "plus a 418-parameter MLP forward pass -- and is therefore an "
+               "estimate, not an end-to-end measurement.",
                f"CAFE-XGB trains {feta / cost.loc['HYBRID-XGB', 'fit_s']:.0f}x faster and "
                f"CAFE-CatBoost {feta / cost.loc['HYBRID-CAT', 'fit_s']:.1f}x faster than "
                f"the FETA-Transformer; against their own matched baselines the direction "
@@ -488,7 +513,7 @@ def table10(s: dict) -> Path:
     rows = []
     for i, (label, val) in enumerate(steps):
         if i == 0:
-            delta = "--"
+            delta = "—"
         else:
             d = val - steps[i - 1][1]
             delta = f"**{d:+.3f}**" if abs(d) >= 0.010 else f"{d:+.3f}"

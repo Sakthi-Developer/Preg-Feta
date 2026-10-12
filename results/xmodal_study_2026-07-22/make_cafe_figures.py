@@ -31,6 +31,13 @@ C = {
     "HYBRID-XGB": "#009E73",
     "HYBRID-CAT": "#D55E00",
 }
+
+# Display labels, identical to the ones make_cafe_tables.py and the manuscript use.
+# The CSVs carry the internal run names; a figure that shows HYBRID-CAT where every
+# table says "CAFE (CatBoost experts)" leaves the reader unable to match the two.
+LABEL = {"HYBRID-CAT": "CAFE (CatBoost experts)", "CatBoost": "CatBoost",
+         "LOGREG": "Logistic regression", "HYBRID-XGB": "CAFE (XGBoost experts)",
+         "XGBoost": "XGBoost"}
 plt.rcParams.update({
     "figure.dpi": 150, "savefig.dpi": 200, "font.size": 9,
     "axes.spines.top": False, "axes.spines.right": False,
@@ -46,7 +53,8 @@ def fig_calibration() -> None:
     for arm, g in df.groupby("arm"):
         g = g.sort_values("pred")
         ax.plot(g.pred, g.observed, "o-", ms=4, lw=1.4, color=C.get(arm),
-                label=f"{arm} (slope {summ.loc[arm, 'cal_slope']:.2f})", zorder=3)
+                label=f"{LABEL.get(arm, arm)} — slope {summ.loc[arm, 'cal_slope']:.2f}",
+                zorder=3)
     ax.set_xlabel("mean predicted probability of loss")
     ax.set_ylabel("observed fraction with loss")
     ax.set_title("Calibration, pooled out-of-fold (repeat 2)", loc="left")
@@ -63,7 +71,7 @@ def fig_decision_curve() -> None:
             label="treat all")
     ax.axhline(0, color="#444444", lw=1.2, ls=":", label="treat none")
     for a in arms:
-        ax.plot(d.threshold, d[a], lw=1.6, color=C.get(a), label=a)
+        ax.plot(d.threshold, d[a], lw=1.6, color=C.get(a), label=LABEL.get(a, a))
     lo = min(0.0, float(d[arms].min().min()))
     ax.set_ylim(max(lo, -0.05), float(d[arms].max().max()) * 1.15)
     ax.set_xlabel("risk threshold at which a clinician would act")
@@ -142,13 +150,17 @@ def fig_accuracy_vs_cost() -> None:
         if arm not in cost.index:
             continue
         x, y = cost.loc[arm, "fit_s"], summ.loc[arm, "auroc"]
-        ax.scatter(x, y, s=70, color=C.get(arm), zorder=3)
-        ax.annotate(arm, (x, y), textcoords="offset points", xytext=(7, 4),
-                    fontsize=8)
+        # Fold-SD bars: without them this axis makes arms the paper reports as ties
+        # look cleanly separated, which is the opposite of the result.
+        ax.errorbar(x, y, yerr=summ.loc[arm, "auroc_sd"], fmt="o", ms=8,
+                    color=C.get(arm), ecolor=C.get(arm), elinewidth=1.2,
+                    capsize=3, alpha=0.9, zorder=3)
+        ax.annotate(LABEL.get(arm, arm), (x, y), textcoords="offset points",
+                    xytext=(9, 5), fontsize=8)
     ax.set_xscale("log")
     ax.set_xlabel("training time for one fold (s, log scale)")
     ax.set_ylabel("AUROC (5×2 CV)")
-    ax.set_title("Accuracy against training cost", loc="left")
+    ax.set_title("Accuracy against training cost (bars: ±1 fold SD)", loc="left")
     fig.savefig(OUT / "fig_cafe_accuracy_vs_cost.png"); plt.close(fig)
 
 
